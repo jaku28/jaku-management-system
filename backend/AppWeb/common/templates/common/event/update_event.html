@@ -1,0 +1,116 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+<!-- Add new task for an event (this task will not be saved on default tasks) -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">Evento: </span><span class="text-capitalize">{{event.title}}</span><br/>
+				<hr>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<form action="." method="POST">
+				{%csrf_token%}
+				<div class="form-row">
+					<div class="col-md-3 mb-3">
+						<label for="">Tarea</label>
+						<input type="text" name="newTask" class="form-control" required>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="">Asignado a:</label>
+						<select name="n_personalusers" id="n_personalusers" class="form-control">
+							<option selected>Ninguno</option>
+							{%for p in personal_users%}
+							<option value="{{p.id}}">{{p.first_name}}</option>
+							{%endfor%}
+						</select>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="">Fecha de asignación:</label>
+						<input type="date" name="n_assigned_date" class="form-control" required>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="">Fecha límite:</label>
+						<input type="date" name="n_due_date" class="form-control" required>
+					</div>
+					<div id="divInput" class="col-md-3">
+
+					</div>
+					<div id="divSelect" class="col-md-3">
+
+					</div>
+					<div id="divDateA" class="col-md-3">
+
+					</div>
+					<div id="divDateL" class="col-md-3">
+
+					</div>
+				</div>
+				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
+						class="fas fa-plus"></i></button>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+			</form>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	function newField() {
+		var divi = document.createElement('div');
+		var divs = document.createElement('div');
+		var divda = document.createElement('div');
+		var divdl = document.createElement('div');
+		var input = document.createElement('input');
+		var select = document.createElement('select');
+		var input_due_date = document.createElement('input');
+		var input_assigned_date = document.createElement('input');
+		input_due_date.type = 'date'
+		input_due_date.name = 'n_due_date'
+		input_due_date.className = 'form-control my-3';
+		input_due_date.required = true
+		input_assigned_date.type = 'date'
+		input_assigned_date.name = 'n_assigned_date'
+		input_assigned_date.className = 'form-control my-3';
+		input_assigned_date.required =true
+		input.name = 'newTask';
+		input.required = true
+		input.className = 'form-control my-3';
+		select.name = 'n_personalusers';
+		select.className = 'form-control my-3';
+		var o;
+		o = document.createElement('option')
+		o.value = 'Ninguno';
+		o.text = 'Ninguno';
+		o.setAttribute('selected', 'selected');
+		select.appendChild(o);
+
+		{% for p in personal_users %}
+		o = document.createElement('option');
+		o.value = '{{p.id}}';
+		o.text = '{{p.first_name}}';
+		select.appendChild(o);
+		{% endfor %}
+		divi.appendChild(input);
+		divs.appendChild(select);
+		divda.appendChild(input_assigned_date);
+		divdl.appendChild(input_due_date);
+		
+
+		document.getElementById("divInput").appendChild(divi)
+		document.getElementById("divSelect").appendChild(divs)
+		document.getElementById("divDateA").appendChild(divda)
+		document.getElementById("divDateL").appendChild(divdl)
+	}
+</script>
+{% endblock%}

@@ -1,0 +1,35 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            
+            <div class="modal-header">
+                <h1> <i class="fas fa-edit" style="color: #bdc3c7;"></i>
+					<span class="text-primary">{{title}}</span>
+				</h1>                
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>    
+
+			<form method="POST" action="{% url 'common:editdefaultworkshop' defaultworkshop.id %}" class="was-validated required">
+				{%csrf_token%}
+				<div class="form-group">
+					<label for="title">Nombre:</label>
+					<input type="text" id="name" name="name" value='{{defaultworkshop.name}}' class="form-control" required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+				</div>
+				<div class="form-group">
+					<label for="description">Descripción</label>
+                    <textarea type="text" class="form-control mb-3" name="description"
+                        id="description">{{defaultworkshop.description}}</textarea>
+				</div>
+				<div class="form-group">
+					<label for="temary">Temario</label>
+                    <textarea type="text" class="form-control mb-3" name="temary"
+                        id="temary">{{defaultworkshop.temary}}</textarea>
+				</div>
+				<button type="submit" class="btn btn-jaku">Actualizar</button>
+				<a class="btn btn-secondary my-3"  href="{% url 'common:listofdefaultworkshops'%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+</div>

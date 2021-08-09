@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'img/icono.ico'%}" type="image/x-icon">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="{% static 'css/layout-administrador.css'%}">
+    <link rel="stylesheet" href="{% static 'css/layout-emprendedor.css'%}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+</head>
+
+<body>
+    <!-- Header Coach -->
+    <div class="main-header">
+        <div class="logo-header">
+            <a href="" class="logo" style="text-decoration: none;">
+                Sistema JAKU
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+            <button class="topbar-toggler more"><i class="fa fa-ellipsis-v"></i></button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+            <div class="container-fluid">
+                {% if request.user.is_authenticated %}
+                <!-- Header Navigation Bar -->
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <!-- User Coach -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-circle"></i>
+                            <span class="text-capitalize">
+                                {% if request.user.first_name %}
+                                {{ request.user.first_name }}
+                                {% else %}
+                                {{ request.user.username }}
+                                {% endif %}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <div class="user-box">
+                                    <div class="u-text">
+                                        <h4 class="text-capitalize">
+                                            {% if request.user.first_name %}
+                                            {{ request.user.first_name }}
+                                            {% else %}
+                                            {{ request.user.username }}
+                                            {% endif %}</h4>
+                                        <p class="text-muted">{{request.user.email}}</p><a href="{% url 'accounts:coachprofile' user.id %}"
+                                            class="btn btn-jaku btn-rounded  btn-sm ">Ver Perfil</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fa fa-power-off"></i>
+                                Cerrar Sesión</a>
+                        </ul>
+                    </li>
+                    <!-- End User Coach -->
+                </ul>
+                <!-- End Header Navigation Bar -->
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Ingresar</a>
+                </li>
+                {% endif %}
+
+            </div>
+        </nav>
+    </div>
+    <!-- End Header Coach-->
+
+    <!-- Side Bar -->
+    <div class="sidebar">
+        <div class="sidebar-wrapper">
+            <!--User Coach Side Bar-->
+            <div class="user">
+                <div class="info">
+                    <span class="text-capitalize">
+                        {% if request.user.first_name %}
+                        {{ request.user.first_name }}
+                        {% else %}
+                        {{ request.user.username }}
+                        {% endif %}
+                        <span class="user-level"><i class="fas fa-user-tie pr-2"></i>{{request.user.groups.all.0}}</span>
+                    </span>
+                </div>
+            </div>
+            <!-- Coach Managements-->
+            <ul class="nav">
+                <li class="nav-item {% if active_page == 'my_projects_coach' %}
+                active
+                {% endif %}">
+                    <a href="{% url 'tracing:coachhome' %}">
+                        <i class="fa fa-id-badge"></i>
+                        <p>Mis proyectos asignados</p>
+                    </a>
+                </li>               
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- End Side Bar -->
+
+    {% block container %}
+
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+        <script src="{% static 'js/phoneformat.js'%}"></script>
+    {% block scripts %}
+    <script type="text/javascript">
+        $(function () { $('[data-toggle="tooltip"]').tooltip() }), jQuery(document).ready(function () { jQuery(".scrollbar-inner").scrollbar() }), $(document).ready(function () {
+            var t = !1, o = !1, e = 0, a = 0
+            t || ($toggle = $(".sidenav-toggler"), $toggle.click(function () { 1 == e ? ($("html").removeClass("nav_open"), $toggle.removeClass("toggled"), e = 0) : ($("html").addClass("nav_open"), $toggle.addClass("toggled"), e = 1) }), t = !0), o || ($topbar = $(".topbar-toggler"), $topbar.click(function () { 1 == a ? ($("html").removeClass("topbar_open"), $topbar.removeClass("toggled"), a = 0) : ($("html").addClass("topbar_open"), $topbar.addClass("toggled"), a = 1) }), o = !0), $('[data-select="checkbox"]').change(function () { $target = $(this).attr("data-target"), $($target).prop("checked", $(this).prop("checked")) })
+        });
+        
+    </script>
+    {% endblock %}
+</body>
+
+</html>

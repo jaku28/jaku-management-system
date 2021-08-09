@@ -1,0 +1,82 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+<!-- Showing default tasks list to register them on an event -->
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">Evento: </span><span class="text-capitalize">{{event.title}}</span><br/>
+				<hr>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			
+			<!-- Default tasks list form -->
+			<form action="." method="POST">
+				{%csrf_token%}
+				<div class="table-responsive shadow-sm" style="border-radius: 9px;">										
+						<table class="table table-bordered">	
+						<tbody>
+							<tr>
+								<th>Tarea</th>
+								<th>Asignado a:</th>
+								<th>Fecha de asignación:</th>
+								<th>Fecha Límite:</th>
+							</tr>									
+							{%for t in default_tasks%}		
+							<tr>							
+							<td style="width: 70%;"><input type="checkbox" name="nametask" id="nametask{{ forloop.counter }}"
+								data-index="{{ forloop.counter }}" value="{{t.name}}" class="mr-3"> {{t.name}}</td>
+							<td style="width: 20%;min-width: 170px;">
+								<select name="personalusers" id="personalusers{{ forloop.counter }}" disabled class="form-control">
+								<option selected>Ninguno</option>
+								{%for p in personal_users%}
+								<option value="{{p.id}}">{{p.first_name}}</option>
+								{%endfor%}
+								</select>
+							</td>
+							<td style="width: 5%">
+								<input type="date" name="assigned_date" id="assigned_date{{ forloop.counter }}" disabled class="form-control" required></td>
+							<td style="width: 5%">
+								<input type="date" name="due_date" id="due_date{{ forloop.counter }}" disabled class="form-control"  required></td>							
+							</tr>	
+							{%endfor%}																
+						</tbody>
+						</table>											
+				</div>
+				<br/>
+				<button type="submit" name="add_tasks" value="add_tasks" class="btn btn-outline-secondary">Agregar nuevas tareas</button>
+				<button type="submit" name="save_tasks" value="save_tasks" class="btn btn-jaku mx-3">Guardar tareas</button>
+				
+			</form>
+			<!-- End Default tasks list form -->
+						
+			<script type="text/javascript">
+				document.addEventListener('change', function (event) {
+					if (event.target.type != 'checkbox')
+						return
+					const index = event.target.getAttribute('data-index')
+					const checked = event.target.checked;
+
+					if (checked) {
+						document.getElementById('personalusers' + index).disabled = false;
+						document.getElementById('assigned_date' + index).disabled = false;
+						document.getElementById('due_date' + index).disabled = false;
+					} else {
+						document.getElementById('personalusers' + index).disabled = true;
+						document.getElementById('assigned_date' + index).disabled = true;
+						document.getElementById('due_date' + index).disabled = true;
+					}
+				});
+			</script>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

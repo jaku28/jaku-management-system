@@ -1,0 +1,50 @@
+{% include 'common/layout_admin.html' with active_page='event'  %}
+{% block container %}
+{% load static %}
+<!-- Shows all events as a list -->
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}: </span><br><span class="text-capitalize">{{event.title}} </span>
+            </h1>
+            <hr>
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered css-serial">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Apellidos y nombres</th>
+                            <th>Correo</th>
+                            <th>DNI</th>
+                            <th>Teléfono</th>
+                            <th>Especialidad</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registry_of_event %}
+                        <tr>
+                            <td></td>
+                            <td class="text-capitalize">{{r.user.last_name}}, {{r.user.first_name}}</td>
+                            <td class="">{{r.user.email}}</td>
+                            <td class="text-capitalize">{{r.user.profile.dni}}</td>
+                            <td class="text-capitalize">{{r.user.profile.phone_number}}</td>
+                            <td class="text-capitalize">{{r.user.profile.specialty}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'common:export' event.id %}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Exportar</a>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

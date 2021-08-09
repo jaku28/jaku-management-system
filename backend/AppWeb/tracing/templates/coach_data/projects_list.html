@@ -1,0 +1,51 @@
+{% include 'common/layout_coach.html' with active_page='my_projects_coach'%}
+{% block container %}
+
+<!-- Shows all the assigned projects -->
+<head>
+	<title>{{title}}</title>
+</head>
+
+
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}} </span>
+            </h1>
+            {%if projects %}
+			<div class="dropdown-divider"></div>
+			<tbody>
+                {% for p in projects %}
+                <tr>
+                    <td>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <a class="btn btn-jaku my-3 text-left" style="width: 100% ;" href="{% url 'tracing:listactivities' p.id %}">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="alert alert-primary" role="alert">
+                                            <span class="font-weight-bold">Proyecto: </span>{{p.name}}
+                                        </div>
+                                        Convocatoria: {{p.call.name}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% else %}
+            <div class="container-fluid">
+                <div class="alert alert-primary">
+                    <p>No tiene proyectos asignados.</p>
+                </div>
+            </div>
+            {% endif %}
+		</div>
+    </div>
+</div>     
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

@@ -1,0 +1,88 @@
+{% include 'common/layout_mentor.html' with active_page='my_mentoring' %}
+{% block container %}
+
+<!-- Shows all mentorings as a list -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-users" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
+				<table class="table table-bordered">
+					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+						<tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+							<th>Convocatoria</th>
+                            <th>Proyecto</th>
+                            <th>Estado</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+                        {% if mentorings %}
+						{% for m in mentorings %}
+						<tr>
+                            <td>{{m.date}}</td>
+                            <td>{{m.time | time:'g:i A'}}</td>
+							<td>{{m.project.call}}</td>
+							<td>{{m.project}}</td>
+							<td style="min-width: 200px;" class="align-middle">
+                                {% if m.is_attended == '2' %}
+                                <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>ATENDIDO</div>
+                                {% elif m.is_attended == '3' %}
+                                <div class="alert alert-danger" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>NO ATENDIDO</div>
+                                {% else %}
+                                <div class="alert alert-secondary" role="alert">PENDIENTE</div>
+                                {% endif %}
+                            </td>
+							<td class="jaku-actions align-middle" style="min-width: 200px;">
+								{% if m.date == today and m.is_attended != '3' %}
+								<button class="btn btn-success" onclick="abrirModal('{% url 'tracing:markattendance' m.id %}')" data-dismiss="modal">
+                                    Asistió
+								</button>
+								{% if m.is_attended != '2' %}
+								<a class="btn btn-danger" href="{% url 'tracing:markabsence' m.id %}"
+								onclick="return confirm('¿Confirmar inasistencia del equipo?')">
+                                    No Asistió
+								</a>
+								{% endif %}
+								{% endif %}
+							</td>
+						</tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>No hay registros de mentorías programadas.</h2>
+                        {% endif %}
+					</tbody>
+				</table>
+			</div>
+			<!-- Modal  -->
+			<div class="modal fade" id="mostrar" role="dialog">
+
+			</div>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+	<script>
+		function abrirModal(url){
+			$('#mostrar').load(url, function(){
+				$(this).modal('show');
+			});
+		}
+	</script>
+{% endblock scripts %}
+	

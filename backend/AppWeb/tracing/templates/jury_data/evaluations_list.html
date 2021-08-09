@@ -1,0 +1,58 @@
+{% include 'layout_jury.html' with active_page='my_evaluation_jury' %}
+{% block container %}
+{% load static %}
+<!-- Shows all evaluation assigned to a jury -->
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} </span>
+            </h1>
+            {% if evaluations %}
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>Evaluación</th>
+                            <th>Convocatoria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in evaluations %}
+                        <tr>
+                            <td>{{e.name}}</td>
+                            <td>{{e.call}}</td>
+                            <td class="jaku-actions">
+                                <ul>
+                                    {% if e.date == today %}
+                                    <li>
+                                        <a href="{% url 'tracing:getjuryprojects' e.id %}" class="evaluation" data-toggle="tooltip" title="Ver" data-placement="top"><i class="fas fa-clipboard fa-lg mx-2" ></i>Evaluar</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container-fluid">
+                <div class="alert alert-primary">
+                    <p>No tiene evaluaciones.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+
+{% endblock %}

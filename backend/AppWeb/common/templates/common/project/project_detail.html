@@ -1,0 +1,78 @@
+<div class="modal-dialog modal-lg" style="margin:auto;" role="document">
+	<div class="modal-content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+
+			<div class="modal-header">
+                <h1> <i class="fas fa-bullhorn" style="color: #bdc3c7;"></i> 
+                    <span class="text-primary">Detalle del Proyecto: </span><br><span class="text-capitalize">{{project.name}}  </span>
+                </h1>              
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>  
+
+                <!-- Table of project information -->
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-head-bg-success table-striped table-hover">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th scope="col">Campo</th>
+                                <th scope="col" class="w-75">Información</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Título del Emprendimiento:</td>
+                                <td>{{project.project.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Convocatoria:</td>
+                                <td>{{project.project.call}}</td>
+                            </tr>
+                            <tr>
+                                <td>Ubicación del Emprendimiento:</td>
+                                <td>{{project.project.get_location_display}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tipo de Emprendimiento:</td>
+                                <td>{{project.project.get_project_type_display}}</td>
+                            </tr>
+                            <tr>
+                                <td>Resumen del Emprendimiento:</td>
+                                <td>{{project.project.summary|linebreaks}}</td>
+                            </tr>
+                            <tr>
+                                <td>Descripción a detalle del Emprendimiento:</td>
+                                <td>{{project.project.detail_description|linebreaks}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Justificación basado en Necesidad del Mercado:</td>
+                                <td>{{project.project.detail_market_needs|linebreaks}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Miembros del Equipo:</td>
+                                <td>{{project.project.members|linebreaks}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Link de Presentacion:</td>
+                                <td>
+                                    {% if project.project.link_video != None %}
+                                    <a href="{{project.project.link_video}}" target="_blank">{{project.project.link_video}}</a>
+                                    {% else %}
+                                    <div class="alert alert-warning" role="alert">
+                                        No cuenta con un link.
+                                    </div>
+                                    {% endif %}
+                                </td>
+                            </tr>                                                        
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of Table of project information -->            
+        </div>
+    </div>
+</div>
+<!-- End of Details of each call -->

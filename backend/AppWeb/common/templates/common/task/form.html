@@ -1,0 +1,29 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+<!-- Form to create a default taks (or preloaded task) -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<form action="." method="POST">
+				{%csrf_token%}
+				<label for="title">Nombre:</label><br>
+				<input type="text" id="title" name="name"><br />
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+			</form>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+
+{% endblock %}

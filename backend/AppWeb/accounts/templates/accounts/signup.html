@@ -1,0 +1,54 @@
+{% extends 'accounts/layout.html' %}
+{% load i18n %}
+
+{% block content %}
+
+  {% if request.user.is_authenticated %}
+    {% trans 'You are logged like ' %}
+    <b>{{ user.username }}</b>, <a href="{% url 'accounts:logout' %}">logout ?</a>
+  {% else %}  
+
+<div class="card fat">
+  <div class="card-body">
+    <h4 class="card-title">Registrate</h4>              
+      <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        <div class="form-group">
+          <label for="id_{{field.name}}">{{field.label}}</label>
+          {{field}}
+          <small id="id_{{field.name}}_help" class="form-text text-muted">{{field.help_text}}</small>
+        </div>
+        {% endfor %}
+
+        {% for field in form_profile %}
+        <div class="form-group">
+          <label for="id_{{field.name}}">{{field.label}}</label>
+          {{field}}
+          <small id="id_{{field.name}}_help" class="form-text text-muted">{{field.help_text}}</small>
+        </div>
+        {% endfor %}
+        
+        {% if next %}
+          <input type="hidden" name="next" value="{{next}}" />        
+        {% elif request.GET.next %}
+          <input type="hidden" name="next" value="{{request.GET.next}}" />
+        {% endif %}
+        
+        <div class="form-group no-margin">
+          <button type="submit" class="btn btn-primary btn-block">
+            Registrate
+          </button>
+        </div>
+        <div class="margin-top20 text-center">
+          ¿Ya tienes una cuenta?
+          <a class="font-semi-bold" href="{% url 'accounts:login'%}{% if request.GET.next %}?next={{request.GET.next}}{% endif %}">
+            Iniciar sesión
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

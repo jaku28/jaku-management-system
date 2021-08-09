@@ -1,0 +1,25 @@
+{% load i18n %}
+
+{% load static %}
+<html>
+    <body class="background-gray" style="box-sizing: inherit;margin: 0;color: #556270;font-family: &quot;Open Sans&quot;, sans-serif;font-feature-settings: 'kern', 'liga', 'pnum';font-size: 1em;line-height: 1.618;-webkit-font-smoothing: antialiased;height: 100%;background-color: #ededed;">
+        <div>
+            <h1>
+                ¡Bienvenido a Atix!
+            </h1>
+            <p>
+              <span class="font-semi-bold" style="font-weight: 600;">¡Bienvenido {{ user.username }}!</span> Gracias por estar con nosotros.
+            </p>
+            <p>
+              <a href="{{ protocol }}://{{ domain }}{% url 'accounts:login' %}">¡Empieza ahora!</a>
+            </p>
+            <p>
+              El equipo de Atix
+            </p>
+        </div>
+        </div>
+        <div>
+            © {% now "Y" %} neax
+        </div>
+    </body>
+</html>

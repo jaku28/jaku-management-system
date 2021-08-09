@@ -1,0 +1,99 @@
+{% include 'common/layout_admin.html' with active_page='call'%}
+{% block container %}
+{% load static %}
+<!-- Shows all projects from this call as a list -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <form method='get'>
+                <div class="row">
+                    <div class="col-md-4">{{project_filter.form.as_p}}</div>
+                    <div class="col-md-6"><button type="submit" class="btn btn-jaku"><i class="fa fa-filter" aria-hidden="true"></i>
+                       Filtrar</button></div>
+                </div>
+                
+                
+            </form>
+            <hr>
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} de la Convocatoria: </span><br><span class="text-capitalize">{{call.name}} </span>
+            </h1>
+            {% if call.is_reviewed == False and call.due_date < today %} 
+            <td class="jaku-actions">
+                <a class="btn btn-jaku" href="{% url 'common:finishreview' call.id%}"
+                onclick="return confirm('Se terminará la revisión de proyectos, y se notificará el estado de sus proyectos a los equipos.')">
+                    Terminar revisiones
+                </a>
+            </td>
+            {% endif %}
+            <hr>
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered css-serial">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Título</th>
+                            <th>Integrantes</th>
+                            <th>Tipo de Proyecto</th>
+                            <th>Link de Presentacion</th>
+                            <th>Estado del Proyecto</th>
+                            <th>Acciones</th>
+                            
+                        </tr>
+                    <tbody>
+                        {% for r in project_filter.qs %}
+                        <tr>
+                            <td></td>
+                            <td>{{r.code}}</td>
+                            <td>{{r.name}}</td>
+                            <td>{{r.members|linebreaks}}</td>
+                            <td>
+                                {% if r.project_type == '1' %} BASE TECNOLÓGICA 
+                                {% elif r.project_type == '2' %} SOCIAL
+                                {% else %} PRODUCTIVO {% endif %}
+                            </td>
+                            <td>
+                            {% if r.link_video|stringformat:"s" == 'None' %}
+                                <div class="alert alert-warning" role="alert">
+                                    No cuenta con link.
+                                </div>
+                            {% else %}
+                                <a href="{{r.link_video}}" target="_blank">{{r.link_video}}</a>
+                            {% endif %}
+                                </td>
+                            <td style="min-width: 200px;"> 
+                                
+                                    {% if r.is_approved == '2' %} <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>APROBADO</div> 
+                                    {% elif r.is_approved == '3' %} <div class="alert alert-danger" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>RECHAZADO</div>
+                                    {% else %} <div class="alert alert-secondary" role="alert">PENDIENTE</div> {% endif %}
+                                
+                            </td>
+                            
+                            <td class="jaku-actions">
+                                <ul>
+                                    <li>
+                                        <a onclick="abrirModal('{% url 'common:callprojectdetail' r.id %}')" class="ver" data-toggle="tooltip" title="Ver" data-placement="top"><i class="fas fa-eye fa-lg" ></i></a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="mostrar">
+
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

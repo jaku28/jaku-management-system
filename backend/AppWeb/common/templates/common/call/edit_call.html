@@ -1,0 +1,88 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+<!-- Add new workshop for a call (this workshop will not be saved on default workshops) -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">Convocatoria: </span><span class="text-capitalize">{{call.name}}</span><br/>
+				<hr>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<form action="." method="POST">
+				{%csrf_token%}
+				<div class="form-row">
+					<div class="col-md-4 mb-4">
+						<label for="">Taller</label>
+						<input type="text" name="workshop_name" class="form-control" required>
+					</div>
+					<div class="col-md-4 mb-4">
+						<label for="">Descripción:</label>
+					    <textarea class="form-control" type="text" name="workshop_description" id="description" rows="1" required></textarea>
+					</div>
+                    <div class="col-md-4 mb-4">
+						<label for="">Temario:</label>
+					    <textarea class="form-control" type="text" name="workshop_temary" id="temary" rows="1" required></textarea>
+					</div>
+					<div id="divInput" class="col-md-4 mb-4">
+
+					</div>
+					<div id="divSelect" class="col-md-4 mb-4">
+
+					</div>
+					<div id="divDateA" class="col-md-4 mb-4">
+
+					</div>
+				</div>
+				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
+						class="fas fa-plus"></i></button>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+			</form>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	function newField() {
+		var divi = document.createElement('div');
+		var divs = document.createElement('div');
+		var divda = document.createElement('div');
+		var input = document.createElement('input');
+		var textareaDesc = document.createElement('textarea');
+		var textareaTem = document.createElement('textarea');
+		textareaDesc.type = 'text'
+		textareaDesc.rows = '1'
+		textareaDesc.name = 'workshop_description'
+		textareaDesc.className = 'form-control mb-4';
+		textareaDesc.required = true
+		textareaTem.type = 'text'
+		textareaTem.rows = '1'
+		textareaTem.name = 'workshop_temary'
+		textareaTem.className = 'form-control mb-4';
+		textareaTem.required =true
+		input.name = 'workshop_name';
+		input.required = true
+		input.className = 'form-control mb-4';
+		
+		divi.appendChild(input);
+		divs.appendChild(textareaDesc);
+		divda.appendChild(textareaTem);
+		
+
+		document.getElementById("divInput").appendChild(divi)
+		document.getElementById("divSelect").appendChild(divs)
+		document.getElementById("divDateA").appendChild(divda)
+	}
+</script>
+{% endblock%}

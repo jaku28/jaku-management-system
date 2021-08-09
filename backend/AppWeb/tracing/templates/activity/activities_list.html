@@ -1,0 +1,159 @@
+{% extends 'common/layout_entrepreneur.html' %}
+{% block container %}
+
+<!-- shows list of activities and mentorings -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1><i class="far fa-newspaper" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title_activity}} </span>
+            </h1>
+            <div class="dropdown-divider"></div>
+			<h4 class="text-muted"><i class="fa fa-address-book" aria-hidden="true"></i>
+				Proyecto: {{project.name}}</h4>
+            <div class="dropdown-divider"></div>
+            
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Fecha límite
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if activities %}
+                        {% for a in activities %}
+                        <tr>
+                            <td>
+                                {{a.title}}<br>
+                                {% if a.is_approved == '1' %}
+                                <div class="badge badge-success">Completado a tiempo</div>
+                                {% elif a.is_approved == '2' %}
+                                <div class="badge badge-warning">Completado con retraso</div>
+                                {% elif a.is_approved == '3' %}
+                                <div class="badge badge-danger">Completado con mucho retraso</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{a.description}}
+                            </td>
+                            <td>
+                                {{a.due_date}}
+                            </td>
+                            {% if a.is_completed %}
+                            <td>
+                                <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>COMPLETADA</div>
+                            </td>
+                            {% else %}
+                            <td>
+                                <div class="alert alert-warning" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>PENDIENTE</div>
+                            </td>
+                            <td class="jaku-actions" style="min-width: 150px;">
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'tracing:completeactivity' a.id %}" class="tareas" data-toggle="tooltip" title="Marcar como completado" data-placement="top">
+                                            <i class="fas fa-check-circle fa-lg"></i>   Completar
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>No hay registros de actividades.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1><i class="far fa-newspaper" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title_mentoring}} </span>
+            </h1>
+            <div class="dropdown-divider"></div>
+			<h4 class="text-muted"><i class="fa fa-address-book" aria-hidden="true"></i>
+				Proyecto: {{project.name}}</h4>
+            <div class="dropdown-divider"></div>
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>
+                                Mentor
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Hora
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Observaciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if mentorings %}
+                        {% for m in mentorings %}
+                        <tr>
+                            <td>
+                                {{m.mentor}}
+                            </td>
+                            <td>
+                                {{m.date}}
+                            </td>
+                            <td>
+                                {{m.time}}
+                            </td>
+                            <td class="align-middle">
+                                {% if m.is_attended == '2' %}
+                                <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>ATENDIDO</div>
+                                {% elif m.is_attended == '3' %}
+                                <div class="alert alert-danger" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>NO ATENDIDO</div>
+                                {% else %}
+                                <div class="alert alert-secondary" role="alert">PENDIENTE</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{m.observations}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>El proyecto no tiene mentorías programadas.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

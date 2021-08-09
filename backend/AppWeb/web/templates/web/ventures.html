@@ -1,0 +1,234 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Jaku | Emprendimientos </title>
+<div class="bg-ventures pb-4">
+    <div class="top-ventures">
+
+    </div>
+    <div class="ventures-content">
+        <div class="winner-img container-jaku">
+            <img src="{% static 'img/IMG_8806.jpg'%}" alt="ganador">
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#0099ff" fill-opacity="1"
+                d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+            </path>
+        </svg>
+        <div class="winner">
+            <div class="winner-content  container-jaku">
+                <h1 style="font-size: 3vh;">
+                    NUESTROS EQUIPOS EMPRENDEDORES
+                </h1>
+                <div style="text-align: center; font-size: 5vh;"><i class="fa fa-trophy" aria-hidden="true"
+                        style="color: orange;"></i>
+                    Ganadores</div>
+                <!-- List Ventures Winner -->
+                <div class="list-winner">
+                    <div class="row">
+                        <div class="col-sm-5 w1">
+                            <h1>Sussi</h1>
+                            <a href="https://susii.com/" class="btn btn-sm animated-button thar-three"
+                                target="_blank">Enlace al emprendimiento</a>
+                            <img src="https://www.unsa.edu.pe/jaku/wp-content/uploads/sites/5/2018/09/susii.png" alt="">
+                        </div>
+                        <div class="col-sm-5 w2">
+                            <h1>SmartBus</h1>
+                            <a href="https://web.facebook.com/smartbus.site/?__tn__=K-R&eid=ARBq3lN7Wt9jrMiF234nn0CNFIjyKSkmeLPwEXPjsxCD1ptENZBMrkbxjfC5eRgmggksWcg_R2k051r9&fref=mentions&__xts__[0]=68.ARAtrOBenXeQj7XIPl3DxyaQhwx5Qv1LAALL7jg9O_Fi5pYPcn71G-LMZ9sonGPUgydc2bD1KbOS3_8WyCWUmjGo4kHOQ6kUGbPZJofWhDppTXFZTSg9JxKAMAW81rMTtO9Al3y0Ys86FOgNlLjliPEP4CYKGfNfqw6PqgLvIdhL0KzSQQrQQM4edjcf_Jbf5qzJIC4ce-clGp44spD7uSwmefx9d4SuEsYSMLSvzRAFJK-BrG2xUjJM1jwgqTOPjrxr3AgSj00fxSXvObueetYitLbXgoA12dyC1IJINUoMqrW6Krhqf8SeqQsgltBHqcDDJRmKryTtYKoL7tDW19Y"
+                                class="btn btn-sm animated-button thar-three" target="_blank">Enlace al
+                                emprendimiento</a>
+                            <img src="https://www.unsa.edu.pe/jaku/wp-content/uploads/sites/5/2018/09/smart-bus.png"
+                                alt="">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#0099ff" fill-opacity="1"
+                d="M0,128L30,112C60,96,120,64,180,48C240,32,300,32,360,58.7C420,85,480,139,540,149.3C600,160,660,128,720,106.7C780,85,840,75,900,106.7C960,139,1020,213,1080,213.3C1140,213,1200,139,1260,122.7C1320,107,1380,149,1410,170.7L1440,192L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z">
+            </path>
+        </svg>
+    </div>
+    <!-- Content other ventures -->
+    <div class="other-ventures">
+        <!-- List Ventures PERU 7G -->
+        <div class="ventures-list container-jaku">
+            <h1>EMPRENDEDORES RUMBO A STARTUP PERU 7G</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/neutree.png' %}" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">NEUROTREE</h4>
+                            <p class="card-text">Lector de ondas cerebrales</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/neutree.org/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/3scobot.jpg' %}" alt="3cobot">
+                        <div class="card-body">
+                            <h4 class="card-title">3cobot</h4>
+                            <p class="card-text">Fabricación y venta de Impresoras 3d, Cortadoras Laser, Tecnología CNC</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/3cobot/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/parkin.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Parkin</h4>
+                            <p class="card-text">La única aplicación que te ayuda a encontrar estacionamiento en tiempo real.</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/parkinperu/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/dolarsol.jpg' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Dolarsol</h4>
+                            <p class="card-text">Casa de Cambio Electrónica</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/dolarsol/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/empila2.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Empila2</h4>
+                            <p class="card-text">Plataforma de Empleo para Jóvenes</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/empila2/?ref=br_rs" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/qinty.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Qinty</h4>
+                            <p class="card-text">En Qinty hacemos más divertida tu aventura</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/TurismoQinty/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/paradar.jpg' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Paradar</h4>
+                            <p class="card-text">Amigurimis (peluches de lana), accesorios (técnica frivolité aretes, collares, anillos de lana de algodón), chocolateria, papercraft</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/Paradar-307693802689891/?ref=br_rs" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/enkassa.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Enkassa</h4>
+                            <p class="card-text">Es una plataforma web de alquiler de propiedades verificadas, para medias y largas estancias. El inquilino no necesita ir a ver la casa antes de reservar.</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/enkassa/?_rdc=1&_rdr" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/beearmy.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Beearmy</h4>
+                            <p class="card-text">Beearmy es un servicio integral de polinización con abejas , dirigido al sector agroindustrial, donde aplicamos biotecnología que incrementa de manera natural el rendimiento en la producción de los cultivos frutícolas y hortícolas.</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/beearmy.pollination/?ref=br_rs" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/MT-depor.jpg' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Mt depor</h4>
+                            <p class="card-text">plataforma virtual que por medio de medidas corporales permite detectar a temprana edad el potencial deportivo de cada individuo.</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/pg/MT-depor-app-326527868104896/about/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/safepaths.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">Safe paths</h4>
+                            <p class="card-text">Asistente personal que te muestra las zonas peligrosas de tu ciudad y te lleva a tu destino de la manera más segura.</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/Safe-Paths-510054296031799/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/Payout.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">2payout</h4>
+                            <p class="card-text">Plataforma virtual (app y página web) de gestión de pagos y deudas, que permite una gestionar de pagos y deudas pendientes de forma sencilla, ordenada, y automatizada</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/2PayOut-2366067250280873/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-left">
+                        <img class="card-img-top" src="{% static 'img/schoolattack.png' %}" alt="parkin">
+                        <div class="card-body">
+                            <h4 class="card-title">School attack</h4>
+                            <p class="card-text">Nuestra visión es crear un impacto en la educación no solo a nivel nacional sino a nivel mundial</p>
+                        </div>
+                        <div class="card-footer ventures-item">
+                            <a href="https://web.facebook.com/SchoolAttacks/" class="btn w-100" target="_blank">Enlace al
+                                emprendimiento</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

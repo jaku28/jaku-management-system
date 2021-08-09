@@ -1,0 +1,54 @@
+{% extends 'common/layout_jury.html' %}
+{% block container %}
+
+<!-- Shows user's projects as a list -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">	            
+            <h1>
+                <i class="fas fa-tasks" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} de la Convocatoria: </span><br>
+                <span class="text-capitalize">{{call.name}} </span>
+            </h1>
+
+			<div class="dropdown-divider"></div>			
+			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
+				<table class="table table-bordered">
+					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+						<tr>
+							<th scope="col">Título</th>						
+							<th scope="col">Tipo de Proyecto</th>
+                            <th scope="col">Criterios</th>                            																			
+							<th scope="col" style="width: 10%;">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for p in projects %}
+						<tr>
+							<td>{{p.name}}</td>						
+							<td>{{p.get_project_type_display}}</td>							
+                            <td>{{p.detail_description|slice:'100'}}...</td>                            												
+							<td class="jaku-actions" style="min-width: 150px;">
+								<ul>
+									<li>
+										<a href="{% url 'common:myprojectdetail' p.id %}"class="ver" data-toggle="tooltip" title="Ver" data-placement="top"><i class="fas fa-eye fa-lg" ></i></a>
+										<a href="{% url 'common:editproject' p.id %}"class="editar" data-toggle="tooltip" title="CrearEvaluacion" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>										
+									</li>
+								</ul>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- Footer -->
+	{% include "web/footer-mysoft.html" %}
+	<!-- End Footer -->
+</div>
+{% endblock %}

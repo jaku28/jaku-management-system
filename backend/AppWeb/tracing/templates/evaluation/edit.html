@@ -1,0 +1,158 @@
+<!-- Form to edit an evaluation -->
+<div class="modal-lg" style="margin: auto;">
+	<div class="modal-content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<div class="modal-header">
+				<h1> <i class="fas fa-edit" style="color: #bdc3c7;"></i>
+					<span class="text-primary">{{title}}: </span><br><span class="text-capitalize ml-3">{{evaluation.name}}
+					</span>
+				</h1>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{% if error %}
+			<div class="alert alert-danger" role="alert">
+				{{error}}
+			</div>
+			{% endif %}
+			<form action="{% url 'tracing:editevaluation' evaluation.id %}" method="POST" class="was-validated required" onsubmit="return validateSumWeight();">
+				{%csrf_token%}
+				<div class="form-group">
+					<div class="form-group">
+						<label for="title">Nombre de la evaluación:</label>
+						<input type="text" class="form-control" input="" value='{{evaluation.name}}' id="name"
+							name="name" required pattern="^((\S+ )*\S+)?$"
+							title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip"
+							data-placement="left">
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="date">Fecha de la evaluación:</label>
+							<input type="Date" class="form-control md-4" input="" id="date" name="date"
+								value="{{evaluation.date|date:"Y-m-d"}}" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="max_points">Puntaje máximo:</label>
+						<div class="form-inline mb-3">
+							<input type="text" class="form-control col-md-2 mr-3" input="" id="max_points"
+								name="max_points" value='{{evaluation.max_points}}' required pattern="^[1-9][0-9]*"
+								maxlength="3" title="Solo se permite numeros." data-toggle="tooltip"
+								data-placement="left">
+							<small class="text-muted">El rango de puntuación inicia en 1.</small>
+						</div>
+					</div>
+				</div>
+				<div class="dropdown-divider"></div>
+				<div class="h3">Criterios:</div>
+				<div class="dropdown-divider"></div>
+				
+				{% if criterias.count == 0 %}
+					<a name="" id="" class="btn btn-success" href="{% url 'tracing:addcriteria' evaluation.id %}" role="button">Agregar criterios.</a>
+				{% endif %}
+					
+				{% for c in criterias %}
+				<div class="card border-secondary mb-3 p-4">
+					<h4>Criterio {{forloop.counter}}:</h4>
+					<div class="form-group row">
+						<label for="staticName" class="col-sm-3 col-form-label">Titulo:</label>
+						<div class="col-sm-7">
+							<input type="text" name="c_name" value='{{c.name}}' class="form-control"
+								required pattern="^((\S+ )*\S+)?$"
+								title="No poner espacios en blanco al inicio, al final o seguidos."
+								data-toggle="tooltip" data-placement="left">
+						</div>
+
+					</div>
+					<div class="form-group row">
+						<label for="inputPassword" class="col-sm-3 col-form-label">Descripción:</label>
+						<div class="col-sm-7">
+							<textarea type="text" name="c_description" value='' class="form-control"
+								required pattern="^((\S+ )*\S+)?$"
+								title="No poner espacios en blanco al inicio, al final o seguidos.">{{c.description}}</textarea>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="inputPassword" class="col-sm-3 col-form-label">Ponderación:</label>
+						<div class="col-sm-7 form-inline">
+							<div class="input-group">
+								<input type="text" name="c_weight" value='{{c.weight}}'
+									class="form-control c_weight" aria-describedby="ponderacionHelp" required
+									pattern="^[1-9][0-9]*" maxlength="3" required data-toggle="tooltip"
+									data-placement="left" title="Ingrese solo números.">
+								<div class="input-group-append">
+									<span class="input-group-text text-info">%</span>
+								</div>
+							</div>
+
+							<small class="text-muted ml-3">
+								Ponderación debe ser de 1 a 100 (%) máximo.
+							</small>
+						</div>
+					</div>
+
+				</div>
+				{% endfor %}
+				<!-- Sum all weight -->
+				<h5 class="text-info md-6">Suma de ponderación: <span class="badge badge-info" id="contentViewWeightEdit">
+						<span id="viewWeightEdit" value="0">0</span> % </span>
+					<div id="msgExceed" class="text-danger ml-3" style="display: none;"><i
+							class="fa fa-exclamation-circle" aria-hidden="true"></i>La suma de la ponderación deber ser
+						100% </div>
+				</h5>
+				<button type="submit" class="btn btn-jaku">Actualizar</button>
+				<a class="btn btn-secondary my-3"
+					href="{% url 'tracing:evaluationslist' evaluation.call.id%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+</div>
+{% block scripts %}
+<!-- Scrit sum and validate the 100% of criterias all weight -->
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".c_weight").each(function () {
+			calculateSum();
+			validateSumWeight();
+			$(".c_weight").keyup(function () {
+				console.log('sum');
+				calculateSum();
+				validateSumWeight();
+			});
+		});
+	});
+
+	function calculateSum() {
+		var sum = 0;
+		
+		$(".c_weight").each(function () {
+			
+			if (!isNaN(this.value) && this.value.length != 0) {
+				
+				
+				sum += parseInt(this.value);
+			}
+
+		});
+		$("#viewWeightEdit").html(sum);
+	}
+	function validateSumWeight() {
+		var sum = document.getElementById('viewWeightEdit');
+		var contentSum = document.getElementById('contentViewWeightEdit');
+		console.log(sum);
+		if (parseInt(sum.innerHTML) == 100) {
+			contentSum.className = 'badge badge-info'
+			document.getElementById('msgExceed').style.display = 'none'
+			console.log('true');
+			return true;
+		} else {
+			contentSum.className = 'badge badge-danger'
+			document.getElementById('msgExceed').style.display = 'inline'
+			console.log('false');
+			return false;
+		}
+
+	}
+</script>
+{% endblock scripts %}

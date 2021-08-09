@@ -1,0 +1,72 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Evento Jaku | {{event.title}}</title>
+<div class="bg-event-detail">
+    <div class="event-content-detail container-jaku">
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <div class="event-detail-title text-uppercase">
+                    <h1><p>Evento:</p> {{event.title}}</h1>
+                </div>
+                <div class="date-event">
+                    <div class="event-d">
+                        <div class="event-d-preview">
+                            <h1 style="font-size: 3vh;" >
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </h1>
+                        </div>
+                        <div class="event-d-info">
+                            <h6>Fecha: </h6>
+                            <h2 style="font-size: 4vh;">{{ event.date}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="event-image">
+                    <img src="{{ event.image.url }}" alt="{{event.title}}">
+                </div>
+            </div>
+        </div>
+        <div class="event-content-detail">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#0099ff" fill-opacity="1" d="M0,160L40,170.7C80,181,160,203,240,181.3C320,160,400,96,480,69.3C560,43,640,53,720,69.3C800,85,880,107,960,96C1040,85,1120,43,1200,48C1280,53,1360,107,1400,133.3L1440,160L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
+            <div class="event-content">
+                <div class="detail-content">
+                    <div class="event-title">
+                        <h1>{{event.title}}</h1>
+                    </div>
+                    <hr>
+                    <div class="event-detail-content mt-3 text-justify">
+                        {{event.description|linebreaks}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="other-events-list container-jaku" style="background-color: rgba(255, 255, 255, 0.815);">
+        <div class="more-event-head">
+            <div class="more-events-title text-uppercase">
+                Ultimos Eventos
+            </div>
+            <div class="button-more">
+                <a href="{% url 'web:events'%}" class="btn btn-primary btn-lg">Mas Eventos<i class="fa fa-plus mx-2"></i></a>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 m-2">
+            {%for ev in sb_events%}
+            <div class="col my-3">
+                <div class="card h-100">
+                    <img src="{{ev.image.url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'web:eventdetail' ev.id %}">{{ev.title|slice:":50"}}</a></h5>
+                        <p class="card-text">{{ev.description|slice:":100"|linebreaks}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

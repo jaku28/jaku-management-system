@@ -1,0 +1,66 @@
+{% include 'common/layout_admin.html' with active_page='coach'%}
+{% block container %}
+
+<!-- Shows coach as a list -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-users" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="btn-toolbar my-3">
+				<a class="btn btn-jaku" href="{% url 'common:createcoach' %}">
+					<i class="fas fa-plus"></i>
+					Agregar nuevo coach
+				</a>
+			</div>
+			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
+				<table class="table table-bordered">
+					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+						<tr>
+                            <th>Apellidos y nombres</th>
+							<th>Celular</th>
+							<th>Correo / nombre de usuario</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for m in coach %}
+						<tr>
+                            <td	class="text-capitalize">{{m.user.last_name}}, {{m.user.first_name}}</td>
+							<td>{{m.phone_number}}</td>
+							<td>{{m.user.email}}</td>
+							<td class="jaku-actions">
+								<ul>
+									<li>
+										{% if perms.auth.change_user %}
+										<a onclick="abrirModal('{% url 'common:editcoach' m.id %}')" class="editar" data-toggle="tooltip"
+											title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
+										{% endif %}
+										{% if perms.auth.delete_user %}
+										<a href="{% url 'common:deletecoach' m.id %}"
+											onclick="return confirm('¿Está seguro de eliminar este usuario?')"
+											class="eliminar" data-toggle="tooltip" title="Eliminar"
+											data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+										{% endif %}
+									</li>
+								</ul>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+  </div>
+  <div class="modal" id="mostrar"></div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

@@ -1,0 +1,277 @@
+<div class="modal-dialog modal-lg" style="margin: auto" role="document">
+	<div class="modal-content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<div class="modal-header">
+				<h1>
+					<i class="fas fa-plus-square" style="color: #bdc3c7"></i>
+					<span class="text-primary">{{title}}</span>
+				</h1>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<h4 class="text-muted">
+				<i class="fa fa-address-book" aria-hidden="true"></i>
+				{{user_last_name}}, {{user_first_name}}
+			</h4>
+			<hr />
+			<h3 class="call-select" style="color: #3180c5">
+				<i class="fa fa-check" aria-hidden="true"></i>{{call}}
+			</h3>
+			<hr />
+			<form method="POST" action="{% url 'common:editproject' project.id %}" class="was-validated required">
+				{%csrf_token%}
+				<div class="form-group">
+					<label for="title">Título del Emprendimiento:</label>
+					{{form.name}}
+					<br>
+					<label for="title">Ubicación del Emprendimiento:</label>
+					{{form.location}}
+					<br>
+					<label for="title">Tipo de Emprendimiento:</label>
+					{{form.project_type}}
+					<br>
+					<label for="title">Resumen del Emprendimiento:</label>
+					{{form.summary}}
+					<br>
+					<label for="title">Descripción a detalle del Emprendimiento:</label>
+					{{form.detail_description}}
+					<br>
+					<label for="title">Justificación basado en Necesidad del Mercado:</label>
+					{{form.detail_market_needs}}
+					<br>
+					<br>
+					<label>Miembros del equipo:</label>
+					{% if profiles %}
+					<div class="row">
+						<div class="col-sm-12">
+							<select id="names" class="form-control mb-3 selectpicker border" data-style="btn-white"
+								data-live-search="true" onchange='addMembers()'>
+								<option value="" selected disabled>Seleccione integrantes</option>
+								{{profile.id}}
+								{%for p in profiles%}
+								<option value="{{p.id}}">{{p.user.first_name}} {{p.user.last_name}} ({{p.user.email}})
+								</option>
+								{%endfor%}
+							</select>
+						</div>
+					</div>
+					{% else %}
+					<div class="alert alert-warning" role="alert">No se tienen emprendedores registrados.</div>
+					{% endif %}
+
+					<input type="text" id="new_leader" style="display:none;" name="new_leader" value="{{leader.id}}"/>
+					<div id="membersContent" class="card bg-light p-3">
+					</div>
+
+					<textarea class="form-control" name="members" id="members" rows="8" style="display:none;"></textarea>
+					<textarea class="form-control" name="members_id" id="members_id" rows="8" style="display:none;"></textarea>
+					<textarea class="form-control" name="members_id_delete" id="members_id_delete" rows="8" style="display:none;"></textarea>
+
+					<label for="title">Link video:</label>
+					{{form.link_video}}
+				</div>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+				<a class="btn btn-secondary my-3" href="{% url 'common:myprojectslist'%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+</div>
+{% block scripts %}
+<script>
+	var dataM = "{{form.members.value|linebreaks}}";
+	console.log(dataM);
+	dataM = dataM.replace("<p>", "");
+	dataM = dataM.replace("</p>", "");
+	var dataline = dataM.split("<br />");
+
+	var data = document.getElementById("names");
+	var miembross = new Map();
+	var newMembers = new Map();
+	var delMembers = new Map();
+	var listMembers = new Map();
+	var leaderSelect = new Map();
+	//add leader
+	for (let i = 0; i < data.length; i++) {
+		for (let j = 0; j < dataline.length; j++) {
+			const element = dataline[j];
+			if (element == data.options[i].text.split(" (", -1)[0]) {
+				miembross.set(data.options[i].value, data.options[i].text.split(" (", -1)[0]);
+				listMembers.set(data.options[i].value, data.options[i].text);
+			}
+		}
+	}
+	// keys 
+	var keyMembers = Array.from(listMembers.keys());
+	addTextArea();
+	enlistarMiembros();
+	
+	function enlistarMiembros() {
+		var divMembers = document.getElementById('membersContent');
+		while(divMembers.firstChild){
+			divMembers.removeChild(divMembers.firstChild);
+		}
+		var liderActual = document.getElementById('new_leader');
+		console.log(liderActual.value);
+		for (var [key, value] of listMembers) {
+			var contentMembers = document.createElement("div");
+			var inputMember = document.createElement("input");
+			var btnDeleteMember = document.createElement("button");
+			var btnNewLeader = document.createElement("button");
+			var spanLeaderCurrent = document.createElement('span');
+			var btnChangeLeader = document.createElement("button");
+
+			contentMembers.className = "input-group mb-2";
+			contentMembers.id = key;
+			inputMember.type = "text";
+			inputMember.className = "form-control";
+			inputMember.disabled = true;
+			btnDeleteMember.setAttribute("onclick", "deleteMembers(this.parentNode)");
+			btnDeleteMember.type = "button";
+			btnDeleteMember.className = "btn btn-outline-danger";
+			btnNewLeader.type = "button";
+			btnNewLeader.className = "newLeader btn btn-outline-secondary";
+			btnNewLeader.disabled = true;
+			btnChangeLeader.type = "button";
+			btnChangeLeader.className = "btn btn-primary";
+			btnChangeLeader.innerHTML = "Cambiar Líder";
+			btnChangeLeader.setAttribute("onclick", "changeLeader()")
+			spanLeaderCurrent.className = "input-group-text border border-success text-success";
+			spanLeaderCurrent.innerHTML = "Lider"
+
+			btnDeleteMember.innerHTML = "X";
+			btnNewLeader.innerHTML = "Nuevo Líder";
+			btnNewLeader.setAttribute("onclick", "addLeader(this.parentNode)")
+			inputMember.value = value;
+
+			if (key !== liderActual.value) {
+				membersContent.appendChild(contentMembers);
+				contentMembers.appendChild(inputMember);
+				contentMembers.appendChild(btnDeleteMember);
+				contentMembers.appendChild(btnNewLeader);
+			} else{
+				membersContent.appendChild(contentMembers);
+				contentMembers.appendChild(inputMember);
+				contentMembers.appendChild(spanLeaderCurrent);
+				contentMembers.appendChild(btnChangeLeader);
+			}
+
+		}
+	}
+
+	function deleteMembers(n) {
+		// console.log(n.id);
+		if (miembross.has(n.id)) {
+			console.log(miembross.get(n.id));
+			delMembers.set(n.id, miembross.get(n.id));
+			miembross.delete(n.id);
+			addTextArea();
+		}
+		n.remove();
+	}
+
+	function addMembers() {
+		// console.log(miembross.get("leader") == data.options[data.selectedIndex].text.split(' (', -1)[0]);
+		if (!!!document.getElementById(data.value) && miembross.get("leader") != data.options[data.selectedIndex].text
+			.split(' (', -1)[0]) {
+			newMembers.set(data.value, data.options[data.selectedIndex].text.split(' (', -1)[0]);
+			listMembers.set(data.value, data.options[data.selectedIndex].text)
+			addTextArea();
+
+			var contentMembers = document.createElement('div')
+			var inputMember = document.createElement('input');
+			var btnDeleteMember = document.createElement('button');
+			var btnNewLeader = document.createElement("button");
+
+			contentMembers.className = 'input-group mb-2';
+			contentMembers.id = data.value
+			inputMember.type = 'text';
+			inputMember.className = 'form-control';
+			inputMember.disabled = true;
+			btnDeleteMember.type = 'button';
+			btnDeleteMember.className = 'btn btn-outline-danger';
+			btnNewLeader.type = "button";
+			btnNewLeader.className = "newLeader btn btn-outline-secondary";
+			btnNewLeader.disabled = true;
+
+			btnDeleteMember.innerHTML = 'X';
+			inputMember.value = data.options[data.selectedIndex].text;
+			btnNewLeader.innerHTML = "Nuevo Líder";
+			btnNewLeader.setAttribute("onclick", "addLeader(this.parentNode)")
+
+			membersContent.appendChild(contentMembers);
+			contentMembers.appendChild(inputMember);
+			contentMembers.appendChild(btnDeleteMember);
+			contentMembers.appendChild(btnNewLeader);
+
+			btnDeleteMember.addEventListener('click', () => {
+				// console.log(btnDeleteMember.id)
+				if (newMembers.has(contentMembers.id)) {
+					console.log(newMembers.get(contentMembers.id))
+					newMembers.devare(contentMembers.id);
+					addTextArea();
+					contentMembers.remove();
+				}
+			})
+		}
+	}
+	// Function add data in textarea of members id's and textarea of names members
+	function addTextArea() {
+		var id_miembro = document.getElementById('members_id');
+		var miembros = document.getElementById('members');
+		id_miembro.value = '';
+		miembros.value = '';
+		for (let [key, value] of miembross) {
+			miembros.value += value + '\n';
+		}
+		for (var [key, value] of newMembers) {
+			miembros.value += value + '\n';
+		}
+
+		compareData();
+		console.log("nuevos", newMembers);
+		console.log("antiguos", miembross);
+		console.log("eliminados", delMembers);
+		membersDelete();
+	}
+
+	// Function change leader div display
+	function changeLeader() {
+		var btnNewLeader = document.querySelectorAll('.newLeader');
+		btnNewLeader.forEach(element => {
+			element.className = "btn btn-success";
+			element.disabled = false;
+		});
+	}
+	// Function select new leader
+	function addLeader(lider) {
+		console.log(">>" , lider.id);
+		var inputLeader = document.getElementById('new_leader');
+		inputLeader.value = lider.id;
+		enlistarMiembros()
+		console.log(miembross);
+	}
+	// Function 
+	function compareData() {
+		var id_miembro = document.getElementById('members_id');
+		id_miembro.value = '';
+		var testVal;
+		for (let [key, val] of newMembers) {
+			testVal = delMembers.get(key);
+			if (testVal !== val) {
+				console.log("nuevo enviar correo", val)
+				id_miembro.value += key + '\n';
+			}
+		}
+		return true;
+	}
+	function membersDelete() {
+		var delM = document.getElementById('members_id_delete');
+		delM.value = '';
+		for (let [key, val] of delMembers) {
+			delM.value += key + '\n';
+		}
+	}
+</script>
+{% endblock scripts %}

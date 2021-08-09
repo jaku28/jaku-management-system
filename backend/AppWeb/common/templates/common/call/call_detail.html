@@ -1,0 +1,83 @@
+<div class="modal-lg" style="margin:auto">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h1> <i class="fas fa-bullhorn" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">Detalles de Convocatoria: </span><br><span
+                        class="text-capitalize">{{call.name}} </span>
+                </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Table of call information -->
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-head-bg-success table-striped table-hover">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Información</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nombre Convocatoria</td>
+                                <td>{{call.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Entidad</td>
+                                <td>{{call.entity}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Cierre</td>
+                                <td>{{call.due_date}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha preparación</td>
+                                <td>{{call.preparation_start}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Final</td>
+                                <td>{{call.final_date}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Premio</td>
+                                <td>{{call.award}}</td>
+                            </tr>
+                            <tr>
+                                <td>Bases</td>
+                                <td><a target="_blank" href="{{call.rules.url}}">Ver Bases</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h2><span class="text-capitalize">Talleres</span></h2>
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-bordered">
+                        <thead style=" background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        <tr>
+                            <th>Taller</th>
+                            <th>Descripción</th>
+                            <th>Temario</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%for t in call_workshops%}
+                            <tr>
+                                <td>{{t.name}}</td>
+                                <td>{{t.description|linebreaks}}</td>
+                                <td>{{t.temary|linebreaks}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of Table of call information -->
+                <a class="btn btn-jaku my-3" href="{% url 'common:calllist'%}">Volver a lista de convocatorias</a>
+            </div>
+
+        </div>
+    </div>
+</div>

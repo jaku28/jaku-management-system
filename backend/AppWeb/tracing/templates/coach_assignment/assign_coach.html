@@ -1,0 +1,100 @@
+<div class="modal-lg" style="margin: auto;">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h3> <i class="fas fa-bullhorn" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}: </span><br><span class="text-capitalize">{{project.name}}
+                    </span>
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'tracing:assigncoach' project_id %}">
+                    {%csrf_token%}
+                    {% if coaches %}
+                    <div class="form-group">
+                        <label for="">Coachs:</label>
+                        <select name="coaches" id="coaches" class="form-control">
+                        {% for c in coaches %}
+                        <option value="{{c.id}}" {%if c.id == project.coach.id%} selected {%endif%}>
+                            {{c.user.first_name}} {{c.user.last_name}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        No hay coaches registrados.
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <button type="submit" name="assign_coach" value="assign_coach"
+                        class="btn btn-jaku mx-3">Asignar</button>
+                    </div>
+                </form>
+                <!-- Table of project information -->
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-head-bg-success table-striped table-hover">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th scope="col">Campo</th>
+                                <th scope="col">Información</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Título del Emprendimiento:</td>
+                                <td>{{project.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Convocatoria:</td>
+                                <td>{{project.call}}</td>
+                            </tr>
+                            <tr>
+                                <td>Ubicación del Emprendimiento:</td>
+                                <td>{{project.get_location_display}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tipo de Emprendimiento:</td>
+                                <td>{{project.get_project_type_display}}</td>
+                            </tr>
+                            <tr>
+                                <td>Resumen del Emprendimiento:</td>
+                                <td>{{project.summary}}</td>
+                            </tr>
+                            <tr>
+                                <td>Descripción a detalle del Emprendimiento:</td>
+                                <td>{{project.detail_description}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Justificación basado en Necesidad del Mercado:</td>
+                                <td>{{project.detail_market_needs}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Miembros del Equipo:</td>
+                                <td>{{project.members|linebreaks}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Link de Presentacion:</td>
+                                {% if project.link == None %}
+                                <td><div class="alert alert-warning" role="alert">
+                                    No cuenta con link.
+                                </div></td>
+                                {% else %}
+                                <td><a href="{{project.link_video}}" target="_blank">{{project.link_video}}</a></td>
+                                {% endif %}
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of table of project information -->
+            </div>
+
+        </div>
+    </div>

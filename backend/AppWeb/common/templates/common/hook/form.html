@@ -1,0 +1,20 @@
+<form action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+    <div class="form-group">
+        <label for="id_{{field.name}}">{{field.label}}</label>
+        {{field}}
+        <small id="id_{{field.name}}_help" class="form-text text-muted">{{field.help_text}}</small>
+        {{ field.errors }}
+    </div>
+    {% endfor %}
+
+    {% if not is_creating %}
+        <a class="btn btn-primary float-right" href="#" id="editar" onclick="edit()"><i class="fas fa-pencil-alt"></i> Editar</a>
+    {% endif %}
+    <div class="form-group no-margin">
+        <input type="submit" id="guardar" class="btn btn-primary float-right" value="Guardar" >
+    </div>
+    <br>
+</form>

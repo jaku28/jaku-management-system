@@ -1,0 +1,70 @@
+{% include 'common/layout_admin.html' with active_page='mytask'%}
+{% block container %}
+
+<!-- Form to view task user's assigned tasks and mark a task as done  -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1> <i class="fas fa-sticky-note" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}</span>
+            </h1>
+            <div class="dropdown-divider"></div>
+            
+            <form action="." method="POST">
+                {%csrf_token%}
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-bordered">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Evento</th>
+                                <th>Fecha en la que fue asignada</th>
+                                <th>Fecha límite</th>
+                                <th style="min-width: 180px;">Estado</th>
+                                <th style="min-width: 200px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for at in assigned_tasks%}
+                            <tr>
+                                <td>{{at.name}}</td>
+                                <td>{{at.event}}</td>
+                                <td>{{at.assigned_date}}</td>
+                                <td>{{at.due_date}}</td>
+                                <td style="min-width: 150px;">{% if at.is_done %}
+                                    <i class="fas fa-check-circle" style="color:#2ecc71 ;"></i> Tarea terminada
+                                    {% else %}
+                                    Tarea no terminada
+                                    {% endif%}
+                                </td>
+                                <td>Marcar como: 
+                                    {% if at.is_done %}
+                                    <a class="btn btn-warning" href="{% url 'common:markasnotdone' at.id %}"
+                                        role="button">
+                                        <i class="fa fa-refresh"></i>
+                                        <b>Deshacer tarea</b>
+                                    </a>
+                                    {% else %}
+                                    <a class="btn btn-jaku" id="changestatus" href="{% url 'common:markasdone' at.id %}" role="button">
+                                        <i class="fas fa-check-circle"></i>
+                                        <b>Terminar tarea</b>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include "web/footer-mysoft.html" %}
+    <!-- End Footer -->
+</div>
+{% endblock %}

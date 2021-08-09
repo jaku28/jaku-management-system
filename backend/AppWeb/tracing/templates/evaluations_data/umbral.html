@@ -1,0 +1,29 @@
+{% include 'common/layout_admin.html' %}
+{% block container %}
+{% load static %}
+<!-- Add umbral -->
+        
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}}: </span><br><span class="text-capitalize"></span>
+            </h1>
+        </div>
+        <form method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+            {%csrf_token%}
+            <label for="umbral">Puntaje mínimo:</label>
+            <input type="number" id="umbral" name="umbral" min="0">  
+
+            <button type="submit" class="btn btn-jaku px-4">Guardar</button>
+        </form>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

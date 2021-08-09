@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'img/icono.ico'%}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/Header.css'%}">
+    <link rel="stylesheet" href="{% static 'css/Footer.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+    <link rel="stylesheet" href="{% static 'css/info-jaku.css'%}">
+<body>
+    
+        <!-- Header Jaku-->
+        <!-- Header Logo-->
+        <div class="logo-jaku container-jaku">
+            <img style="padding: 0px;margin: 10px;width: 200px;" src="{% static 'img/jakulogo.jpg' %}">
+            <img class="float-right" style="padding: 0px;margin: 10px;width: 59px;margin-right: 27px;"
+                src="{% static 'img/Unsa.png' %}">
+        </div>
+        <!-- End Header Logo-->
+        <!-- Header Navbar Menu -->
+        <div class="text-uppercase header-blue sticky-top" style="background: linear-gradient(120deg,#3183c5,#33afe2);border-bottom: 1px solid #fbaa34;">
+            <nav class="navbar navbar-light navbar-expand-lg nav-bar-effect container-jaku">
+                <div class="container-fluid" >
+                    <button data-toggle="collapse" class="navbar-toggler border rounded float-right"
+                        data-target="#navbar-head"
+                        style="padding: 0px 15px;margin: 3px 5px;background-color: rgba(255,255,255,0.54);">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar-head" style="width: 100%;">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item nav-bar-effect " role="presentation"><a class="nav-link {% if request.path == '/' %} active {%endif%}" href="{% url 'web:home'%}"><i
+                                        class="fa fa-dot-circle-o"></i>Inicio<br></a></li>
+                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link {% if request.path == '/historia' or request.path == '/organigrama' or request.path == '/mision-vision' or request.path == '/directorio-mentores' %} active {%endif%}" data-toggle="dropdown"
+                                    aria-expanded="false" href=""><i class="fa fa-dot-circle-o"></i>Conócenos</a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" role="presentation" href="{% url 'web:history' %}">
+                                        <i class="fa fa-dot-circle-o"></i>Historia</a>
+                                    <a class="dropdown-item" role="presentation" href="{% url 'web:organizationchart' %}">
+                                        <i class="fa fa-dot-circle-o"></i>Organigrama</a>
+                                    <a class="dropdown-item" role="presentation" href="{% url 'web:missionvision' %}">
+                                        <i class="fa fa-dot-circle-o"></i>Vision / Mision</a>
+                                    <a class="dropdown-item" role="presentation" href="{% url 'web:directorymentors' %}">
+                                        <i class="fa fa-dot-circle-o"></i>Directorio / mentores</a></div>
+                            </li>
+                            <li class="nav-item" role="presentation" style="min-width: 150px;"><a class="nav-link {% if request.path == '/emprendimientos' %} active {%endif%}" href="{% url 'web:ventures'%}"><i
+                                        class="fa fa-dot-circle-o"></i>Emprendimientos</a></li>
+                            <li class="nav-item" role="presentation" style="min-width: 150px;"><a class="nav-link {% if request.path == '/convocatorias' %} active {%endif%}" href="{% url 'web:calls'%}"><i
+                                        class="fa fa-dot-circle-o"></i>Convocatorias<br></a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link {% if request.path == '/noticias' %} active {%endif%}" href="{% url 'web:news'%}"><i
+                                        class="fa fa-dot-circle-o"></i>Noticias</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link {% if request.path == '/eventos'%} active {%endif%}" href="{% url 'web:events'%}"><i
+                                        class="fa fa-dot-circle-o"></i>Eventos </a></li>
+                            <li class="nav-item" role="presentation" style="min-width: 150px;"><a class="nav-link" href="{% url 'common:home' %}"><i
+                                        class="fa fa-dot-circle-o"></i>Sistema en linea</a></li>
+                            <li class="nav-item" role="presentation" style="min-width: 150px;"><a class="nav-link {% if request.path == '/contactenos' %} active {%endif%}" href="{% url 'web:contact' %}"><i
+                                        class="fa fa-dot-circle-o"></i>Contáctenos</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!--End Header Navbar -->
+        <!--End Header-->
+        
+        {% block container %}
+
+        {% endblock %}
+        <!-- Footer Jaku -->
+        <div class="footer-jaku">
+            <div class="row">
+                <!-- Column Logo -->
+                <div class="col-sm-6 col-md-4 footer-navigation"><img src="{% static 'img/jakulogotrans.png' %}"
+                        width="100%">
+                    <p class="company-name">Company Name © 2020</p>
+                </div>
+                <!-- End Column Logo -->
+                <!-- Column Contacts -->
+                <div class="col-sm-6 col-md-4 footer-contacts">
+                    <div><span class="fa fa-map-marker footer-contacts-icon"> </span>
+                        <p><span class="text-uppercase new-line-span">Dirección</span>Área de sociales de la UNSA <br> Frente a la Facultad de Histórico Sociales</p>
+                    </div>
+                    <div><i class="fa fa-phone footer-contacts-icon"></i>
+                        <p class="footer-center-info email text-left"> +51 959 278 681</p>
+                    </div>
+                    <div><i class="fa fa-envelope footer-contacts-icon"></i>
+                        <p> <a href="#" target="_blank">emprende@unsa.edu.pe</a></p>
+                    </div>
+                    <div><span class="fa fa-clock-o footer-contacts-icon"> </span>
+                        <p><span class="text-uppercase new-line-span">Horario</span> 08:00 a 16:00 hrs de Lunes a
+                            Viernes</p>
+                    </div>
+                </div>
+                <!-- End Column Contacts-->
+                <!-- Column About -->
+                <div class="col-md-4 footer-about">
+                    <h3 class="text-uppercase">Jaku - Emprende UNSA</h3>
+                    <p> JAKU Emprende UNSA, es una incubadora de empresas que brinda asesoria especializada a emprendedores y empresas en etapa temprana de crecimiento.</p>
+                    <div class="social-links social-icons">
+                        <a href="https://www.facebook.com/jakuemprendeunsa/" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/JAKUEmprende" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/jaku-emprende-unsa/" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/jakuemprende/?hl=es-la" target="_blank"><i class="fa fa-instagram"></i></a>
+                    </div>
+                </div>
+                <!-- End Column About-->
+            </div>
+        </div>
+        <!-- End Footer Jaku -->
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
+    {% block scripts %}
+    <script src="{% static 'js/slider.js'%}"></script>
+    {% endblock %}
+</body>
+
+</html>

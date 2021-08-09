@@ -1,0 +1,24 @@
+<!-- Project rejection confirmation email  -->
+<html>
+    <body class="background-gray" style="box-sizing: inherit;margin: 0;color: #556270;font-family: &quot;Open Sans&quot;, sans-serif;font-feature-settings: 'kern', 'liga', 'pnum';font-size: 1em;line-height: 1.618;-webkit-font-smoothing: antialiased;height: 100%;background-color: #ededed;">
+        <div>
+            <h1>
+                {{ user.first_name }}
+            </h1>
+            <p>
+                <br>
+                Lo sentimos, tu proyecto ha sido rechazado.
+            </p>
+            <p>
+                <br>
+                Agradecemos tu participación.
+            </p>
+            <p>
+                Jaku Emprende UNSA
+            </p>
+        </div>
+        <div style="text-align: center; color: #556270">
+            © {% now "Y" %} Jaku
+        </div>
+    </body>
+</html>

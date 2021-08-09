@@ -1,0 +1,55 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Noticia Jaku | {{new.title}}</title>
+<div class="bg-news">
+    <div class="bg-news-detail container-jaku shadow">
+        <div class="event-content-detail">
+            <div class="new-detail">
+                <div class="new-detail-content">
+                    <div class="title-news"><i class="fa fa-newspaper-o border rounded-circle"></i>
+                        <p class="text-uppercase d-inline-block text-events"><strong>Noticia</strong></p>
+                    </div>
+                    <hr>
+                    <div class="new-image">
+                        <img src="{{ new.image.url }}" alt="{{new.title}}">
+                    </div>
+                    <div class="new-title">
+                        <h1>{{new.title}}</h1>
+                    </div>
+                    <div class="new-detail-content mt-3 text-justify">
+                        {{new.description|linebreaks}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="other-news-list shadow container-jaku"
+        style="background-color: rgba(255, 255, 255, 0.815);position: relative;">
+        <div class="more-new-head">
+            <div class="more-news-title text-uppercase p-3">
+                Últimas Noticias
+            </div>
+            <div class="button-more">
+                <a href="{% url 'web:news'%}" class="btn btn-primary btn-lg">Mas Noticias<i
+                        class="fa fa-plus mx-2"></i></a>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 m-2">
+            {%for n in sb_news%}
+            <div class="col my-3">
+                <div class="card h-100">
+                    <img src="{{n.image.url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'web:newdetail' n.id %}">{{n.title|slice:":50"}}</a></h5>
+                        <p class="card-text">{{n.description|slice:":100"|linebreaks}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

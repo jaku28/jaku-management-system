@@ -1,0 +1,62 @@
+{% include 'common/layout_admin.html' with active_page='project_evaluation'%}
+{% block container %}
+{% load static %}
+<!-- Shows all evaluations as a list -->
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} </span>
+            </h1>
+            <div class="dropdown-divider"></div>
+            {% if evaluations %}
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                            <th>Puntaje máximo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in evaluations %}
+                        <tr>
+                            <td>{{e.name}}</td>
+                            <td>{{e.date}}</td>
+                            <td>{{e.max_points}}</td>
+
+                            <td class="jaku-actions">
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'tracing:projectsranking' e.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ranking</a>
+                                        <a href="{% url 'tracing:evaluationscards' e.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Cartillas de evaluación</a>
+                                    </li>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container-fluid">
+                <div class="alert alert-primary">
+                    <p>No se encontraron evaluaciones en esta convocatoria.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+
+{% endblock %}

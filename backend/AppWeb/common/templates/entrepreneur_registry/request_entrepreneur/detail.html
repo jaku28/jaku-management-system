@@ -1,0 +1,105 @@
+<div class="modal-lg" style="margin:auto;">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h1> <i class="fas fa-users" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}</span>
+                </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Table of user information -->
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-head-bg-success table-striped table-hover">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Información</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombres</td>
+                            <td>{{requesting_user.user.first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Apellidos</td>
+                            <td>{{requesting_user.user.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>DNI</td>
+                            <td>{{requesting_user.dni}}</td>
+                        </tr>
+                        <tr>
+                            <td>Teléfono/Celular</td>
+                            <td>{{requesting_user.phone_number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Correo Electrónico</td>
+                            <td>{{requesting_user.user.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Sexo</td>
+                            <td>
+                                {% if requesting_user.sex == "M" %} Masculino
+                                {% elif requesting_user.sex == "F" %} Femenino
+                                {% else %} No especifica {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Especialidad</td>
+                            <td>{{requesting_user.specialty}}</td>
+                        </tr>
+                        <tr>
+                            <td>Motivo por el que quiere pertenecer a la red de emprendedores Jaku</td>
+                            <td>{{requesting_user.reason_to_belong}}</td>
+                        </tr>
+                        <tr>
+                            <td>Lugar de origen</td>
+                            <td>{{requesting_user.country}}, {{requesting_user.state}}, {{requesting_user.city}}</td>
+                        </tr>
+                        <tr>
+                            <td>Institución de procedencia</td>
+                            <td>{{requesting_user.institution}}</td>
+                        </tr>
+                        <tr>
+                            <td>Carrera</td>
+                            <td>
+                                {% if requesting_user.career %}
+                                    {{requesting_user.career}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Año de ingreso</td>
+                            <td>
+                                {% if requesting_user.year_income %}
+                                    {{requesting_user.year_income}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Acciones</td>
+                            <td>{% if perms.auth.add_user %}
+                                    <a href="{% url 'common:acceptentrepreneur' requesting_user.id %}" 
+                                    onclick="return confirm('¿Está seguro que desea aceptar a este emprendedor?')"
+                                    class="btn btn-primary btn btn-block active" role="button" aria-pressed="true" style="width: 200px;">ACEPTAR</a>
+                                {% endif %}
+                                {% if perms.auth.delete_user %}
+                                    <a href="{% url 'common:rejectentrepreneur' requesting_user.id %}" 
+                                    onclick="return confirm('¿Está seguro que desea rechazar a este emprendedor?')"
+                                    class="btn btn-secondary btn btn-block active" role="button" aria-pressed="true" style="width: 200px;">RECHAZAR </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <!-- End of table of user information -->
+        </div>
+    </div>

@@ -1,0 +1,59 @@
+{% extends 'common/layout_entrepreneur.html' %}
+{% block container %}
+
+<!-- this form is for create a new activity -->
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1><i class="fas fa-newspaper" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}</span>
+            </h1>
+            <div class="dropdown-divider"></div>
+
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-head-bg-success table-striped table-hover">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        <tr>
+                            <th scope="col">Campo</th>
+                            <th scope="col">Información</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Título de la actividad:</td>
+                            <td>{{activity.title}}</td>
+                        </tr>
+                        <tr>
+                            <td>Descripción:</td>
+                            <td>{{activity.description}}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha límite:</td>
+                            <td>{{activity.due_date}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" class="was-validated required">
+                {%csrf_token%}
+                {% if activity.file_activity %}
+                <p class="file-upload mb-3">Actualmente: <a target="_blank" href="{{activity.file_activity.url}}">{{activity.file_activity}}</a></p>
+                {% endif %}
+                <label for="validatedCustomFile">Adjuntar archivo para completar:</label>
+                <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" input=""  id="file" name="file" required onchange="$('.custom-file-label').html(this.files[0].name)">
+                    <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un archivo...</span>
+                </div>
+                <input type="submit" value="Completar" class="btn btn-jaku px-4 my-3" onclick="return confirm('¿Esta seguro que desea completar esta actividad?')">
+            </form>
+        </div>
+    </div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% include 'common/layout_admin.html' with active_page='call' %}
+{% block container %}
+{% load static %}
+<!-- Shows all active projects from a call as a list -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} de la convocatoria: </span><br><span class="text-capitalize">{{call.name}} </span>
+            </h1>
+            <hr>
+
+            <div class="btn-toolbar my-3">
+				<a class="btn btn-jaku" href="{% url 'tracing:globalactivity' call.id %}">
+					<i class="fas fa-plus"></i>
+					Agregar actividades globales
+				</a>
+			</div>
+
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered css-serial">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Título</th>
+                            <th>Integrantes</th>
+                            <th>Tipo de Proyecto</th>
+                            <th>Coach</th>
+                            
+                        </tr>
+                    <tbody>
+                        {% if active_projects %}
+                        {% for p in active_projects %}
+                        <tr>
+                            <td></td>
+                            <td>{{p.code}} <br>
+                                <a href="{% url 'tracing:blockproject' p.id %}" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea dar de baja a este proyecto?')"><i class="fa fa-times mr-2"></i>Dar de baja el proyecto</a>
+                            </td>
+                            <td>{{p.name}}</td>
+                            <td>{{p.members|linebreaks}}</td>
+                            <td>
+                                {% if p.project_type == '1' %} BASE TECNOLÓGICA 
+                                {% elif p.project_type == '2' %} SOCIAL
+                                {% else %} PRODUCTIVO {% endif %}
+                            </td>
+
+                            <td class="jaku-actions" style="max-width: 150px;">
+                                {% if p.interview_set.count == 1 %}
+                                    {% if p.coach %}
+                                    <div class="form-inline" style="align-items: baseline;">
+                                        <div class="alert alert-success" role="alert">
+                                            <i class="fa fa-graduation-cap" aria-hidden="true"></i> {{p.coach.user.last_name}}, {{p.coach.user.first_name}}
+                                        </div>
+                                        <a onclick="abrirModal('{% url 'tracing:assigncoach' p.id %}')" class="btn btn-warning ml-3">Reasignar coach</a>                                    
+                                        {% else %}
+                                        <a onclick="abrirModal('{% url 'tracing:assigncoach' p.id %}')" class="btn btn-jaku ml -3">Asignar coach</a>
+                                        
+                                    </div>
+                                    {% endif %}   
+                                    
+                                {% else %}
+								<span style="color: Dodgerblue;"></span><a href="{% url 'tracing:createinterview' p.id %}" data-toggle="tooltip" title="Añadir entrevista" data-placement="top"><i class="fas fa-coffee fa-2x" ></i></a></span>							
+
+                                {% endif %}                   
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>Esta convocatoria no tiene proyectos vigentes.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal  -->
+<div class="modal" id="mostrar" >
+
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

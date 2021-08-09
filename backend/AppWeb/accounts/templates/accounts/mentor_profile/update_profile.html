@@ -1,0 +1,83 @@
+{% include 'common/layout_mentor.html' %}
+{% block container %}
+{% load static %}
+<head>
+    <title>{{title}}</title>
+</head>
+<!-- Update profile mentor, hidden field is needed for validation -->
+
+<div class="main-panel">
+    <div class="content">
+        <div class="container profile shadow-sm p-3" style="border-radius: 10px;background-color: white;">
+            <div class="shadow-sm" style="border-radius: 10px;">
+                <div class="bg-primary pt-4" style="border-radius: 10px;">
+
+                    <div class="" style="position: relative;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                            <path fill="white" fill-opacity="1"
+                                d="M0,96L24,128C48,160,96,224,144,213.3C192,203,240,117,288,90.7C336,64,384,96,432,117.3C480,139,528,149,576,144C624,139,672,117,720,122.7C768,128,816,160,864,186.7C912,213,960,235,1008,202.7C1056,171,1104,85,1152,90.7C1200,96,1248,192,1296,218.7C1344,245,1392,203,1416,181.3L1440,160L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class=" w-75" style="margin: auto;position: relative;margin-top:-20%;">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5> Editar datos personales:</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data" class="was-validated required">
+                                {%csrf_token%}
+                                <div class="form-group">
+                                    <div style="width: 200px; height: 200px;margin: auto;border-radius: 50%;overflow: hidden;" class="shadow mb-4">
+                                        <img src="{% static 'accounts/img/logo.png' %}" alt="new-jaku0" alt="emprendedor-avatar"
+                                            style="width: 100%; height: auto; " class="imagePreview">
+                                    </div>
+
+                                    <div class="row pb-4">
+                                        <label class="col-sm-6 font-weight-bold" for="title">Nombre:</label>
+                                        <div class="col-sm-6">{{form_user.first_name}}</div>
+                                    </div>
+                                    <div class="row pb-4">
+                                        <label class="col-sm-6 font-weight-bold">Apellido:</label>
+                                        <div class="col-sm-6">{{form_user.last_name}}</div>
+                                    </div>
+                                    <div class="row pb-4">
+                                        <label class="col-sm-6 font-weight-bold">Especialidad:</label>
+                                        <div class="col-sm-6">{{form_profile.specialty}}</div>
+                                    </div>
+                                    <div class="row pb-4">
+                                        <label class="col-sm-6 font-weight-bold">Número de Teléfono:</label>
+                                        <div class="col-sm-6">
+                                            <input
+                                              type="tel"
+                                              id="phone_number"
+                                              name="phone_number"
+                                              value="{{form_profile.phone_number.value}}"
+                                              class="phone_number form-control mr-sm-3"
+                                              required
+                                              title="Solo se permite numeros."
+                                              data-toggle="tooltip"
+                                              data-placement="left"
+                                            />
+                                          </div>
+                                    </div>
+                                    {{form_user.username.as_hidden}}
+                                    {{form_user.email.as_hidden}}
+                                </div>
+                                <button type="submit" class="btn btn-jaku mt-3 px-4">Actualizar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Table of mentor profile information -->
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include "web/footer-mysoft.html" %}
+    <!-- End Footer -->
+</div>
+{% endblock %}

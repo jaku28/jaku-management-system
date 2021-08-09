@@ -1,0 +1,117 @@
+{% include 'common/layout_admin.html' with active_page='call'%}
+{% block container %}
+<!-- New call Form Panel -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>  
+                <i class="fas fa-folder-plus" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}}</span>
+            </h1>
+            <div class="dropdown-divider"></div>
+            <!-- New call Form -->
+            <div class="alert alert-danger" role="alert">
+                Todos los campos con * son obligatorios.
+            </div>
+                <form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <label for="name">Nombre de la convocatoria:</label><br>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-control input-square mb-3" 
+                        required
+                        pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+
+                    <label for="entity">Entidad:</label><br>
+                    {% if entities %}
+                    <select 
+                        name="entity" 
+                        id="entity" 
+                        class="form-control input-square mb-3">
+                        {%for e in entities%}
+                        <option value="{{e.id}}">{{e.name}}</option>
+                        {%endfor%}
+                    </select>
+                    {% else %}
+                    <div class="alert alert-warning" role="alert">No existen entidades creadas.</div>
+                    {% endif %}
+
+                    <label for="due_date">Fecha de cierre de la convocatoria:</label><br>
+                    <input 
+                        type="date" 
+                        id="due_date" 
+                        name="due_date" 
+                        class="form-control col-md-4 mb-3" 
+                        data-min="preparation_start"
+                        required
+                    >
+
+                    <label for="preparation_start">Fecha de Inicio de preparación para los equipos:</label><br>
+                    <input 
+                        type="date" 
+                        id="preparation_start" 
+                        name="preparation_start" 
+                        class="form-control col-md-4 mb-3"                        
+                        data-min="final_date"
+                        required
+                    >
+
+                    <label for="final_date">Fecha final:</label><br>
+                    <input 
+                        type="date" 
+                        id="final_date" 
+                        name="final_date" 
+                        class="form-control col-md-4 mb-3" 
+                        required
+                    >
+
+                    <label for="award">Premio:</label><br>
+                    <input 
+                        type="text" 
+                        id="award" 
+                        name="award" 
+                        class="form-control input-square mb-3" 
+                        required
+                        pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+                    
+                    <label for="validatedCustomFile">Bases:</label>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" input=""  id="rules" name="rules" required onchange="$('.custom-file-label').html(this.files[0].name)">
+                        <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un archivo...</span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-jaku px-4">Guardar</button>
+                    <a class="btn btn-secondary my-3"  href="{% url 'common:calllist'%}">Cancelar</a>
+                </form>
+            <!-- End of New call Form -->
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+<!-- End of New call Form Panel -->
+{% endblock %}
+
+{% block scripts %}
+{% include 'validation_date/validation_date.html' with id_date='due_date' %}
+<script type="text/javascript">
+    function updateMinByData(event) {
+        const elementIdToUpdate= event.target.getAttribute('data-min')
+        document.getElementById(elementIdToUpdate).setAttribute('min', event.target.value);  
+    }
+    var el_due = document.getElementById("due_date"); 
+    var el_prep = document.getElementById("preparation_start"); 
+    el_due.addEventListener("change", updateMinByData, false); 
+    el_prep.addEventListener("change", updateMinByData, false); 
+</script>
+
+{% endblock %}

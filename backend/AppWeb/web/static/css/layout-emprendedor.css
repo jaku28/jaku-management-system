@@ -1,0 +1,18 @@
+.empre-date-event .date{
+    background-color: #3180c5;
+    color: #fff;
+    text-align: center;
+}
+.empre-date-event h1{
+    color:#fff ;
+    font-size: 10vh;
+}
+.empre-date-event h2{
+    background-color:#fff;
+    color: #3180c5;
+}
+.empre-date-event h3{
+    font-size: 3vh;
+}
+
+/*Profile*/

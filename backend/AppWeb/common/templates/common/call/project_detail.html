@@ -1,0 +1,107 @@
+<div class="modal-lg" style="margin: auto;">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h1> <i class="fas fa-bullhorn" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}: </span><br><span class="text-capitalize ml-3">{{project.name}}
+                    </span>
+                </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Table of call information -->
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-head-bg-success table-striped table-hover">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col"  style="min-width: 200px;">Información</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Título del emprendimiento</td>
+                            <td>{{project.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Líder</td>
+                            <td>{{leader.first_name}} {{leader.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Ubicación</td>
+                            <td>{{project.get_location_display}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de proyecto</td>
+                            <td>
+                                {% if project.project_type == '1' %} BASE TECNOLÓGICA
+                                {% elif project.project_type == '2' %} SOCIAL
+                                {% else %} PRODUCTIVO {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Resumen del emprendimiento</td>
+                            <td>{{project.summary}}</td>
+                        </tr>
+                        <tr>
+                            <td>Descripción a detalle del emprendimiento</td>
+                            <td>{{project.detail_description}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Justificación basado en necesidad del mercado</td>
+                            <td>{{project.detail_market_needs}}</td>
+                        </tr>
+                        <tr>
+                            <td>Justificación basado en necesidad del mercado</td>
+                            <td>{{project.detail_market_needs}}</td>
+                        </tr>
+                        <tr>
+                            <td>Miembros del Equipo:</td>
+                            <td>{{project.members|linebreaks}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Link de Presentacion:{{project.link_video}}</td>
+                            <td>
+                                {% if project.link_video|stringformat:"s" == 'None' %}
+                                <div class="alert alert-warning" role="alert">
+                                    No cuenta con link.
+                                </div>
+                                {% else %}
+                                <a href="{{project.link_video}}" target="_blank">{{project.link_video}}</a>
+                                {% endif %}
+                            </td>
+                        
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>
+
+                                {% if project.is_approved == '2' %}
+                                <div class="d-inline alert alert-success mr-3" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>APROBADO</div>
+                                {% elif project.is_approved == '3' %}
+                                <div class="d-inline alert alert-danger mr-3" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>RECHAZADO</div>
+                                {% else %}
+                                <div class="d-inline alert alert-secondary mr-3" role="alert">PENDIENTE</div>
+                                {% endif %}
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <td>
+                    {% if project.call.due_date < today and project.call.has_evaluations == 0 and project.call.is_reviewed == False %}
+                    <a href="{% url 'common:approveproject' project.id %}" class="btn btn-success"
+                    onclick="return confirm('¿Está seguro de aprobar este proyecto?')"><i class="fa fa-check mr-2" aria-hidden="true"></i>APROBAR</a>
+                    <a href="{% url 'common:rejectproject' project.id %}" class="btn btn-danger"
+                    onclick="return confirm('¿Está seguro de rechazar este proyecto?')"><i class="fa fa-times mr-2" aria-hidden="true"></i>RECHAZAR</a>
+                    {% endif %}
+                </td>
+            </div>
+            <!-- End of Table of project information -->
+        </div>
+    </div>
+</div>
+<!-- End of Details of each call -->

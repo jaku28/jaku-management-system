@@ -1,0 +1,26 @@
+<html>
+    <body class="background-gray" style="box-sizing: inherit;margin: 0;color: #556270;font-family: &quot;Open Sans&quot;, sans-serif;font-feature-settings: 'kern', 'liga', 'pnum';font-size: 1em;line-height: 1.618;-webkit-font-smoothing: antialiased;height: 100%;background-color: #ededed;">
+        <div>
+            <h1>
+                ¡Has sido asignado como coach de un nuevo proyecto!
+            </h1>
+            <p>
+            <span class="font-semi-bold" style="font-weight: 600;">Estimado {{ user.first_name }} {{ user.last_name }}</span>
+            <br>
+                Se le notifica que fue asignado como coach en el proyecto {{ project }}!
+            <br>
+                Puedes iniciar sesión para ver los detalles del proyecto nuevo.
+            </p>
+            <p>
+                <a href="{{ protocol }}://{{ domain }}{% url 'accounts:login' %}">¡Inicia sesión ahora!</a>
+            </p>
+            <p>
+                Jaku Emprende UNSA
+            </p>
+        </div>
+        </div>
+        <div style="text-align: center; color: #556270">
+            © {% now "Y" %} Jaku
+        </div>
+    </body>
+</html>

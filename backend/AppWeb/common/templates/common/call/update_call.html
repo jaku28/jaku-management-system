@@ -1,0 +1,75 @@
+
+<div class="modal-lg" style="margin:auto" role="document">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h1>  
+                    <i class="fas fa-pencil-alt" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}: </span><br><span class="text-capitalize ml-3">{{call.name}} </span>
+                </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- End of update call Form -->
+            <div class="card-body">
+                <form action="{% url 'common:updatecall' call.id %}" method="POST" class="was-validated required" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <label for="title">Nombre de la convocatoria:</label>
+                    <input type="text" id="name" name="name" value="{{call.name}}"
+                        class="form-control input-square mb-3" required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+                    <label for="entity">Entidad:</label>
+                    <select name="entity" id="entity" class="form-control input-square mb-3">
+                        {%for e in entities%}
+                        <option value="{{e.id}}" {%if e.id == call.entity.id%} selected {%endif%}>{{e.name}}</option>
+                        {%endfor%}
+                    </select>
+
+                    <label for="due_date">Fecha de cierre de la convocatoria:</label>
+                    <input type="date" id="due_date" name="due_date" value="{{call.due_date|date:"Y-m-d"}}" data-min="preparation_start" required
+                        class="form-control col-md-4 mb-3">
+
+                    <label for="preparation_start">Fecha de Inicio de preparación para los equipos:</label>
+                    <input type="date" id="preparation_start" name="preparation_start"
+                        value="{{call.preparation_start|date:"Y-m-d"}}" class="form-control col-md-4 mb-3" data-min="final_date" required>
+
+                    <label for="final_date">Fecha final:</label>
+                    <input type="date" required="" id="final_date" name="final_date"
+                        value="{{call.final_date|date:"Y-m-d"}}" class="form-control col-md-4 mb-3">
+
+                    <label for="award">Premio:</label>
+                    <input type="text" id="award" name="award" value="{{call.award}}"
+                        class="form-control input-square mb-3" required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+
+                    <label for="rules">Bases:</label>
+                    <p class="file-upload mb-3">Actualmente: <a target="_blank" href="{{call.rules.url}}">{{call.rules}}</a>
+                        Modificar:</p>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" input=""  id="rules" name="rules" onchange="$('.custom-file-label').html(this.files[0].name)">
+                            <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un archivo...</span>
+                        </div>
+                    <button type="submit" class="btn btn-jaku">Actualizar</button>
+                    <a class="btn btn-secondary my-3"  href="{% url 'common:calllist'%}">Cancelar</a>
+
+                </form>
+            </div>
+            <!-- End of update call Form -->
+        </div>
+    </div>
+</div>
+
+<!-- End of update call Form Panel -->
+{% block scripts%}
+{% include 'validation_date/validation_date.html' with id_date='due_date' %}
+<script type="text/javascript">
+    function updateMinByData(event) {
+        const elementIdToUpdate= event.target.getAttribute('data-min')
+        document.getElementById(elementIdToUpdate).setAttribute('min', event.target.value);  
+    }
+    var el_due = document.getElementById("due_date"); 
+    var el_prep = document.getElementById("preparation_start"); 
+    el_due.addEventListener("change", updateMinByData, false); 
+    el_prep.addEventListener("change", updateMinByData, false); 
+</script>
+
+{% endblock %}

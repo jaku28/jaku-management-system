@@ -1,0 +1,51 @@
+{% include 'common/layout_admin.html' with active_page='project_evaluation'%}
+{% block container %}
+{% load static %}
+
+<!-- Shows ranking of projects from this evaluation -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} de la convocatoria: </span><br><span class="text-capitalize">{{evaluation.call.name}} </span>
+            </h1>
+            
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered css-serial">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            {% for j in juries %}
+                            <th>{{j.user.last_name}}, {{j.user.first_name}}</th>
+                            {% endfor %}
+                            <th>Puntaje final</th>
+
+                        </tr>
+                    <tbody>
+                        {% for p in projects %}
+                        <tr>
+                            <td></td>
+                            <td>{{p.name}}</td>
+                            {% for j in juries %}
+                                    <td>{{ points_per_jury_dict|get_item_score:p|get_item_for_jury:j }}</td>
+                            {% endfor %}
+                            <td>{{ final_score_dict|get_item_final_score:p }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a href="{% url 'tracing:addumbral' evaluation.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Agregar umbral</a>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

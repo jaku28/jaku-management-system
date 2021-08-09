@@ -1,0 +1,51 @@
+{% include 'common/layout_admin.html' with active_page='mentoring'%}
+{% block container %}
+
+<!-- Shows all the registered calls -->
+<head>
+	<title>{{title}}</title>
+</head>
+
+<!-- Table of calls  -->
+{%if calls%}
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}} </span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<tbody>
+                {% for c in calls %}
+                <tr>
+                    <td>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <a class="btn btn-jaku my-3 text-left" style="width: 100% ;" href="{% url 'tracing:approvedprojects' c.id %}">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="alert alert-primary" role="alert">
+                                            <span class="font-weight-bold">Convocatoria: </span>{{c.name}}
+                                        </div>
+                                        Entidad: {{c.entity}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+		</div>
+    </div>
+    {% else %}
+        <div class="container-fluid">
+            <div class="alert alert-primary">
+                <p>No se encontraron Convocatorias.</p>
+            </div>
+        </div>
+    {% endif %}
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

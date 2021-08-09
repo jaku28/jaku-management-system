@@ -1,0 +1,104 @@
+{% include 'common/layout_admin.html' with active_page='mentoring'%}
+{% block container %}
+
+<!-- shows list of mentorings -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1><i class="far fa-newspaper" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}} </span>
+            </h1>
+            <div class="dropdown-divider"></div>
+			<h4 class="text-muted"><i class="fa fa-address-book" aria-hidden="true"></i>
+				Proyecto: {{project.name}}</h4>
+            <div class="dropdown-divider"></div>
+            {% if perms.tracing.add_mentoring %}
+            <a href="{% url 'tracing:creatementoring' project.id%}" class="btn btn-jaku my-3">
+                <i class="fas fa-plus"></i> Agregar Nueva Mentoría
+            </a>
+            {% endif %}
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>
+                                Mentor
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Hora
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Observaciones
+                            </th>
+                            <th>
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if mentorings %}
+                        {% for m in mentorings %}
+                        <tr>
+                            <td>
+                                {{m.mentor.user.first_name}} {{m.mentor.user.last_name}}
+                            </td>
+                            <td>
+                                {{m.date}}
+                            </td>
+                            <td>
+                                {{m.time | time:'g:i A'}}
+                            </td>
+                            <td class="align-middle">
+                                {% if m.is_attended == '2' %}
+                                <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>ATENDIDO</div>
+                                {% elif m.is_attended == '3' %}
+                                <div class="alert alert-danger" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>NO ATENDIDO</div>
+                                {% else %}
+                                <div class="alert alert-secondary" role="alert">PENDIENTE</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{m.observations|linebreaks}}
+                            </td>
+                            <td class="jaku-actions" style="min-width: 150px;">
+                                <ul>
+                                    <li>
+                                        {% if perms.tracing.change_mentoring and m.date >= today %}
+                                        <a onclick="editarModal('{% url 'tracing:editmentoring' m.id %}')" class="editar" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
+                                        {% endif %}
+                                        {% if perms.tracing.delete_mentoring %}
+                                        <a href="{% url 'tracing:deletementoring' m.id %}"
+                                            onclick="return confirm('¿Esta seguro de eliminar Esta Mentoría?')" class="eliminar" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>No hay registros de mentorías.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="editar">
+        
+    </div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

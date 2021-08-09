@@ -1,0 +1,112 @@
+{% include 'common/layout_admin.html' with active_page='project_evaluation'%}
+{% block container %}
+
+<!-- Shows all the calls as a list to select -->
+
+<head>
+  <title>{{title}}</title>
+</head>
+
+<div class="main-panel">
+  <div class="content">
+    <div class="container-fluid shadow-sm bg-light p-3">
+      <h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+        <span class="text-primary">{{title}} </span>
+      </h1>
+      <div class="dropdown-divider"></div>
+
+      <!-- Barra de busqueda -->
+      <div class="row justify-content-center px-3">
+        <div class="col-md-7 px-0 align-self-center">
+          <form method="get">
+            <div id="custom-search-input">
+              <div class="input-group">
+                <input type="text" class="form-control" style="font-family:Arial, FontAwesome"
+                  placeholder="&#xF002; Buscar... por convocatoria o por entidad" name="buscar"
+                  value="{{ request.GET.buscar }}">
+                <span class="input-group-list">
+                  <i class="icon icon-search"></i>
+                  <button type="submit" class="btn btn-jaku">Buscar</button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      {% if calls %}
+
+      <tbody>
+        {% for c in calls %}
+        <tr>
+          <td>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <a class="btn btn-jaku my-3 text-left" style="width: 100% ;"
+                href="{% url 'tracing:evalevaluationslist' c.id %}">
+                <div class="row">
+                  <div class="col-10">
+                    <div class="alert alert-primary" role="alert">
+                      <span class="font-weight-bold">Convocatoria: </span>{{c.name}}
+                    </div>
+                    Entidad: {{c.entity}}
+                  </div>
+                </div>
+              </a>
+              <h1>&nbsp</h1>  
+              <a class="btn btn-jaku my-3" href="{% url 'tracing:activeprojects' c.id %}">
+                <i class="fas fa-list-ol"></i>
+                Lista de proyectos vigentes
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      {% else %}
+      <div class="container-fluid">
+        <div class="alert alert-primary">
+          <p>No se encontraron convocatorias, por favor agregue nuevas.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Menú de paginación -->
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if calls.has_previous %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{ calls.previous_page_number }}">&laquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+          </li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+          <li class="page-item {% if calls.number == i %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+          </li>
+          {% endfor %}
+          {% if calls.has_next %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{ calls.next_page_number }}">&raquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">&raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+
+
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+
+{% endblock %}

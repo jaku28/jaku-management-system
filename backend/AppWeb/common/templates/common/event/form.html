@@ -1,0 +1,86 @@
+{% include 'common/layout_admin.html' with active_page='event'  %}
+{% load static %}
+{% block container %}
+
+<!-- Form to create an event -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-plus" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}</span>
+            </h1>
+            <div class="dropdown-divider"></div>
+            <div class="alert alert-danger" role="alert">
+                Todos los campos con * son obligatorios.
+            </div>
+            <div class="content-section clearfix">
+                <form action="." method="POST" class="needs-validation required" novalidate
+                    enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <label for="title">Título del Evento:</label>
+                    <input type="text" class="form-control mb-3" id="title" name="title" required
+                        pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos.">
+                    <label for="description">Descripción del Evento:</label>
+                    <textarea class="form-control mb-3" rows="5" id="description" name="description"
+                        required></textarea>
+                    <label for="date">Fecha del Evento:</label>
+                    <input type="Date" class="form-control col-md-4 mb-3" input="" id="date" name="date" required>
+                    <label for="image">Imagen:</label>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="image" name="image"
+                            onchange="$('.custom-file-label').html(this.files[0].name)" required accept="image/*">
+                        <span class="custom-file-label" for="customFileLang" data-browse="Elegir">Seleccionar
+                            Archivo</span>
+                    </div>
+
+                    <span>Link:</span>
+                    <input type="text" class="form-control mb-3" id="link" name="link">
+                    <small id="helpId" class="form-text text-muted">Ejemplo: www.sitioweb.com</small>
+
+                    <button type="submit" class="btn btn-jaku px-4">Guardar</button>
+                    <a class="btn btn-secondary my-3" href="{% url 'common:eventlist'%}">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include "web/footer-mysoft.html" %}
+    <!-- End Footer -->
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $("#link").each(function () {
+            $(this).keyup(function () {
+                validateLink();
+            });
+        });
+
+    });
+
+    function validateLink() {
+        var link = document.getElementById('link').value
+        if (link === 'https://') {
+            link = '';
+            document.getElementById('link').value = link;
+        }else{
+            if ('https://' === link.substr(0, 8)) {
+                console.log(link);
+            } else {
+                link = 'https://' + link;
+                document.getElementById('link').value = link;
+                console.log(document.getElementById('link').value);
+            }
+            
+        }
+    }
+</script>
+{% include 'validation_date/validation_date.html' with id_date='date' %}
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+<!-- Showing default workshops list to register them on a call -->
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">Convocatoria: </span><span class="text-capitalize">{{call.name}}</span><br/>
+				<hr>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			
+			<!-- Default tasks list form -->
+			<form action="." method="POST">
+				{%csrf_token%}
+				<div class="table-responsive shadow-sm" style="border-radius: 9px;">										
+						<table class="table table-bordered">	
+						<tbody>
+							<tr>
+								<th>Taller</th>
+								<th>Descripción:</th>
+								<th>Temario:</th>
+							</tr>									
+							{%for t in default_workshops%}		
+							<tr>							
+							<td style="width: 30%;"><input type="checkbox" name="nameworkshop" id="nameworkshop{{ forloop.counter }}"
+								data-index="{{ forloop.counter }}" value="{{t.id}}" class="mr-3"> {{t.name}}</td>
+                            <td style="width: 35%">
+                                {{t.description|linebreaks}}
+                            </td>
+                            <td style="width: 35%">
+                                {{t.temary|linebreaks}}
+                            </td>
+                            </tr>
+							{%endfor%}																
+						</tbody>
+						</table>											
+				</div>
+				<br/>
+				<button type="submit" name="add_workshops" value="add_workshops" class="btn btn-outline-secondary">Agregar nuevos talleres</button>
+				<button type="submit" name="save_workshops" value="save_workshops" class="btn btn-jaku mx-3">Guardar talleres</button>
+				
+			</form>
+			<!-- End Default workshops list form -->
+						
+			<script type="text/javascript">
+				document.addEventListener('change', function (event) {
+					if (event.target.type != 'checkbox')
+						return
+					const index = event.target.getAttribute('data-index')
+					const checked = event.target.checked;
+                    
+					/*if (checked) {
+						document.getElementById('descriptionworkshop' + index).disabled = false;
+						document.getElementById('temaryworkshop' + index).disabled = false;
+					} else {
+						document.getElementById('descriptionworkshop' + index).disabled = true;
+						document.getElementById('temaryworkshop' + index).disabled = true;
+					}*/
+				});
+			</script>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

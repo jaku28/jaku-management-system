@@ -1,0 +1,39 @@
+{% include 'common/layout_admin.html' with active_page='entity'%}
+{% block container %}
+
+<!-- Form to create a default taks (or preloaded task) -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-plus-square" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="alert alert-danger" role="alert">
+                Todos los campos con * son obligatorios.
+			</div>
+			{% if error %}
+			<div class="alert alert-danger" role="alert">
+                {{error}}
+			</div>
+			{% endif %}
+			<form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+				{%csrf_token%}
+				<div class="form-group">
+					<label for="title">Nombre:</label>
+					<input type="text" id="name" name="name" class="form-control" required pattern="^((\S+ )*\S+)?$" data-toggle="tooltip" data-placement="left" title="No poner espacios en blanco al inicio, al final o seguidos.">
+				</div>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+				<a class="btn btn-secondary my-3"  href="{% url 'common:listofentities'%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

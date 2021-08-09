@@ -1,0 +1,641 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-07 17:29-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:41 forms.py:336 forms.py:355 forms.py:365 forms.py:388
+#: forms.py:445
+msgid "email"
+msgstr "correo electrónico"
+
+#: forms.py:42 forms.py:446
+msgid "password"
+msgstr "Contraseña"
+
+#: forms.py:124
+msgid "DNI must contain 8 digits"
+msgstr "DNI debe contener 8 digitos"
+
+#: forms.py:255 templates/accounts/base_profile_edit.html:15
+#: templates/accounts/profile_password_reset.html:8 views.py:259
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+#: forms.py:255 forms.py:322 templates/accounts/password_reset_confirm.html:44
+#: templates/accounts/profile_password_reset.html:10
+msgid "Save"
+msgstr "Guardar"
+
+#: forms.py:269
+msgid "Email"
+msgstr "correo electrónico"
+
+#: forms.py:322
+msgid "Reset password"
+msgstr "Recuperar contraseña"
+
+#: forms.py:346
+msgid "create new user"
+msgstr "crear un nuevo usuario"
+
+#: forms.py:370
+msgid "Create new user"
+msgstr "crear nuevo usuario"
+
+#: forms.py:372
+msgid "The two password fields didn't match."
+msgstr "Las contraseñas no coinciden"
+
+#: forms.py:374
+msgid "Password"
+msgstr "Contraseña"
+
+#: forms.py:376
+msgid "Password confirmation"
+msgstr "Confirmación de contraseña"
+
+#: forms.py:378
+msgid "Enter the same password as above, for verification."
+msgstr "Ingrese la misma contraseña"
+
+#: forms.py:398
+msgid "this email is already registered"
+msgstr "este correo ya esta registrado"
+
+#: forms.py:436
+msgid "name"
+msgstr "nombres"
+
+#: forms.py:437
+msgid "last name"
+msgstr "apellidos"
+
+#: forms.py:438
+msgid "company"
+msgstr "empresa"
+
+#: forms.py:439
+msgid "occupation"
+msgstr "ocupación"
+
+#: forms.py:440
+msgid "country"
+msgstr "país"
+
+#: forms.py:441
+msgid "telephone"
+msgstr "teléfono"
+
+#: forms.py:442
+msgid "events per year"
+msgstr "¿Cuantos eventos realiza al año?"
+
+#: forms.py:443
+msgid "referred by"
+msgstr "¿Como se entero de nosotros?"
+
+#: forms.py:476
+msgid "email already exists like a client"
+msgstr "este correo ya esta registrado"
+
+#: functions.py:64
+#, python-format
+msgid "Welcome to %(slug)s!"
+msgstr "Bienvenido a %(slug)s!"
+
+#: models.py:12
+msgid "man"
+msgstr "masculino"
+
+#: models.py:13
+msgid "woman"
+msgstr "femenino"
+
+#: models.py:16
+msgid "alternative email"
+msgstr "correo opcional"
+
+#: models.py:17
+msgid "dni"
+msgstr "dni"
+
+#: models.py:18
+msgid "nationality"
+msgstr ""
+
+#: models.py:20
+msgid "phone number"
+msgstr "teléfono"
+
+#: models.py:21
+msgid "photo"
+msgstr "foto"
+
+#: models.py:22
+msgid "gender"
+msgstr "genero"
+
+#: models.py:23
+msgid "address"
+msgstr "dirección"
+
+#: models.py:24
+msgid "birth date"
+msgstr "fecha de cumpleaños"
+
+#: models.py:25
+msgid "resume"
+msgstr "curriculum vitae"
+
+#: models.py:27
+msgid "facebook"
+msgstr "facebook"
+
+#: models.py:28
+msgid "linkedin"
+msgstr "linkedin"
+
+#: models.py:29
+msgid "twitter"
+msgstr "twitter"
+
+#: models.py:30
+msgid "website"
+msgstr "sitio web"
+
+#: models.py:44 models.py:54
+msgid "select one"
+msgstr "seleccione uno"
+
+#: models.py:45
+msgid "social networks"
+msgstr "redes sociales"
+
+#: models.py:46
+msgid "newspapers"
+msgstr "prensa escrita"
+
+#: models.py:47
+msgid "tv"
+msgstr "televisión"
+
+#: models.py:48
+msgid "radio"
+msgstr "radio"
+
+#: models.py:49
+msgid "internet"
+msgstr "internet"
+
+#: models.py:50
+msgid "friends"
+msgstr "amigos"
+
+#: models.py:55
+msgid "less than 10"
+msgstr "menos de 10"
+
+#: models.py:56
+msgid "10 - 50"
+msgstr ""
+
+#: models.py:57
+msgid "50 - 100"
+msgstr ""
+
+#: models.py:58
+msgid "100 - 200"
+msgstr ""
+
+#: models.py:59
+msgid "more than 200"
+msgstr "más de 200"
+
+#: templates/accounts/base_profile_edit.html:12 tests.py:161 views.py:185
+msgid "Edit profile"
+msgstr "Editar perfil"
+
+#: templates/accounts/client_register_form.html:250
+msgid "create an account"
+msgstr "crear una cuenta"
+
+#: templates/accounts/client_register_form.html:253
+msgid "(*) required fields"
+msgstr "(*) Campos requeridos"
+
+#: templates/accounts/client_register_form.html:260
+#: templates/accounts/login.html:43
+#: templates/accounts/password_reset_done.html:35
+#: templates/accounts/password_reset_form.html:58
+#: templates/accounts/register_form.html:14
+msgid "login"
+msgstr "iniciar sesión"
+
+#: templates/accounts/email/email_reset.html:3
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"Estas recibiendo este correo porque se solicitó restaurar su contraseña\n"
+"        para tu cuenta en %(site_name)s"
+
+#: templates/accounts/email/email_reset.html:5
+#: templates/accounts/email/email_reset.txt:6
+msgid "Please go to the following page and choose a new password:"
+msgstr "Por favor, ve a la siguiente página y escoge una nueva contraseña"
+
+#: templates/accounts/email/email_reset.html:10
+#: templates/accounts/email/email_reset.txt:10
+msgid "Your username, in case you've forgotten:"
+msgstr "Tu usuario, en caso de haberlo olvidado"
+
+#: templates/accounts/email/email_reset.html:12
+#: templates/accounts/email/email_reset.txt:12
+msgid "Thanks for using our site!"
+msgstr "Gracias por registrarte en nuestra app"
+
+#: templates/accounts/email/email_reset.html:14
+#: templates/accounts/email/email_reset.txt:14
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "El equipo %(site_name)s"
+
+#: templates/accounts/email/email_reset.txt:3
+#, python-format
+msgid ""
+"You're receiving this e-mail because you requested a password reset\n"
+"        for your user account at %(site_name)s"
+msgstr ""
+"Estas recibiendo este correo porque se solicitó restaurar su contraseña\n"
+"        para tu cuenta en %(site_name)s"
+
+#: templates/accounts/email/welcome_new_user.html:12
+msgid "Welcome to"
+msgstr "Bienvenido a"
+
+#: templates/accounts/email/welcome_new_user.html:25
+msgid "Hello"
+msgstr "Hola"
+
+#: templates/accounts/email/welcome_new_user.html:32
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                                                    We are happy you have "
+#| "registered to %(event_short_name)s, you can\n"
+#| "                                                    follow us  <a href="
+#| "\"%(url_to_review)s\"\n"
+#| "                                                                  style="
+#| "\"color: #3572b0; text-decoration:none;\">\n"
+#| "                                                    here</a>\n"
+#| "                                                    .\n"
+#| "                                                "
+msgid ""
+"\n"
+"                        We are happy you have registered to "
+"%(event_short_name)s, you can\n"
+"                        follow us  <a href=\"%(url_to_review)s\"\n"
+"                                      style=\"color: #3572b0; text-"
+"decoration:none;\">\n"
+"                        here</a>\n"
+"                        .\n"
+"                    "
+msgstr ""
+"\n"
+"                                                    Estamos contentos que "
+"tehayas registrado al %(event_short_name)s, puedes\n"
+"                                                    seguirnos  <a href="
+"\"%(url_to_review)s\"\n"
+"                                                                  style="
+"\"color: #3572b0; text-decoration:none;\">\n"
+"                                                    aquí</a>\n"
+"                                                    .\n"
+"                                                "
+
+#: templates/accounts/email/welcome_new_user.html:66
+msgid "If you have any questions, contact us to "
+msgstr "Si tienes algun pregunta contactanos a"
+
+#: templates/accounts/email/welcome_new_user.html:72
+msgid "Cheers,"
+msgstr "Saludos,"
+
+#: templates/accounts/email/welcome_new_user.html:73
+#, python-format
+msgid ""
+"\n"
+"                        The %(event_short_name)s team\n"
+"                    "
+msgstr ""
+"\n"
+"                                                    El equipo "
+"%(event_short_name)s \n"
+"                                                "
+
+#: templates/accounts/home.html:40
+msgid "Hi"
+msgstr "Hola"
+
+#: templates/accounts/home.html:42
+msgid "In a short while to complete your registration"
+msgstr "Ya estamos por terminar tu registro"
+
+#: templates/accounts/home.html:43
+msgid ", select your a payment method"
+msgstr ", selecciona tu metodo de pago"
+
+#: templates/accounts/home.html:57 templates/accounts/home.html:76
+#: templates/accounts/home.html:155
+msgid "option"
+msgstr "opción"
+
+#: templates/accounts/home.html:59
+msgid "bank deposit"
+msgstr "deposito bancario"
+
+#: templates/accounts/home.html:67
+msgid "send"
+msgstr "enviar"
+
+#: templates/accounts/home.html:77 templates/accounts/home.html:157
+msgid "using"
+msgstr "usando"
+
+#: templates/accounts/home.html:141
+msgid "next"
+msgstr "siguiente"
+
+#: templates/accounts/home.html:158
+msgid "card"
+msgstr "tarjeta"
+
+#: templates/accounts/login.html:50
+msgid "or new author"
+msgstr "o nuevo autor"
+
+#: templates/accounts/login.html:56
+msgid "Do you forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/accounts/login.html:64
+msgid "do not have an account yet?"
+msgstr "¿Aún no tienes una cuenta?"
+
+#: templates/accounts/login.html:64
+msgid "register now"
+msgstr "registrate ahora"
+
+#: templates/accounts/password_reset_complete.html:17
+msgid "Password reset completed"
+msgstr "Reseteo de contraseña completado"
+
+#: templates/accounts/password_reset_complete.html:22
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "Tu contraseña ha sido enviada. Sigue adelante e Ingresa ahora"
+
+#: templates/accounts/password_reset_complete.html:23
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: templates/accounts/password_reset_confirm.html:39
+msgid "Set a new password"
+msgstr "Cambiar contraseña"
+
+#: templates/accounts/password_reset_confirm.html:41 views.py:623
+msgid "Password reset unsuccessful"
+msgstr "Contraseña no ha sido actualizada"
+
+#: templates/accounts/password_reset_confirm.html:48
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/accounts/password_reset_form.html:36
+msgid "did you forget your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/accounts/password_reset_form.html:37
+msgid "You will be sent a message with instructions to restore your password"
+msgstr ""
+"Se te enviará un mensaje con las instrucciones para restaurar tu contraseña"
+
+#: templates/accounts/password_reset_form.html:41
+msgid "You are logged like "
+msgstr "Haz iniciado sesión como "
+
+#: templates/accounts/password_reset_form.html:50
+msgid "reset password"
+msgstr "Recuperar contraseña"
+
+#: templates/accounts/register_form.html:11
+msgid "register "
+msgstr "registrar "
+
+#: templates/accounts/register_form.html:13
+msgid "please before you apply your paper register like an author or "
+msgstr "por favor, antes de presentar tu articulo, registrate como autor o"
+
+#: templates/accounts/register_workshop.html:276
+#: templates/accounts/register_workshop_done.html:177
+msgid "how register?"
+msgstr "¿Como inscribirse?"
+
+#: templates/accounts/update_password.html:15
+#, python-format
+msgid ""
+"\n"
+"                            Hi %(name)s, please write a password\n"
+"                        "
+msgstr ""
+"\n"
+"            Hola %(name)s, Por favor actualiza tu contraseña\n"
+"        "
+
+#: views.py:84
+msgid "Wrong user or password"
+msgstr "Usuario o Contraseña incorrecta"
+
+#: views.py:96
+msgid "Login"
+msgstr "Ingresar"
+
+#: views.py:112
+msgid "Logged out"
+msgstr "Sesión cerrada"
+
+#: views.py:138
+msgid "Welcome"
+msgstr "Bienvenido"
+
+#: views.py:151
+msgid "Register"
+msgstr "¿Como inscribirse?"
+
+#: views.py:177
+msgid "You information have been updated."
+msgstr "Tu información ha sido actualizada"
+
+#: views.py:206
+#, python-format
+msgid ""
+"You are logged with <b>%(user_email)s</b>, click <a href=\"%(url_close)s"
+"\">here</a> to close session, then your can login with you username <b>"
+"%(send_emal)s</b>"
+msgstr ""
+
+#: views.py:252
+msgid "Success"
+msgstr "Exito"
+
+#: views.py:282
+#, python-format
+msgid ""
+"Are you sure you are simple user?, maybe you want go to the <a href=\"%(url)s"
+"\">admin panel</a>"
+msgstr ""
+"Estas seguro que eres un simple usuario?, quizas quieras ir al <a href="
+"\"%(url)s\">panel de administración</a>"
+
+#: views.py:342
+msgid ""
+"<strong>We have sent you an email!</strong> Please, follow the instructions "
+"to reset your password."
+msgstr ""
+"<strong>¡Te hemos enviado un correo</strong> Por favor, sigue las "
+"instrucciones para recuperar tu contraseña."
+
+#: views.py:349 views.py:354
+msgid "<strong>Success!</strong> You have changed your password."
+msgstr "<strong>¡Éxito!</strong> Has cambiado tu contraseña."
+
+#: views.py:412
+msgid "Password reset"
+msgstr "Resetear password"
+
+#: views.py:430
+#, python-format
+msgid ""
+"Your register is not approved yet, would you like contact us? %(main_mail)s"
+msgstr ""
+"Tu registro no ha sido aprobaoo aún, ¿te gustaría contactarnos? %(main_mail)s"
+
+#: views.py:434
+#, python-format
+msgid ""
+"You don't have a register, you can request one <a href=\"%(url)s\">clicking "
+"here</a>"
+msgstr ""
+"No estas registrado, puedes solicitarlo <a href=\"%(url)s\">haciendo click "
+"aquí</a>"
+
+#: views.py:446
+#, python-format
+msgid "It is not allowed for your ticket type (%(ticket)s)"
+msgstr ""
+
+#: views.py:452
+#, python-format
+msgid "it only allow for: %(tickets)s <br/> your ticket is %(current_ticket)s"
+msgstr ""
+
+#: views.py:573
+msgid "Password reset sent"
+msgstr "Reseteo de password enviada"
+
+#: views.py:612
+msgid "Enter new password"
+msgstr "Ingresar nueva contraseña"
+
+#: views.py:643
+msgid "Password reset complete"
+msgstr "Resteo de contraseña completada"
+
+#: views.py:680
+msgid "Password change"
+msgstr "Contraseña actualizada"
+
+#: views.py:696
+msgid "Password change successful"
+msgstr "Contraseña actualizada exitosamente"
+
+#: views.py:737
+msgid "register"
+msgstr "registro"
+
+#~ msgid "already have an account?"
+#~ msgstr "¿Ya tienes una cuenta?"
+
+#~ msgid "Sincerely"
+#~ msgstr "Sinceramente"
+
+#~ msgid "Login to your account here"
+#~ msgstr "Ingrese a su cuenta aqui"
+
+#~ msgid "Forgot your password? Click here"
+#~ msgstr "¿Olvidaste tu contraseña? Click aqui"
+
+#, fuzzy
+#~| msgid ""
+#~| "You're receiving this e-mail because you requested a password reset\n"
+#~| "        for your user account at %(site_name)s"
+#~ msgid ""
+#~ "You're receiving this e-mail because you requested a password reset\n"
+#~ "        for your user account at %(site_name)s\n"
+#~ "    "
+#~ msgstr ""
+#~ "Estas recibiendo este correo porque se solicitó restaurar su contraseña\n"
+#~ "        para tu cuenta en %(site_name)s"
+
+#~ msgid ""
+#~ "You're receiving this e-mail because you requested a password reset for "
+#~ "your user account at"
+#~ msgstr ""
+#~ "Estas recibiendo este correo porque se solicitó restaurar su contraseña\n"
+#~ "        para tu cuenta en"
+
+#~ msgid "Please go to the following page and choose a new password"
+#~ msgstr "Por favor, ve a la siguiente página y escoge una nueva contraseña"
+
+#~ msgid "Your username, in case you've forgotten"
+#~ msgstr "Tu usuario, en caso de haberlo olvidado"
+
+#~ msgid "The"
+#~ msgstr "El"
+
+#~ msgid "team"
+#~ msgstr "equipo"
+
+#~ msgid "Welcome %(name)s"
+#~ msgstr "Bienvenido a %(slug)s!"
+
+#~ msgid "Check your email"
+#~ msgstr "Revisa tu correo électronico"
+
+#~ msgid "We've emailed you instructions for recovering your password."
+#~ msgstr "The hemos enviado instrucciones para que restaures tu contraseña"
+
+#~ msgid ""
+#~ "Please make sure you've entered the address you registered with, and "
+#~ "check your spam folder."
+#~ msgstr ""
+#~ "Por favor, asegurate de haber ingresado el correo con el que te "
+#~ "registraste, y revisa tu buzon de correos no deseados"
+
+#~ msgid "Go to home"
+#~ msgstr "Ir al inicio"

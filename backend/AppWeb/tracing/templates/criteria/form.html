@@ -1,0 +1,284 @@
+{% include 'common/layout_admin.html' with active_page='call'%}
+{% block container %}
+
+<!-- Add criterias in an evaluation -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}: </span><span
+					class="text-capitalize">{{evaluation.name}}</span><br />
+			</h1>
+
+			<div class="dropdown-divider"></div>
+
+			<div class="alert alert-danger" role="alert">
+				Todos los campos con * son obligatorios.
+			</div>
+
+
+			<form action="." method="POST" class="needs-validation required" novalidate
+				onsubmit="return validateSumWeight();">
+				{%csrf_token%}
+
+				<div class="card mb-3">
+					<div class="card-header h3">Nuevo Criterio
+					</div>
+					<div class="card-body">
+						<div class="form-group row ">
+							<label for="" class="col-sm-2 col-form-label">Título:</label>
+							<div class="col-sm-8">
+								<input type="text" name="name" class="form-control" required pattern="^((\S+ )*\S+)?$"
+									data-toggle="tooltip" data-placement="left"
+									title="No poner espacios en blanco al inicio, al final o seguidos.">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-sm-2 col-form-label">Descripción del criterio:</label>
+							<div class="col-sm-8">
+								<textarea type="text" name="description" class="form-control" required></textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-sm-2 col-form-label">Ponderación:</label>
+							<div class="col-sm-8 form-inline">
+								<div class="input-group">
+									<input type="text" name="weight" id="weight0" class="form-control sm-3 weight"
+										min="1" pattern="^[1-9][0-9]*" maxlength="3" required data-toggle="tooltip"
+										data-placement="left" title="Ingrese solo números.">
+									<div class="input-group-append">
+										<span class="input-group-text text-info">%</span>
+									</div>
+								</div>
+								<small class="text-muted ml-3">
+									Ponderación debe ser de 1 a 100 (%) máximo.
+								</small>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div id="divCriterias">
+					<!-- content new criterias -->
+				</div>
+				<hr>
+				<!-- Sum all weight -->
+				<h5 class="text-info md-6">Suma de ponderación: <span class="badge badge-info" id="contentViewWeight">
+						<span id="viewWeight" value="0">0</span> % </span>
+					<div id="msgExceed" class="text-danger ml-3" style="display: none;"><i
+							class="fa fa-exclamation-circle" aria-hidden="true"></i>La suma de la ponderación deber ser
+						100% </div>
+				</h5>
+				<hr>
+
+				<button type="button" onclick="newCriteria()" class="btn btn-info mx-2"><i
+						class="fas fa-plus mr-2"></i>Añadir
+					nuevo criterio</button>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+			</form>
+		</div>
+	</div>
+	<!-- Footer -->
+	{% include "web/footer-mysoft.html" %}
+	<!-- End Footer -->
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+	var countWeight = 0;
+
+	$(document).ready(function () {
+		$(".weight").each(function () {
+
+			$(this).keyup(function () {
+				calculateSum();
+				validateSumWeight();
+			});
+		});
+
+	});
+
+	function calculateSum() {
+
+		var sum = 0;
+		$(".weight").each(function () {
+			if (!isNaN(this.value) && this.value.length != 0) {
+				sum += parseInt(this.value);
+			}
+
+		});
+		$("#viewWeight").html(sum);
+	}
+	function newCriteria() {
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+		countWeight = countWeight + 1;
+		var divCriteria = document.createElement('div');
+		var divCriteriaHead = document.createElement('div');
+		var divCriteriaBody = document.createElement('div');
+
+		var divContentName = document.createElement('div');
+		var labelName = document.createElement('label');
+		var divName = document.createElement('div');
+
+		var divContentDescription = document.createElement('div');
+		var labelDescription = document.createElement('label');
+		var divDescription = document.createElement('div');
+
+		var divContentWeight = document.createElement('div');
+		var labelWeight = document.createElement('label');
+		var divGroupInput = document.createElement('div');
+		var divInputAppend = document.createElement('div');
+		var spanInput = document.createElement('span');
+		var divWeight = document.createElement('div');
+		var smallWeight = document.createElement('small');
+
+		var c_name = document.createElement('input');
+		var c_description = document.createElement('textarea');
+		var c_weight = document.createElement('input');
+
+		//Button close
+		var spanClose = document.createElement('span');
+		var iClose = document.createElement('i');
+
+
+		divCriteria.className = 'card mb-3'
+		divCriteriaHead.className = 'card-header h3'
+		divCriteriaHead.innerHTML = 'Nuevo Criterio ';
+		divCriteriaBody.className = 'card-body'
+
+		spanClose.className = 'pull-right clickable close-icon'
+		spanClose.dataset = 'fadeOut'
+		iClose.className = 'fa fa-times'
+
+		divContentName.className = 'form-group row'
+		labelName.innerHTML = 'Título:'
+		labelName.className = 'col-sm-2 col-form-label'
+		divName.className = 'col-sm-8'
+
+		divContentDescription.className = 'form-group row'
+		labelDescription.innerHTML = 'Descripción del Criterio:'
+		labelDescription.className = 'col-sm-2 col-form-label'
+		divDescription.className = 'col-sm-8'
+
+		divGroupInput.className = 'input-group'
+		divInputAppend.className = 'input-group-append'
+		spanInput.className = 'input-group-text text-info'
+		spanInput.innerHTML = '%'
+		divContentWeight.className = 'form-group row'
+		labelWeight.innerHTML = 'Ponderación:'
+		labelWeight.className = 'col-sm-2 col-form-label'
+		divWeight.className = 'col-sm-8 form-inline'
+
+		c_name.type = 'text'
+		c_name.name = 'name'
+		c_name.className = 'form-control';
+		c_name.required = true
+		c_name.pattern = '^((\\S+ )*\\S+)?$'
+		c_name.setAttribute("data-toggle", "tooltip")
+		c_name.setAttribute("data-placement", "left")
+		c_name.title = 'No poner espacios en blanco al inicio, al final o seguidos.'
+
+
+		c_description.type = 'textarea'
+		c_description.name = 'description'
+		c_description.className = 'form-control';
+		c_description.required = true
+		c_weight.type = 'text'
+		c_weight.name = 'weight'
+		c_weight.className = 'form-control sm-3 weight';
+		c_weight.required = true
+		c_weight.pattern = '^[1-9][0-9]*'
+		c_weight.maxLength = 3
+		c_weight.setAttribute('data-toggle', 'tooltip');
+		c_weight.setAttribute('data-placement', 'left');
+		c_weight.title = 'Ingrese solo números.'
+		c_weight.id = 'weight' + countWeight
+		smallWeight.className = 'text-muted ml-3'
+		smallWeight.innerHTML = 'Ponderación debe ser de 1 a 100 (%) máximo.'
+
+		divCriterias.appendChild(divCriteria);
+		divCriteria.appendChild(divCriteriaHead);
+		divCriteria.appendChild(divCriteriaBody);
+		divCriteriaBody.appendChild(divContentName);
+		divCriteriaHead.appendChild(spanClose);
+		spanClose.appendChild(iClose);
+		divContentName.appendChild(labelName);
+		divContentName.appendChild(divName);
+		divName.appendChild(c_name);
+
+		divCriteriaBody.appendChild(divContentDescription);
+		divContentDescription.appendChild(labelDescription);
+		divContentDescription.appendChild(divDescription);
+		divDescription.appendChild(c_description);
+
+		divCriteriaBody.appendChild(divContentWeight);
+		divContentWeight.appendChild(labelWeight);
+		divContentWeight.appendChild(divWeight);
+		divWeight.appendChild(divGroupInput);
+		divGroupInput.appendChild(c_weight);
+		divGroupInput.appendChild(divInputAppend);
+		divInputAppend.appendChild(spanInput);
+		divWeight.appendChild(smallWeight);
+
+		spanClose.addEventListener('click', () => {
+			var deleteWeight = document.getElementById(c_weight.id).value;
+			var resumWeight = document.getElementById('viewWeight').innerText;
+			var sum = parseInt(resumWeight) - parseInt(deleteWeight);
+			document.getElementById('viewWeight').innerText = sum;
+			divCriteria.remove()
+		});
+
+
+		$(document).ready(function () {
+			$(".weight").each(function () {
+
+				$(this).keyup(function () {
+					calculateSum();
+					validateSumWeight();
+				});
+			});
+
+		});
+
+		function calculateSum() {
+			var sum = 0;
+			$(".weight").each(function () {
+
+				//add only if the value is number
+				if (!isNaN(this.value) && this.value.length != 0) {
+					sum += parseInt(this.value);
+				}
+
+			});
+			$("#viewWeight").html(sum);
+		}
+	}
+	function validateSumWeight() {
+		var sum = document.getElementById('viewWeight');
+		var contentSum = document.getElementById('contentViewWeight');
+		console.log(sum);
+		if (parseInt(sum.innerHTML) == 100) {
+			contentSum.className = 'badge badge-info'
+			document.getElementById('msgExceed').style.display = 'none'
+			console.log('true');
+			return true;
+		} else {
+			contentSum.className = 'badge badge-danger'
+			document.getElementById('msgExceed').style.display = 'inline'
+			console.log('false');
+			return false;
+		}
+
+	}
+
+</script>
+
+{% endblock%}

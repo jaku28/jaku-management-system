@@ -1,0 +1,87 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Jaku | Convocatorias </title>
+<div class="head-call">
+
+</div>
+<div class="bg-call">
+    <!-- Search Calls -->
+    <div class="search-calls pt-4" style="position: relative;z-index: 999; width: 80%;margin: auto;">
+        <form method="get">
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control" placeholder="Buscar convocatoria" name="search-call">
+                    <span class="input-group-list">
+                        <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Buscar</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="call-title text-uppercase" style="text-align: center;font-size: 5vh; color: #fff;">
+        Convocatorias
+    </div>
+    <div class="list-calls">
+        {% if calls %}
+        {%for c in calls%}
+        <div class="row content-call mb-4">
+            <div class="col-sm-3 info-call">
+                <h5 style="color: #3180c5;"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                    Fecha Límite de inscripción</h5>
+                <p>{{c.due_date}}</p>
+                <hr>
+                <h5 style="color: #3180c5;"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                    Fecha de inicio (Preparación) </h5>
+                <p>{{c.preparation_start}}</p>
+                <hr>
+                <h5 style="color: #3180c5;"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                    Fecha final </h5>
+                <p>{{c.final_date}}</p>
+                <hr>
+
+            </div>
+            <div class="col-sm-9 content-detail-call" style="border-left: 1px solid rgb(196, 196, 196);">
+                <h1 style="font-size: 4vh;">{{c.name}}</h1>
+                <hr>
+                <h5 style="color: #3180c5;"><i class="fa fa-bookmark" aria-hidden="true"></i>
+                    Entidad</h5>
+                <p>{{c.entity}}</p>
+                <hr>
+                <h5 style="color: #3180c5;"><i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    Bases</h5>
+                <a target="_blank" href="{{ c.rules.url }}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 30px; color: #e74c3c;"></i></a>
+                <hr>
+                <h4>Talleres</h4>
+                <p>{%for t in c.workshop_set.all%}
+                        {{t.name}}, 
+                    {%endfor%}
+                    ...
+                </p>
+                <hr>
+                <a href="{% url 'web:calldetail' c.id%}" class="btn" style="background-color: #3180c5;color: white;">Mas información</a>
+            </div>
+        </div>
+        {%endfor%}
+        {%endif%}
+    
+       <!-- Paginator Buttom-->
+       <div class="row p-4" style="background-color: #fff;">
+        <div class="col-md-6">
+            {% if calls.has_previous %}
+                <div class="clearfix">
+                    <a href="?page={{calls.previous_page_number}}" class="btn btn-primary float-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Anterior</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            {% if calls.has_next %}
+                <div class="clearfix">
+                    <a href="?page={{calls.next_page_number}}" class="btn btn-primary">Siguiente <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

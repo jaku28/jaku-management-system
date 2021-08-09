@@ -1,0 +1,42 @@
+{% include 'common/layout_admin.html' with active_page='workshop'%}
+{% block container %}
+
+<!-- Form to create a default workshop (or preloaded workshop) -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-plus-square" style="color: #bdc3c7;"></i>
+				{{title}}
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="alert alert-danger" role="alert">
+                Todos los campos con * son obligatorios.
+            </div>
+			<form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+				{%csrf_token%}
+				<div class="form-group">
+					<label for="title">Nombre:</label>
+					<input type="text" id="name" name="name" class="form-control" required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos." data-toggle="tooltip" data-placement="left">
+				</div>
+				<div class="form-group">
+					<label for="description">Descripción:</label>
+					<textarea class="form-control  mb-3" type="text" name="description" id="description" rows="10" required></textarea>
+				</div>
+				<div class="form-group">
+					<label for="temary">Temario:</label>
+					<textarea class="form-control  mb-3" type="text" name="temary" id="temary" rows="10" required></textarea>
+				</div>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+				<a class="btn btn-secondary my-3"  href="{% url 'common:listofdefaultworkshops'%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

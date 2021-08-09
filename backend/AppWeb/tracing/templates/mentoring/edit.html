@@ -1,0 +1,46 @@
+<div class="modal-lg" style="margin: auto;">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <div class="modal-header">
+                <h1><i class="fas fa-newspaper" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}</span>
+                </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger" role="alert">
+                Todos los campos con * son obligatorios.
+            </div>
+            <form method="POST" action="{% url 'tracing:editmentoring' mentoring.id %}" class="was-validated required">
+
+                {%csrf_token%}
+                <label for="mentor">Mentor</label>
+                {% if mentors %}
+                <select name="mentor" id="mentor" class="form-control input-square" value="{{mentoring.name}}">
+                    {%for m in mentors%}
+                    <option value="{{m.id}}" {%if m.id == mentoring.mentor.id%} selected {%endif%}>
+                        {{m.user.first_name}} {{m.user.last_name}}</option>
+                    {%endfor%}
+                </select><br>
+                {% else %}
+                <p>No hay mentores registrados</p>
+                {% endif %}
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="date">Fecha</label>
+                        <input type="date" id="date" name="date" class="form-control"
+                            value="{{mentoring.date|date:"Y-m-d"}}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="time">Hora</label>
+                        <input type="time" id="time" name="time" value="{{mentoring.time}}" class="form-control"
+                            required>
+                    </div>
+                </div>
+                <input type="submit" value="Actualizar" class="btn btn-jaku px-4 my-3">
+                <a class="btn btn-secondary my-3" href="{% url 'tracing:showmentorings' project.id%}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>

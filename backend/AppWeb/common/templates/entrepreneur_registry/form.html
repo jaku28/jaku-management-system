@@ -1,0 +1,440 @@
+<!-- Form to request an entrepreneur user -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <!-- Optional theme -->
+  </head>
+  <body>
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="{% static 'js/phoneformat.js'%}"></script>
+    <script src="{% static 'js/validation-form.js'%}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <p hidden id="loadPaises"></p>
+    <div class="main-panel" style="background-color: #0099ff">
+      <div class="content py-5" style="width: 80%; margin: auto">
+        <div class="row">
+          <div class="col-lg-6">
+            <img src="{% static 'accounts/img/jaku.svg' %}" alt="" />
+          </div>
+          <div class="col-lg-6 bg-light shadow">
+            <div class="container" style="padding: 5%; ">
+              <p style="font-size: 5vh">
+                <span class="text" style="color: #3182c5">{{title}}</span>
+              </p>
+              <div class="dropdown-divider"></div>
+              <div class="alert alert-danger" role="alert">
+                Todos los campos son obligatorios.
+              </div>
+              <div class="content-section clearfix">
+                <form
+                  action="."
+                  method="POST"
+                  class="needs-validation required"
+                  novalidate
+                  enctype="multipart/form-data"
+                >
+                  {%csrf_token%}
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Nombre:</span>
+                    </div>
+                    <input
+                      type="text"
+                      id="first_name"
+                      name="first_name"
+                      class="form-control"
+                      required
+                      pattern="^((\S+ )*\S+)?$"
+                      title="No poner espacios en blanco al inicio, al final o seguidos."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Apellidos:</span>
+                    </div>
+                    <input
+                      type="text"
+                      id="last_name"
+                      name="last_name"
+                      class="form-control"
+                      required
+                      pattern="^((\S+ )*\S+)?$"
+                      title="No poner espacios en blanco al inicio, al final o seguidos."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">DNI:</span>
+                    </div>
+                    <input
+                      type="text"
+                      id="dni"
+                      name="dni"
+                      class="form-control"
+                      required
+                      pattern="[0-9]+"
+                      title="Ingrese 8 números."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                      maxlength="8"
+                      minlength="8"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Teléfono/Celular:</span>
+                    </div>
+                    <input
+                      type="tel"
+                      id="phone_number"
+                      name="phone_number"
+                      class="phone_number form-control mr-sm-3"
+                      required
+                      title="Solo se permite numeros."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Correo electronico:</span>
+                    </div>
+                    <input
+                      type="email"
+                      id="username"
+                      name="username"
+                      class="form-control"
+                      required
+                      pattern="^((\S+ )*\S+)?$"
+                      title="No poner espacios en blanco al inicio, al final o seguidos."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Sexo:</span>
+                    </div>
+                    {{form_profile.sex}}
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Especialidad:</span>
+                    </div>
+                    <input
+                      type="text"
+                      id="specialty"
+                      name="specialty"
+                      class="form-control"
+                      required
+                      pattern="^((\S+ )*\S+)?$"
+                      title="No poner espacios en blanco al inicio, al final o seguidos."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Fecha de nacimiento:</span>
+                    </div>
+                    <input
+                      type="date"
+                      id="birthday"
+                      name="birthday"
+                      class="form-control"
+                      required
+                      pattern="^((\S+ )*\S+)?$"
+                      title="No poner espacios en blanco al inicio, al final o seguidos."
+                      data-toggle="tooltip"
+                      data-placement="left"
+                    />
+                  </div>
+                  {{form_user.email.as_hidden}}
+                  <hr />
+                  <div class="form">
+                    <div class="required">
+                      <label for="reason"
+                        >Razón por la que quieres pertenecer a JAKU:</label
+                      ><br />
+                      {{form_profile.reason_to_belong}}
+                    </div>
+                  </div>
+                  <hr />
+                  <label>Mi ubicación:</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">País</span>
+                    </div>
+                    <select
+                      id="pais"
+                      name="pais"
+                      onchange="loadPaises();"
+                      class="form-control"
+                      required
+                    >
+                      <option selected disabled value="">Elija un pais</option>
+                    </select>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Estado</span>
+                    </div>
+                    <select
+                      id="estado"
+                      name="estado"
+                      onchange="loadState();"
+                      class="form-control"
+                    >
+                      <option selected disabled>Elija un estado</option>
+                    </select>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Ciudad</span>
+                    </div>
+                    <select id="city" name="city" class="form-control" a>
+                      <option selected disabled>Elija un ciudad</option>
+                    </select>
+                  </div>
+                  <hr />
+                  <label for="">Institución:</label>
+                  <div class="form-check mb-3">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="check-unsa"
+                      checked
+                      value="Universidad Nacional de San Agústin"
+                    />
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Universidad Nacional de San Agústin (UNSA)
+                    </label>
+                  </div>
+                  <div class="form-check mb-3">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="check-no-unsa"
+                    />
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Otra Institución.
+                    </label>
+                    <input
+                      type="text"
+                      aria-label="carrera"
+                      id="univ"
+                      name="univ"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Carrera</span>
+                    </div>
+                    <input
+                      type="text"
+                      aria-label="carrera"
+                      id="career"
+                      name="career"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Año de ingreso</span>
+                    </div>
+                    <select
+                      id="year_income"
+                      name="year_income"
+                      class="form-control"
+                    >
+                      <option value="" selected>Elige un año</option>
+                      <script>
+                        let fecha = new Date();
+                        let año = fecha.getFullYear();
+                        for (let i = 1970; i <= año; i++) {
+                          document.write(
+                              '<option value="' + i + '">' + i + "</option>"
+                            );
+                        }
+                      </script>
+                    </select>
+                  </div>
+                  <input type="hidden" id="country" name="country" />
+                  <input type="hidden" id="state" name="state" />
+                  <input type="hidden" id="institution" name="institution" />
+                  <hr />
+                  <span
+                    ><button
+                      type="submit"
+                      class="btn"
+                      style="
+                        width: 40%;
+                        background-color: #3182c5;
+                        color: white;
+                        font-size: 3vh;
+                      "
+                    >
+                      <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                      Enviar
+                    </button></span
+                  >
+                  <span
+                    ><a
+                      href="{% url 'common:home' %}"
+                      style="text-decoration: none"
+                      class="btn btn-secondary"
+                      >Volver</a
+                    ></span
+                  >
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      {% include "web/footer-mysoft.html" %}
+      <!-- End Footer -->
+    </div>
+
+    {% block scripts %}
+
+    <script type="text/javascript">
+      document.getElementById("birthday").type = "date";
+      function today() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = "0" + dd;
+        }
+        if (mm < 10) {
+          mm = "0" + mm;
+        }
+
+        today = yyyy + "-" + mm + "-" + dd;
+        return today;
+      }
+      today = today();
+      document.getElementById("birthday").setAttribute("max", today);
+    </script>
+    <script>
+      let cod;
+      function loadPaises() {
+        $("#estado").find("option").not(":first").remove();
+        $("#city").find("option").not(":first").remove();
+        axios({
+          method: "GET",
+          // url: 'https://restcountries.eu/rest/v2/all'
+          url: "https://raw.githubusercontent.com/satishverma143/countries-states-cities-database-1/master/countries%2Bstates%2Bcities.json",
+        }).then((res) => {
+          for (var i = 0; i < res.data.length - 1; i++) {
+            var opt = document.createElement("OPTION");
+            opt.text = res.data[i].name;
+            opt.value = i + 1;
+            document.getElementById("pais").options.add(opt);
+          }
+          let pa = document.getElementById("pais").value;
+          document.getElementById("country").value =
+            res.data[document.getElementById("pais").value - 1].name;
+
+          cod = res.data.find((a) => a.id == pa);
+          let astates = [];
+          for (var make in cod.states) {
+            astates.push(make);
+            var opt = document.createElement("OPTION");
+            opt.text = make;
+            opt.value = astates.length + 1;
+            document.getElementById("estado").options.add(opt);
+          }
+        });
+      }
+      let ciudad = [];
+      function loadState() {
+        $("#city").find("option").not(":first").remove();
+        let es = document.getElementById("estado");
+        let selected = es.options[es.selectedIndex].text;
+        (document.getElementById("state").value = selected), cod;
+
+        for (var make in cod.states) {
+          console.log(make);
+          if (!make.localeCompare(selected)) {
+            ciudad = cod.states[make];
+            console.log(ciudad.length);
+            break;
+          }
+        }
+        for (var i = 0; i < ciudad.length; i++) {
+          var opt = document.createElement("OPTION");
+          opt.text = ciudad[i];
+          opt.value = ciudad[i];
+          document.getElementById("city").options.add(opt);
+        }
+      }
+      document.getElementById("loadPaises").innerHTML = loadPaises();
+    </script>
+    <script>
+      let univer = document.getElementById("institution");
+      let checkUnsa = document.getElementById("univ");
+      checkUnsa.disabled = true;
+      univer.value = "Universidad Nacional de San Agústin";
+      document
+        .getElementById("check-unsa")
+        .addEventListener("click", function (e) {
+          checkUnsa.disabled = true;
+          window.onload;
+          univer.value = "Universidad Nacional de San Agústin";
+          checkUnsa.value = "";
+          console.log(univer.value);
+        });
+      document
+        .getElementById("check-no-unsa")
+        .addEventListener("click", function (e) {
+          checkUnsa.disabled = false;
+          checkUnsa.addEventListener("change", (e) => {
+            univer.value = checkUnsa.value;
+            console.log(univer.value);
+          });
+        });
+      console.log(univer.value);
+    </script>
+<script type="text/javascript">
+  $(function () { $('[data-toggle="tooltip"]').tooltip() }), jQuery(document).ready(function () { jQuery(".scrollbar-inner").scrollbar() }), $(document).ready(function () {
+      var t = !1, o = !1, e = 0, a = 0
+      t || ($toggle = $(".sidenav-toggler"), $toggle.click(function () { 1 == e ? ($("html").removeClass("nav_open"), $toggle.removeClass("toggled"), e = 0) : ($("html").addClass("nav_open"), $toggle.addClass("toggled"), e = 1) }), t = !0), o || ($topbar = $(".topbar-toggler"), $topbar.click(function () { 1 == a ? ($("html").removeClass("topbar_open"), $topbar.removeClass("toggled"), a = 0) : ($("html").addClass("topbar_open"), $topbar.addClass("toggled"), a = 1) }), o = !0), $('[data-select="checkbox"]').change(function () { $target = $(this).attr("data-target"), $($target).prop("checked", $(this).prop("checked")) })
+  })     	
+</script>
+    {% endblock %}
+  </body>
+</html>

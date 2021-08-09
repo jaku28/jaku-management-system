@@ -1,0 +1,63 @@
+{% include 'common/layout_entrepreneur.html'  with active_page='e_events'   %}
+{% block container %}
+<!-- Shows all events and the entrepreneur can register to an event -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}</span><hr>
+            </h1>
+
+            {% for e in events%}
+            <div class="row m-3 shadow-sm p-3 bg-light" style="border: 1px solid #3180c5;">
+                <div class="empre-date-event col-sm-2" style="min-width: 200px;">
+                    <div class="date">
+                        <h2>FECHA</h2>
+                        <h1>{{e.date|date:"d"}}</h1>
+                        <h3>{{e.date|date:"l"}}</h3>
+                        <h3>{{e.date|date:"M Y"}}</h3>
+                    </div>
+                </div>
+                <div class="empre-info-event col-sm-9">
+                    <h3>{{e.title}}</h3>
+                    <hr>
+                    <p>
+                        <div class="container">
+                            <a href="" data-toggle="collapse" data-target="#demo{{e.id}}">Clic aqu&iacute; para m&aacute;s información</a>
+                            <div id="demo{{e.id}}" class="collapse text-justify">
+                                {{e.description|linebreaks}}
+                                <a href="{% url 'web:eventdetail' e.id %}" target="_blank">Ver evento completo.</a>
+                            </div>
+                        </div>
+                        </p>
+                    {% if e.is_registered %}
+
+                    <div class="alert alert-success" role="alert"><i class="fa fa-check" aria-hidden="true"></i>
+
+                        REGISTRADO</div>
+                    <a class="btn btn-secondary" href="{% url 'common:leave' e.id %}" role="button" ">
+                            <i class=" fa fa-reply" aria-hidden="true"></i>
+                        NO ASISTIRÉ
+                    </a>
+                    {% else %}
+                    <a class="btn btn-jaku" id="registry{{forloop.counter}}" href="{% url 'common:register' e.id %}"
+                        role="button" ">
+                            <i class=" fas fa-marker"></i>
+                        ASISTIRÉ
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

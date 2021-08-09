@@ -1,0 +1,39 @@
+{% extends 'common/layout_admin.html' %}
+{% block container %}
+
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-users" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}</span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
+				<table class="table table-bordered">
+					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+						<tr>
+                            <th>Jurado</th>
+							<th>Puntaje</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for sc in score_project %}
+						<tr>
+                            <td>{{sc.jury.user.last_name}}, {{sc.jury.user.first_name}} </td>
+                            <td>{{sc.score}} </td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

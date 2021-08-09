@@ -1,0 +1,58 @@
+{
+  "name": "appweb",
+  "description": "appweb",
+  "scripts": {
+    "postdeploy": "./bin/post_deploy.sh"
+  },
+  "env": {
+    "SENTRY_DSN": {
+      "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+     "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+     "required": true
+    },
+    "AWS_STORAGE_BUCKET_NAME": {
+     "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "DJANGO_SETTINGS_MODULE": "AppWeb.settings.heroku"
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql",
+    "papertrail",    
+    "sendgrid"
+  ],
+  "stack": "heroku-16",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "environments": {
+    "test": {
+      "formation": {
+          "test": {
+            "quantity": 1,
+            "size": "standard-1x"
+          }
+      },
+      "env": {
+        "SENTRY_DSN": "fake_sentry_dsn",
+        "AWS_ACCESS_KEY_ID": "fake_aws_access_key_id",
+        "AWS_STORAGE_BUCKET_NAME": "fake_storage_bucket_name",
+        "DJANGO_SETTINGS_MODULE": "AppWeb.settings.heroku",
+        "ENVIRONMENT": "test"        
+      },
+      "scripts": {
+        "test": "cd appweb ; ./manage.py test"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1><i class="fas fa-newspaper" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}</span>
+            </h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="alert alert-success" role="alert">
+                Agrega observaciones a este equipo
+            </div>
+            <div class="row">
+                    <label for="project" class="col-sm-4">Proyecto:</label>
+                    <div class="col-sm-8">
+                        {{mentoring.project}}
+                    </div>
+                    <label for="date" class="col-sm-4">Fecha:</label>
+                    <div class="col-sm-8"> {{mentoring.date}}</div>
+                    <label for="time" class="col-sm-4">Hora: </label>
+                    <div class="col-sm-8">
+                        {{mentoring.time}}
+                    </div>
+            </div>
+            <form method="POST" action="{% url 'tracing:markattendance' mentoring.id %}" class="was-validated required">
+                {%csrf_token%}
+                <div class="modal-body">
+                    <div>
+                        <label for="feedback">Observaciones</label>
+                        <textarea name="feedback" id="feedback" cols="30" rows="10" class="form-control" required>{{mentoring.observations}}</textarea>
+                    </div>
+                </div>
+                <input type="submit" value="Guardar observaciones" class="btn btn-jaku px-4 my-3">
+            </form>
+        </div>
+    </div>
+</div>

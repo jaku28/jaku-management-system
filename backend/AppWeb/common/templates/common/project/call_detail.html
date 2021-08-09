@@ -1,0 +1,93 @@
+{% include 'common/layout_entrepreneur.html'  with active_page='my_proyects'   %}
+{% block container %}
+
+<!-- Details of each call -->
+
+<head>
+    <title>{{call.name}}</title>
+</head>
+
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1> <i class="fas fa-bullhorn" style="color: #bdc3c7;"></i> 
+                Detalle de: {{call.name}} 
+            </h1>
+            <div class="dropdown-divider"></div>
+                <!-- Table of call information -->
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-head-bg-success table-striped table-hover">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Info</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nombre Convocatoria</td>
+                                <td>{{call.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Entidad</td>
+                                <td>{{call.entity}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Cierre</td>
+                                <td>{{call.due_date}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha preparacion</td>
+                                <td>{{call.preparation_start}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Final</td>
+                                <td>{{call.final_date}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Premio</td>
+                                <td>{{call.award}}</td>
+                            </tr>
+                            <tr>
+                                <td>Bases</td>
+                                <td><a target="_blank" href="{{call.rules.url}}">Ver bases</a></td>
+                            </tr>
+                            
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <h2><span class="text-capitalize">Talleres</span></h2>
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-bordered">
+                        <thead style=" background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        <tr>
+                            <th>Taller</th>
+                            <th>Descripción</th>
+                            <th>Temario</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%for t in call_workshops%}
+                            <tr>
+                                <td>{{t.name}}</td>
+                                <td>{{t.description|linebreaks}}</td>
+                                <td>{{t.temary|linebreaks}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+                <a class="btn btn-jaku my-3" href="{% url 'common:myprojectscalls' %}">Volver</a>
+                <!-- End of Table of call information -->
+        </div>
+
+    </div>
+    <!-- Footer -->
+    {% include "web/footer-mysoft.html" %}
+    <!-- End Footer -->
+</div>
+<!-- End of Details of each call -->
+{% endblock %}

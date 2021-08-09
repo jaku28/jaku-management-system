@@ -1,0 +1,41 @@
+{% include 'common/layout_entrepreneur.html'  with active_page='my_events'   %}
+{% block container %}
+
+<!-- Shows user events -->
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm p-3" style="background-color: #fff;">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                {{title}} 
+            </h1>
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>Evento</th>
+                            <th>Fecha</th>
+                            <th>Link del evento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for me in my_events %}
+                        <tr>
+                            <td>{{me.event.title}}</td>
+                            <td>{{me.event.date}}</td>
+                            <th><a target="_blank" href="{{me.event.link}}">{{me.event.link}}</a></th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

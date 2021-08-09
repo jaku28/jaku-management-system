@@ -1,0 +1,37 @@
+<html>
+    <body class="background-gray" style="box-sizing: inherit;margin: 0;color: #556270;font-family: &quot;Open Sans&quot;, sans-serif;font-feature-settings: 'kern', 'liga', 'pnum';font-size: 1em;line-height: 1.618;-webkit-font-smoothing: antialiased;height: 100%;background-color: #ededed;">
+        <div>
+            <h1>
+                ¡Has sido aprobado para tu registro!
+            </h1>
+            <p>
+            	<!-- <span class="font-semi-bold" style="font-weight: 600;">¡Bienvenido {{ user.username }}!</span>  -->
+              <span class="font-semi-bold" style="font-weight: 600;">¡Bienvenido {{ user.first_name }}!</span>
+              <br>
+              Gracias pertenecer a la red de emprendedores Jaku.
+              <br>
+              Tus credenciales para ingresar al sistema son las siguientes:
+              <table style="border: 1px solid #000;">
+                <tr>
+                  <th>Usuario:</th>
+                  <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                  <th>Contraseña:</th>
+                  <td>{{ pwd }}</td>
+                </tr>
+              </table>
+            </p>
+            <p>
+              <a href="{{ protocol }}://{{ domain }}{% url 'accounts:login' %}">¡Empieza ahora!</a>
+            </p>
+            <p>
+              Jaku Emprende UNSA
+            </p>
+        </div>
+        </div>
+        <div style="text-align: center; color: #556270">
+            © {% now "Y" %} Jaku
+        </div>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+{% include 'common/layout_admin.html' with active_page='mentoring'%}
+{% block container %}
+{% load static %}
+<!-- Shows all approved projects from a call as a list -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
+                <span class="text-primary">{{title}} de la Convocatoria: </span><br><span class="text-capitalize">{{call.name}} </span>
+            </h1>
+            <hr>
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered css-serial">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Título</th>
+                            <th>Líder</th>
+                            <th>Tipo de Proyecto</th>
+                            <th>Link de Presentacion</th>
+                            <th>Estado del Proyecto</th>
+                            <th>Acciones</th>
+                            
+                        </tr>
+                    <tbody>
+                        {% if projects_approved %}
+                        {% for p in projects_approved %}{% for l in leaders %}
+                        <tr>
+                            <td></td>
+                            <td>{{p.code}}</td>
+                            <td>{{p.name}}</td>
+                            <td>{{l.first_name}} {{l.last_name}}</td>
+                            <td>
+                                {% if p.project_type == '1' %} BASE TECNOLÓGICA 
+                                {% elif p.project_type == '2' %} SOCIAL
+                                {% else %} PRODUCTIVO {% endif %}
+                            </td>
+                            <td><a href="{{p.link_video}}" target="_blank">{{p.link_video}}</a></td>
+                            <td style="min-width: 200px;"> 
+                                
+                                    {% if p.is_approved == '2' %} <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>APROBADO</div> 
+                                    {% elif p.is_approved == '3' %} <div class="alert alert-danger" role="alert"><i class="fa fa-times mr-2" aria-hidden="true"></i>RECHAZADO</div>
+                                    {% else %} <div class="alert alert-secondary" role="alert">PENDIENTE</div> {% endif %}
+                                
+                            </td>
+                            
+                            <td class="jaku-actions">
+                                <a class="btn btn-jaku" href="{% url 'tracing:showmentorings' p.id%}">
+                                    Mentorías
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}{% endfor %}
+                        {% else %}
+                        <h2>Esta convocatoria no tiene proyectos aprobados.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+{% endblock %}

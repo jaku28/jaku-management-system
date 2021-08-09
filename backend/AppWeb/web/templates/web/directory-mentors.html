@@ -1,0 +1,122 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Jaku | Directorio y Mentores </title>
+<div class="fondo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fff" fill-opacity="1" d="M0,128L40,133.3C80,139,160,149,240,133.3C320,117,400,75,480,80C560,85,640,139,720,154.7C800,171,880,149,960,122.7C1040,96,1120,64,1200,48C1280,32,1360,32,1400,32L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
+    <div class="jaku-Directorio-Mentores">
+        <div class="bg-content-dir-mentores-jaku container-jaku">
+            <div class="content-dir-mentores">
+                <di class="directorio-jaku">
+                    <h1>Directorio</h1>
+                    <div class="content-directorio-jaku">
+                        <div class="">
+                            <div class="row">
+                                <div class="carddm col-sm shadow-sm">
+                                    <div class="our-team">
+                                        <div class="picture">
+                                            <img class="img-fluid" src="{% static 'img/1-min.PNG' %}">
+                                        </div>
+                                        <div class="team-content">
+                                            <h3 class="name">Ing. Juan Zamata Machaca</h3>
+                                            <h4 class="title">Coordinador General</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carddm col-sm shadow-sm">
+                                    <div class="our-team">
+                                        <div class="picture">
+                                            <img class="img-fluid" src="{% static 'img/2-min.PNG' %}">
+                                        </div>
+                                        <div class="team-content">
+                                            <h3 class="name">Ing. Freddy Gonzales</h3>
+                                            <h4 class="title">Ejecutivo de Proyectos</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carddm col-sm shadow-sm">
+                                    <div class="our-team">
+                                        <div class="picture">
+                                            <img class="img-fluid" src="{% static 'img/3.PNG' %}">
+                                        </div>
+                                        <div class="team-content">
+                                            <h3 class="name">Orlando Mendoza Yuera</h3>
+                                            <h4 class="title">Ejecutivo de Emprendimiento</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="carddm col-sm-4 shadow-sm">
+                                    <div class="our-team">
+                                        <div class="picture">
+                                            <img class="img-fluid" src="{% static 'img/4-min.PNG' %}">
+                                        </div>
+                                        <div class="team-content">
+                                            <h3 class="name">Juan José López</h3>
+                                            <h4 class="title">Ejecutivo de Innovación y Capacitación</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carddm col-sm-4 shadow-sm">
+                                    <div class="our-team">
+                                        <div class="picture">
+                                            <img class="img-fluid" src="{% static 'img/5.PNG' %}">
+                                        </div>
+                                        <div class="team-content">
+                                            <h3 class="name">Reynaldo Cornejo Linares</h3>
+                                            <h4 class="title">Coordinador Administrativo</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </di>
+                <div class="dropdown-divider my-5"></div>
+                <div class="mentores-jaku">
+                    <h1>Mentores</h1>
+                    <div class="content-directorio-jaku">
+                        <div class="row">
+                            <div class="carddm col-sm shadow-sm">
+                                <div class="our-team">
+                                    <div class="picture">
+                                        <img class="img-fluid" src="{% static 'img/6-min.jpg' %}">
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="name">Roguer Mario Paredes Falconi</h3>
+                                        <h4 class="title">rogmariop@gmail.com</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carddm col-sm shadow-sm">
+                                <div class="our-team">
+                                    <div class="picture">
+                                        <img class="img-fluid" src="{% static 'img/7-min.png' %}">
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="name">Tamayo Oporto José Carlos</h3>
+                                        <h4 class="title">ctamayo@yolomedia.pe</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carddm col-sm shadow-sm">
+                                <div class="our-team">
+                                    <div class="picture">
+                                        <img class="img-fluid" src="{% static 'img/8-min.png' %}">
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="name">Karla Yessenia Rejas Charrez</h3>
+                                        <h4 class="title">krejascharrez@gmail.com</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fff" fill-opacity="1" d="M0,256L40,261.3C80,267,160,277,240,282.7C320,288,400,288,480,266.7C560,245,640,203,720,176C800,149,880,139,960,154.7C1040,171,1120,213,1200,202.7C1280,192,1360,128,1400,96L1440,64L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
+</div>
+{% endblock %}

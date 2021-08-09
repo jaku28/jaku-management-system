@@ -1,0 +1,21 @@
+{% extends 'common/layout_entrepreneur.html' %}
+{% block container %}
+
+<!-- Shows all the calls as a list to select -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			No puede registrar un proyecto porque ya tiene un proyecto anterior en esta convocatoria o en una convocatoria de la misma entidad. 
+		</div>
+    </div>
+    
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

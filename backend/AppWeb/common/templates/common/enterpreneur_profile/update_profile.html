@@ -1,0 +1,350 @@
+{% extends 'common/layout_entrepreneur.html' %} {% block container %} {% load
+static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Optional theme -->
+  </head>
+
+  <!-- Update profile entrepreneur, hidden field is needed for validation -->
+  <body>
+    <p hidden id="loadPaises"></p>
+    <div class="main-panel">
+      <div class="content">
+        <div
+          class="container profile shadow-sm p-3"
+          style="border-radius: 10px; background-color: white"
+        >
+          <div class="shadow-sm" style="border-radius: 10px">
+            <div class="bg-primary pt-4" style="border-radius: 10px">
+              <div class="" style="position: relative">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                  <path
+                    fill="white"
+                    fill-opacity="1"
+                    d="M0,96L24,128C48,160,96,224,144,213.3C192,203,240,117,288,90.7C336,64,384,96,432,117.3C480,139,528,149,576,144C624,139,672,117,720,122.7C768,128,816,160,864,186.7C912,213,960,235,1008,202.7C1056,171,1104,85,1152,90.7C1200,96,1248,192,1296,218.7C1344,245,1392,203,1416,181.3L1440,160L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="w-75"
+              style="margin: auto; position: relative; margin-top: -20%"
+            >
+              <div class="card">
+                <div class="card-header">
+                  <h5>Editar datos personales:</h5>
+                </div>
+                <div class="card-body">
+                  <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="was-validated required"
+                  >
+                    {%csrf_token%}
+
+                    <div class="form-group">
+                      <div
+                        style="
+                          width: 200px;
+                          height: 200px;
+                          margin: auto;
+                          border-radius: 50%;
+                          overflow: hidden;
+                        "
+                        class="bg-light"
+                      >
+                        <img
+                          src="{{profile.avatar.url}}"
+                          alt="new-jaku0"
+                          alt="emprendedor-avatar"
+                          style="width: 100%; height: auto"
+                          class="imagePreview"
+                        />
+                      </div>
+                      <div class="form-group text-center m-2">
+                        <p class="file-upload mb-3 font-weight-bold">Avatar:</p>
+                        <div class="custom-file mb-3">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            input=""
+                            id="avatar"
+                            name="avatar"
+                            onchange="$('.custom-file-label').html(this.files[0].name)"
+                            accept="image/*"
+                          />
+                          <span
+                            class="custom-file-label"
+                            for="validatedCustomFile"
+                            data-browse="Elegir"
+                            >Elige un archivo...</span
+                          >
+                        </div>
+                      </div>
+
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold" for="title"
+                          >Nombre:</label
+                        >
+                        <div class="col-sm-8">{{form_user.first_name}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Apellido:</label
+                        >
+                        <div class="col-sm-8">{{form_user.last_name}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold">DNI:</label>
+                        <div class="col-sm-8">{{form_profile.dni}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Número de Teléfono:</label
+                        >
+                        <div class="col-sm-8">
+                          <input
+                            type="tel"
+                            id="phone_number"
+                            name="phone_number"
+                            value="{{form_profile.phone_number.value}}"
+                            class="phone_number form-control mr-sm-3"
+                            required
+                            title="Solo se permite numeros."
+                            data-toggle="tooltip"
+                            data-placement="left"
+                          />
+                        </div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Especialidad:</label
+                        >
+                        <div class="col-sm-8">{{form_profile.specialty}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Fecha de nacimiento:</label
+                        >
+                        <div class="col-sm-8">
+                          <input
+                            type="date"
+                            id="birthday"
+                            name="birthday"
+                            value="{{profile.birthday|date:'Y-m-d'}}"
+                            class="form-control"
+                            required
+                          /><br />
+                        </div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Sexo:</label
+                        >
+                        <div class="col-sm-8">{{form_profile.sex}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold">Pais:</label>
+                        <div class="col-sm-8">
+                          <select
+                            id="pais"
+                            name="pais"
+                            onchange="loadPaises();"
+                            class="form-control"
+                          ></select>
+                        </div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold">Estado:</label>
+                        <div class="col-sm-8">
+                          <select
+                            id="estado"
+                            name="estado"
+                            onchange="loadState();"
+                            class="form-control"
+                          ></select>
+                        </div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold">Ciudad:</label>
+                        <div class="col-sm-8">
+                          <select
+                            id="city"
+                            name="city"
+                            class="form-control"
+                          ></select>
+                        </div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Institución de proveniencia:</label
+                        >
+                        <div class="col-sm-8">{{form_profile.institution}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Carrera:</label
+                        >
+                        <div class="col-sm-8">{{form_profile.career}}</div>
+                      </div>
+                      <div class="row pb-4">
+                        <label class="col-sm-4 font-weight-bold"
+                          >Año de ingreso:</label
+                        >
+                        <div class="col-sm-8">
+                            <select
+                      id="year_income"
+                      name="year_income"
+                      class="form-control"
+                    >
+                      <script>
+                          let year = "{{form_profile.year_income.value}}"
+                        let fecha = new Date();
+                        let año = fecha.getFullYear();
+                        for (let i = 1970; i <= año; i++) {
+                          if (i == year) {
+                            console.log(año);
+                            document.write(
+                              '<option value="' +
+                                i +
+                                '" selected>' +
+                                i +
+                                "</option>"
+                            );
+                          } else {
+                            document.write(
+                              '<option value="' + i + '">' + i + "</option>"
+                            );
+                          }
+                        }
+                      </script>
+                    </select>
+                           </div>
+                      </div>
+                      <input type="hidden" id="country" name="country" />
+                      <input type="hidden" id="state" name="state" />
+
+                      {{form_user.username.as_hidden}}
+                      {{form_user.email.as_hidden}}
+                      {{form_profile.user.as_hidden}}
+                      {{form_profile.reason_to_belong.as_hidden}}
+                      {{form_profile.is_pending.as_hidden}}
+                      {{form_profile.temp_pwd.as_hidden}}
+                    </div>
+                    <button type="submit" class="btn btn-jaku mt-3 px-4">
+                      Actualizar
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of Table of call information -->
+        </div>
+      </div>
+      <!-- Footer -->
+      {% include "web/footer-mysoft.html" %}
+      <!-- End Footer -->
+    </div>
+    {% endblock %} {% block scripts %}
+    <script>
+      let cod;
+      let sel = false;
+      function loadPaises() {
+        let dataCountry = "{{form_profile.country.value}}";
+        let $lider_state = $("#estado option");
+        $("#estado").prepend(
+          $("<option />", {
+            text: "Elige un estado",
+            value: "",
+          })
+        );
+        let $lider_city = $("#city option");
+        $("#city").prepend(
+          $("<option />", {
+            text: "Elige una ciudad",
+            value: "",
+          })
+        );
+        $("#estado").find("option").not(":first").remove();
+        $("#city").find("option").not(":first").remove();
+        axios({
+          method: "GET",
+          // url: 'https://restcountries.eu/rest/v2/all'
+          url: "https://raw.githubusercontent.com/satishverma143/countries-states-cities-database-1/master/countries%2Bstates%2Bcities.json",
+        }).then((res) => {
+          for (var i = 0; i < res.data.length - 1; i++) {
+            var opt = document.createElement("OPTION");
+            opt.text = res.data[i].name;
+            opt.value = i + 1;
+            document.getElementById("pais").options.add(opt);
+            if (!dataCountry.localeCompare(opt.text)) {
+              if (!sel) {
+                opt.setAttribute("selected", true);
+                sel = opt.getAttribute("selected");
+                continue;
+              }
+            }
+          }
+          let pa = document.getElementById("pais").value;
+          let dataState = "{{form_profile.state.value}}";
+          document.getElementById("country").value =
+            res.data[document.getElementById("pais").value - 1].name;
+
+          cod = res.data.find((a) => a.id == pa);
+          let astates = [];
+          console.log(cod.states ===undefined)
+          if (cod.states !== undefined) {
+            for (var make in cod.states) {
+              astates.push(make);
+              var opt = document.createElement("OPTION");
+              opt.text = make;
+              opt.value = astates.length + 1;
+              document.getElementById("estado").options.add(opt);
+              if (!dataState.localeCompare(opt.text)) {
+                opt.setAttribute("selected", true);
+                loadState();
+                continue;
+              }
+            }
+            
+          } else {
+            document.getElementById("state").value = "";
+            console.log(">>", document.getElementById("city").text);
+          }
+        });
+      }
+      let dataCity = "{{form_profile.city.value}}";
+      let ciudad = [];
+      function loadState() {
+        $("#city").find("option").not(":first").remove();
+        let es = document.getElementById("estado");
+        let selected = es.options[es.selectedIndex].text;
+        (document.getElementById("state").value = selected), cod;
+
+        for (var make in cod.states) {
+          if (!make.localeCompare(selected)) {
+            ciudad = cod.states[make];
+            break;
+          }
+        }
+        for (var i = 0; i < ciudad.length; i++) {
+          var opt = document.createElement("OPTION");
+          opt.text = ciudad[i];
+          opt.value = ciudad[i];
+          document.getElementById("city").options.add(opt);
+          if (!dataCity.localeCompare(opt.text)) {
+            opt.setAttribute("selected", true);
+            continue;
+          }
+        }
+      }
+      document.getElementById("loadPaises").innerHTML = loadPaises();
+    </script>
+    {% endblock %}
+  </body>
+</html>

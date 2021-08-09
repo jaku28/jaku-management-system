@@ -1,0 +1,41 @@
+<div class="modal-dialog modal-lg" style="margin:auto;" role="document">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            
+            <div class="modal-header">
+                <h1><i class="fas fa-pencil-alt" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">Editar Noticia</span>
+                </h1>               
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>  
+                
+            <form method="POST" action="{% url 'common:editnew' new.id %}" enctype="multipart/form-data" class="was-validated required">
+                {%csrf_token%}
+                <div>
+                    <label for="title">Título</label>
+
+                    <input type="text" class="form-control mb-3" name="title" id="title" value="{{form.title.value}}">
+                    <label for="description">Descripción</label>
+                    <textarea type="text" class="form-control mb-3" name="description"
+                        id="description">{{form.description.value}}</textarea>
+                    <label for="image">Imagen</label>
+
+                    <p class="file-upload mb-3">Actualmente:</p>
+                    <img src="{{form.image.value.url}}" alt="" class="img-thumbnail" style="width: 5vw; min-width: 160px;"><br>
+                        Modificar:
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" input="" id="image" name="image"
+                            onchange="$('.custom-file-label').html(this.files[0].name)" accept="image/*">
+                        <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un
+                            archivo...</span>
+                    </div>
+                </div>
+                <input type="submit" value="Actualizar" class="btn btn-jaku px-4">
+                <a class="btn btn-secondary my-3" href="{% url 'common:new'%}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+            

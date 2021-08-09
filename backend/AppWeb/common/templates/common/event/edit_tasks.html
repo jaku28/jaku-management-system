@@ -1,0 +1,223 @@
+{% include 'common/layout_admin.html' with active_page='event'  %}
+{% block container %}
+
+<!-- Form to edit task assigned on an event -->
+
+<head>
+	<title>{{title}}</title>
+</head>
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid shadow-sm bg-light p-3">
+			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
+				<span class="text-primary">{{title}}: </span><br><span class="text-capitalize">{{event.title}} </span>
+			</h1>
+			<div class="dropdown-divider"></div>
+			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
+				<table class="table table-bordered">
+					<thead style=" background: linear-gradient(120deg,#3183c5,#33afe2);">
+					<tr>
+						<th>Tarea</th>
+						<th>Asignado a</th>
+						<th>Fecha en la que fue asignada</th>
+						<th>Fecha límite</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+					</thead>
+					<tbody>
+						{%for t in event_tasks%}
+						<tr>
+							<td>{{t.name}}</td>
+							<td>{{t.assign_to.last_name}}, {{t.assign_to.first_name}}</td>
+							<td>{{t.assigned_date}}</td>
+							<td>{{t.due_date}}</td>
+							<td>{% if t.is_done %}
+								<h5><span class="badge badge-success">Resuelto</span></h5>
+								{% else %}
+								<h5><span class="badge badge-warning">No Resuelto</span></h5>
+								{% endif%}
+							</td>
+							<td class="jaku-actions">
+								<ul>
+									<li>
+										{% if perms.common.change_event %}
+										<a href="{% url 'common:deleteeventtask' event.id t.id %}"
+											onclick="return confirm('¿Está seguro de eliminar esta tarea asignada?')"
+											class="eliminar" data-toggle="tooltip" title="Eliminar"
+											data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+										{% endif%}
+									</li>
+								</ul>
+							</td>
+						</tr>
+						{%endfor%}
+					</tbody>
+				</table>
+			</div>
+			<div class="dropdown-divider"></div>
+			<h1> <i class="fas fa-sticky-note" style="color: #bdc3c7;"></i> Agregar tareas </h1>
+			<div class="dropdown-divider"></div>
+			<form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+				{%csrf_token%}
+				<div class="card mb-3" id="newTask">
+					<div class="card-header h4">Nueva tarea
+						<span class="pull-right clickable close-icon" dataset="fadeOut" id="taskClose"><i class="fa fa-times" aria-hidden="true"></i></span>
+					</div>
+					<div class="card-body">
+						<div class="form-row">
+							<div class="col-md-3 mb-3">
+								<label for="">Tarea</label>
+								<input type="text" name="task_name" class="form-control" required pattern="^((\S+ )*\S+)?$"
+								data-toggle="tooltip" data-placement="left"
+								title="No poner espacios en blanco al inicio, al final o seguidos.">
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Asignado a:</label>
+								<select name="personal_users" id="personal_users" class="form-control">
+									<option selected>Ninguno</option>
+									{%for p in personal_users%}
+									<option value="{{p.id}}">{{p.last_name}}, {{p.first_name}}</option>
+									{%endfor%}
+								</select>
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Fecha de asignación:</label>
+								<input type="date" name="assigned_date" class="form-control" required>
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Fecha límite:</label>
+								<input type="date" name="due_date" class="form-control" required>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="divTasks">
+
+				</div>
+				<!-- </div> -->
+				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
+						class="fas fa-plus mr-2"></i>Añadir nueva tarea</button>
+				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
+
+
+			</form>
+
+		</div>
+	</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	var close = document.getElementById('taskClose');
+	close.addEventListener('click', () => document.getElementById('newTask').remove());
+	var countTask = 0;
+	function newField() {
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+		countTask = countTask+1
+		var divTask = document.createElement('div');
+		var divTaskHead = document.createElement('div');
+		var divTaskBody = document.createElement('div');
+		var divContentTaskBody = document.createElement('div');
+		var spanClose = document.createElement('span');
+		var iClose = document.createElement('i');
+		var divContentTask = document.createElement('div');
+		var divContentAssigned = document.createElement('div');
+		var divContentDateAssigned = document.createElement('div');
+		var divContentDateLimit = document.createElement('div');
+
+		var laInput = document.createElement('label');
+		var input = document.createElement('input');
+		
+		var laSelect = document.createElement('label');
+		var select = document.createElement('select');
+		var laDateAssined = document.createElement('label');
+		var input_due_date = document.createElement('input');
+		var laDateLimit = document.createElement('label');
+		var input_assigned_date = document.createElement('input');
+
+		divTask.className = 'card mb-3'
+		divTaskHead.className = 'card-header h4'
+		divTaskHead.innerHTML = 'Nueva tarea'
+		divTaskBody.className = 'card-body'
+		spanClose.className = 'pull-right clickable close-icon'
+		spanClose.dataset = 'fadeOut'
+		spanClose.id = 'taskCloses'
+		iClose.className = 'fa fa-times'
+		divContentTaskBody.className = 'form-row'
+		divContentTask.className = 'col-md-3 mb-3'
+		divContentAssigned.className = 'col-md-3 mb-3'
+		divContentDateAssigned.className = 'col-md-3 mb-3'
+		divContentDateLimit.className = 'col-md-3 mb-3'
+		
+		laInput.innerHTML = 'Tarea'
+		input.setAttribute('data-toggle', 'tooltip');
+		input.setAttribute('data-placement', 'left');
+		input.name = 'task_name';
+		input.required = true
+		input.className = 'form-control';
+		input.pattern = '^((\\S+ )*\\S+)?$'
+		input.title = 'No poner espacios en blanco al inicio, al final o seguidos.'
+		laDateAssined.innerHTML = 'Fechas de asignación:'
+		laDateLimit.innerHTML = 'Fecha límite:'
+		input_due_date.type = 'date'
+		input_due_date.name = 'due_date'
+		input_due_date.className = 'form-control';
+		input_due_date.required = true
+		input_assigned_date.type = 'date'
+		input_assigned_date.name = 'assigned_date'
+		input_assigned_date.className = 'form-control';
+		input_assigned_date.required = true
+		
+		laSelect.innerHTML = 'Asignado a:'
+		select.name = 'personal_users';
+		select.className = 'form-control';
+		var o;
+		o = document.createElement('option')
+		o.value = 'Ninguno';
+		o.text = 'Ninguno';
+		o.setAttribute('selected', 'selected');
+		select.appendChild(o);
+
+		{% for p in personal_users %}
+		o = document.createElement('option');
+		o.value = '{{p.id}}';
+		o.text = '{{p.first_name}}';
+		select.appendChild(o);
+		{% endfor %}
+
+		divTasks.appendChild(divTask);
+		divTask.appendChild(divTaskHead);
+		divTaskHead.appendChild(spanClose);
+		spanClose.appendChild(iClose);
+		divTask.appendChild(divTaskBody);
+		divTaskBody.appendChild(divContentTaskBody);
+		divContentTaskBody.appendChild(divContentTask);
+		divContentTaskBody.appendChild(divContentAssigned);
+		divContentTaskBody.appendChild(divContentDateAssigned);
+		divContentTaskBody.appendChild(divContentDateLimit);
+		divContentTask.appendChild(laInput);
+		divContentTask.appendChild(input);
+		divContentAssigned.appendChild(laSelect);
+		divContentAssigned.appendChild(select);
+		divContentDateAssigned.appendChild(laDateAssined);
+		divContentDateAssigned.appendChild(input_assigned_date);
+		divContentDateLimit.appendChild(laDateLimit);
+		divContentDateLimit.appendChild(input_due_date);
+		
+		spanClose.addEventListener('click', () =>divTask.remove());
+
+		// document.getElementById("divInput").appendChild(divi)
+		// document.getElementById("divSelect").appendChild(divs)
+		// document.getElementById("divDateA").appendChild(divda)
+		// document.getElementById("divDateL").appendChild(divdl)
+
+	}
+</script>
+{% endblock%}

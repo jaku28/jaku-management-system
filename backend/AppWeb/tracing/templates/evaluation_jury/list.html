@@ -1,0 +1,79 @@
+{% include 'common/layout_admin.html' with active_page='call'%}
+{% block container %}
+{% load static %}
+<!-- Shows juries from an evaluation -->
+
+<head>
+    <title>{{title}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title}}:</span> {{evaluation.name}}
+            </h1>
+            <hr>
+            <form action="." method="POST">
+				{%csrf_token%}
+                <h3 class="ml-3 text-muted">Lista de jurados</h3>
+                <div class="ml-3 row">
+                    {% if juries %}
+                    <select name="juries" id="juries" class="form-control col-sm-4">
+                        {% for j in juries %}
+                        <option value="{{j.id}}">{{j.user.first_name}}</option>
+                        {% endfor %}
+                    </select>
+                    {% else %}
+                    <h3>No hay más jurados.</h3>
+                    {% endif %}
+                    <button type="submit" name="add_evaluation_jury" value="add_evaluation_jury" class="btn btn-jaku mx-3">Agregar</button>
+                </div>
+            </form>
+            <hr>
+            <h4 class="ml-3 ">Jurados de la evaluación</h4>
+            {% if evaluation_juries %}
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>Apellidos y Nombres</th>
+                            <th style="width: 15%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ej in evaluation_juries %}
+                        <tr>
+                            <td>{{ej.jury.user.last_name}}, {{ej.jury.user.first_name}}</td>
+                            <td class="jaku-actions" style="min-width: 150px;">
+                                <ul>
+                                    <li>
+                                    {% if perms.tracing.change_evaluation %}
+                                        <a href="{% url 'tracing:deleteevaluationjury' ej.id %}"
+                                    onclick="return confirm('¿Está seguro de eliminar este jurado de la evaluación?')" class="eliminar" data-toggle="tooltip" title="Quitar jurado" data-placement="top"><i class="fa fa-times mr-2"></i>Quitar jurado</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container-fluid">
+                <div class="alert alert-danger">
+                    <p>Esta evaluación no tiene jurados.</p>
+                </div>
+            </div>
+            {% endif %}
+            <a class="btn btn-primary my-3"  href="{% url 'tracing:evaluationslist' evaluation.call.id %}">Volver a evaluaciones</a>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+
+{% endblock %}

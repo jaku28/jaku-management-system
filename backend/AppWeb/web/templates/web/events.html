@@ -1,0 +1,88 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Jaku | Eventos</title>
+<div class="bg-event">
+    <!-- Search Events -->
+    <div class="search-events pt-4" style="position: relative;z-index: 999; width: 80%;margin: auto;">
+        <form method="get">
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control" placeholder="Buscar evento" name="search-event">
+                    <span class="input-group-list">
+                        <button type="submit" class="btn btn-warning"><i class="fa fa-search px-2"></i>Buscar</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- List Events-->
+    <div class="Events-Jaku container-jaku">
+        <div class="title-events"><i class="fa fa-calendar border rounded-circle"></i>
+            <p class="text-uppercase d-inline-block text-events"><strong>Lista Eventos</strong></p>
+        </div>
+        <div class="List-Events">
+            <!-- Event of Jaku -->
+            {% for e in events%}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="evento ml-lg-5 ml-md-5 mt-5 py-lg-5">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="dateContainer ml-lg-n5 mt-lg-0 mt-md-0 ml-md-n5 mt-n5"
+                                        style="border-radius: 50%;background-color: #3182c5;height:8rem;width: 8rem;">
+                                        <div style=" color: #fff;font-size: 50px;">{{ e.date| date:'d'}}</div>
+                                        <div style=" color: #fff;font-size: 30px;">{{ e.date| date:'M'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="content">
+                                        <div class="date">
+                                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            {{ e.date}}
+                                        </div>
+                                        <div class="title">
+                                            {{e.title|slice:":100" }}
+                                        </div>
+                                        <hr>
+                                        <div class="desc">
+                                            {{e.description|linebreaks|slice:":50"}}
+                                        </div>
+                                        <div class="d-flex justify-content-center justify-content-lg-start">
+                                            <a href="{% url 'web:eventdetail' e.id %}" class="btn readMoreBtn">
+                                                Leer Mas
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- End Event of Jaku-->
+        </div>
+        <!-- Paginator Buttom-->
+        <div class="row">
+            <div class="col-md-6">
+                {% if events.has_previous %}
+                <div class="clearfix">
+                    <a href="?page={{events.previous_page_number}}" class="btn btn-primary float-right"><i
+                            class="fa fa-arrow-left" aria-hidden="true"></i> Anterior</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if events.has_next %}
+                <div class="clearfix">
+                    <a href="?page={{events.next_page_number}}" class="btn btn-primary">Siguiente <i
+                            class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

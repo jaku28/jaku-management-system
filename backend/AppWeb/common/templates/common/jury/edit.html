@@ -1,0 +1,77 @@
+<div class="modal-lg" style="margin:auto">
+  <div class="content">
+    <div class="container-fluid shadow-sm bg-light p-3">
+      <div class="modal-header">
+        <h1> <i class="fas fa-user-plus" style="color: #bdc3c7;"></i>
+          <span class="text-primary">{{title}}</span>
+        </h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'common:editjury' jury.id %}" method="POST" class="was-validated">
+          <div class="alert alert-danger" role="alert">
+            Todos los campos con * son obligatorios.
+          </div>
+          {% if error %}
+          <div class="alert alert-danger" role="alert">
+            {{error}}
+          </div>
+          {% endif %}
+          {%csrf_token%}
+          <div class="form-row">
+            <div class="form-group col-md-6 required">
+              <label for="first_name">Nombres:</label><br>
+              <input type="text" id="first_name" name="first_name" value='{{jury.user.first_name}}' class="form-control"
+                required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos."
+                data-toggle="tooltip" data-placement="left">
+            </div>
+            <div class="form-group col-md-6 required">
+              <label for="last_name">Apellidos:</label><br>
+              <input type="text" id="last_name" name="last_name" value='{{jury.user.last_name}}' class="form-control"
+                required pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos."
+                data-toggle="tooltip" data-placement="left">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6 required">
+              <label for="email">Correo electrónico:</label>
+              <div class="input-group ">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">@</div>
+                </div>
+                <input type="email" id="email" name="email" value='{{jury.user.email}}' class="form-control" required
+                  data-toggle="tooltip" data-placement="left" title="Ingrese una dirección de correo válido."
+                  data-toggle="tooltip" data-placement="left" readonly>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Cambiar contraseña:</label>
+              <input type="password" id="password" name="password" value='' class="form-control"
+                pattern="^((\S+ )*\S+)?$" title="No poner espacios en blanco al inicio, al final o seguidos."
+                data-toggle="tooltip" data-placement="left" autocomplete="on">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6 required">
+              <label for="last_name">Celular:</label><br>
+              <div class="form-inline">
+                <input type="tel" id="phone_number" name="phone_number" value='{{jury.phone_number}}'
+                  class="phone_number form-control mr-sm-3" required title="Solo se permite numeros." data-toggle="tooltip"
+                  data-placement="left">
+                <small class="text-muted">N° Actual: {{jury.phone_number}}</small>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-jaku px-4">Actualizar</button>
+          <a class="btn btn-secondary my-3" href="{% url 'common:listjury'%}">Cancelar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% load static %}
+<script src="{% static 'js/phoneformat.js'%}"></script>

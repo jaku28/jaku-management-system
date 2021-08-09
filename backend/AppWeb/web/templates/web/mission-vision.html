@@ -1,0 +1,47 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Jaku | Misión y Visión</title>
+<div class="jaku-Mision-Vision">
+    <div class="fondo row">
+        <div class="col-lg-6 image-right">
+            <img src="{% static 'img/fondo.svg'%}" alt="">
+        </div>
+        <div class="col-lg-6 mv-left">
+            <div class="jaku-mision-vision-content py-5">
+                <div class="container" style="align-items: center;">
+                    <div class="">
+                            <div class="bg-content-mision-jaku mb-2">
+                                <div class="content-mision-jaku shadow text-justify">
+                                    <h1>Visión</h1>
+                                    Consolidar un modelo de incubación que apoye en el desarrollo
+                                    económico, social y cultural de la sociedad peruana y aporte en la
+                                    integración técnica, económica y comercial del corredor latinoamericano
+                                    central.
+    
+                                </div>
+                            </div>
+                        <div class="w-100"></div>
+                            <div class="bg-content-vision-jaku">
+                                <div class="content-vision-jaku shadow text-justify">
+                                    <h1>Misión</h1>
+                                    JAKU EMPRENDE UNSA está dedicada a complementar la
+                                    formación integral de profesionales, académicos y científicos con
+                                    fortalezas competitivas y éticas; con capacidad de trabajar con
+                                    ideas, transformándolas en proyectos exitosos, auto-sostenibles
+                                    que apoyen el desarrollo integral de las sociedades; para ello se
+                                    proporcionan herramientas, a nivel personal para el desarrollo de
+                                    habilidades y capacidades humanas que afiancen el talento
+                                    emprendedor; a nivel técnico para la construcción y soporte de la
+                                    propuesta empresarial.
+                                </div>
+                            </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

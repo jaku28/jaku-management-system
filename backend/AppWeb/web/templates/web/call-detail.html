@@ -1,0 +1,97 @@
+{% extends 'web/layout.html' %}
+{% load static %}
+{% block container %}
+<title>Convocatoria | {{call.name}}</title>
+<div class="bg-call pb-4">
+    <div class="call-title p-5 text-uppercase" style="text-align: center;font-size: 50px; color: #fff;">
+        <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+        {{call.name}}
+    </div>
+    <div class="call-content">
+        <div class="row" style="width: 90%;margin: auto;">
+            <div class="col-sm-4">
+                <div class="date-event">
+                    <div class="event-d">
+                        <div class="event-d-preview">
+                            <h1>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </h1>
+                        </div>
+                        <div class="event-d-info">
+                            <h6>Fecha Límite de Inscripción: </h6>
+                            <h4>{{call.due_date}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="date-event">
+                    <div class="event-d">
+                        <div class="event-d-preview">
+                            <h1>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </h1>
+                        </div>
+                        <div class="event-d-info">
+                            <h6>Fecha de inicio de preparación para equipos: </h6>
+                            <h4>{{call.preparation_start}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="date-event">
+                    <div class="event-d">
+                        <div class="event-d-preview">
+                            <h1>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </h1>
+                        </div>
+                        <div class="event-d-info">
+                            <h6>Fecha final: </h6>
+                            <h4>{{call.final_date}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row content-call">
+            <div class="col-sm-3 info-call">
+                <h5 style="color: #3180c5;"><i class="fa fa-bookmark" aria-hidden="true"></i>
+                    Entidad</h5>
+                <p>{{call.entity}}</p>
+                <hr>
+                <h5 style="color: #3180c5;"><i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    Bases</h5>
+                <a href="{{ call.rules.url }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 30px;color: #e74c3c;"></i></a>
+                <hr>
+                
+            </div>
+            <div class="col-sm-9 content-detail-call" style="border-left: 1px solid rgb(196, 196, 196);">
+                <h3>Talleres</h3>
+                <hr>
+                <table class="table table-bordered">
+					<thead style=" background: linear-gradient(120deg,#3183c5,#33afe2);">
+					<tr>
+						<th>Taller</th>
+						<th>Descripción</th>
+						<th>Temario</th>
+					</tr>
+					</thead>
+					<tbody>
+						{%for t in call.workshop_set.all%}
+						<tr>
+							<td>{{t.name}}</td>
+							<td>{{t.description|linebreaks}}</td>
+							<td>{{t.temary|linebreaks}}</td>
+						</tr>
+						{%endfor%}
+					</tbody>
+				</table>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

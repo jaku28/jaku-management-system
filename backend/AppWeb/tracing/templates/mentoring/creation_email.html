@@ -1,0 +1,40 @@
+<html>
+    <body class="background-gray" style="box-sizing: inherit;margin: 0;color: #556270;font-family: &quot;Open Sans&quot;, sans-serif;font-feature-settings: 'kern', 'liga', 'pnum';font-size: 1em;line-height: 1.618;-webkit-font-smoothing: antialiased;height: 100%;background-color: #ededed;">
+        <div>
+            <h1>
+                ¡Tienes una nueva mentoria!
+            </h1>
+            <p>
+              <span class="font-semi-bold" style="font-weight: 600;">Querido(a) {{ m.mentor.user.first_name }}:</span>
+              <br>
+              Gracias por pertenecer a la red de mentores Jaku.
+              <br>
+              Se te ha asignado una nueva mentoría:
+              <table style="border: 1px solid #000;">
+                <tr>
+                  <th>Proyecto:</th>
+                  <td>{{ m.project }}</td>
+                </tr>
+                <tr>
+                  <th>Fecha:</th>
+                  <td>{{ m.date }}</td>
+                </tr>
+                <tr>
+                    <th>Hora:</th>
+                    <td>{{ m.time }}</td>
+                </tr>
+              </table>
+            </p>
+            <p>
+              <a href="{{ protocol }}://{{ domain }}{% url 'tracing:mentorhome' %}">¡Puedes revisar tus mentorías asignadas ahora!</a>
+            </p>
+            <p>
+              Jaku Emprende UNSA
+            </p>
+        </div>
+        </div>
+        <div style="text-align: center; color: #556270">
+            © {% now "Y" %} Jaku
+        </div>
+    </body>
+</html>

@@ -8,7 +8,7 @@
         "is_superuser": true,
         "username": "admin",
         "first_name": "Admin",
-        "last_name": "",
+        "last_name": "Admin",
         "email": "admin@gmail.com",
         "is_staff": true,
         "is_active": true,

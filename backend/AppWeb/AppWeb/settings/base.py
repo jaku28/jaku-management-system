@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'tracing.apps.TracingConfig',
     'django_filters',
-    #'rest_auth',
 ]
 
 MIDDLEWARE = [

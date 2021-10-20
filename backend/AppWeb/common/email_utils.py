@@ -46,7 +46,7 @@ class email_util:
             subject = "Lo sentimos, no has sido aprobado."
             html_message = render_to_string('entrepreneur_registry/request_entrepreneur/rejected_email.html', context)
         
-        from_email = 'jaku.emprende@gmail.com'
+        from_email = 'emprende@unsa.edu.pe'
         plain_message = strip_tags(html_message)
         to_email = user.email
         send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
@@ -67,7 +67,7 @@ class email_util:
         subject = "¡Has sido agregado a un nuevo proyecto!"
         html_message = render_to_string('common/project/request_project/add_email.html', context)
         
-        from_email = 'jaku.emprende@gmail.com'
+        from_email = 'emprende@unsa.edu.pe'
         plain_message = strip_tags(html_message)
         to_email = user.email
         send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
@@ -84,7 +84,7 @@ class email_util:
         }
         subject = "¡Tienes una nueva mentoria!"
         html_message = render_to_string('mentoring/creation_email.html', context)
-        from_email = 'jaku.emprende@gmail.com'
+        from_email = 'emprende@unsa.edu.pe'
         plain_message = strip_tags(html_message)
         to_email = mentoring.mentor.user.email
         send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
@@ -114,7 +114,7 @@ class email_util:
             subject = "Lo sentimos, tu proyecto ha sido rechazado."
             html_message = render_to_string('common/call/project_classification/rejected_email.html', context)
         
-        from_email = 'jaku.emprende@gmail.com'
+        from_email = 'emprende@unsa.edu.pe'
         plain_message = strip_tags(html_message)
         to_email = user.email
         send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
@@ -135,7 +135,7 @@ class email_util:
         subject = "¡Has sido asignado como coach de un nuevo proyecto!"
         html_message = render_to_string('coach_assignment/notify_email.html', context)
         
-        from_email = 'jaku.emprende@gmail.com'
+        from_email = 'emprende@unsa.edu.pe'
         plain_message = strip_tags(html_message)
         to_email = user.email
         send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)

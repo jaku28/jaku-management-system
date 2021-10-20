@@ -5,7 +5,6 @@ from urllib.parse import urlparse
 
 import dj_database_url
 
-import raven
 
 from .base import *
 
@@ -25,7 +24,6 @@ MIDDLEWARE += [
 INSTALLED_APPS += [
     'storages',
 	'django.contrib.postgres',
-    'raven.contrib.django.raven_compat',
 ]
 
 # SSL/HTTPS
@@ -37,10 +35,6 @@ SECURE_SSL_REDIRECT = True
 # Sentry
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
-
-RAVEN_CONFIG = {
-    'site': os.environ.get('HEROKU_APP_NAME')
-}
 
 
 # Database

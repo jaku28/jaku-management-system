@@ -1,0 +1,108 @@
+{% include 'common/layout_admin.html' with active_page='project_evaluation'%}
+{% block container %}
+<!-- List of registered global activity  -->
+<head>
+    <title>{{title_activity}}</title>
+</head>
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+            <h1>
+                <i class="far fa-list-alt" style="color: #bdc3c7;"></i>
+                <span class="text-primary">{{title_activity}}</span>
+            </h1>
+            <div class="dropdown-divider"></div>
+            <div class="btn-toolbar my-3">
+                <a class="btn btn-jaku" href="{% url 'tracing:globalactivity' call.id %}">
+                    <i class="fas fa-plus"></i>
+					Agregar actividades globales
+				</a>
+			</div>
+            
+            <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                <table class="table table-bordered">
+                    <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                        <tr>
+                            <th>
+                                Actividad
+                            </th>
+                            <th>
+                                Proyecto
+                            </th>
+                            <th>
+                                Integrantes
+                            </th>
+                            <th>
+                                Fecha límite
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if activities %}
+                        {% for a in activities %}
+                        <tr>
+                            <td>
+                                <b>{{a.title}}</b><br>
+                                {{a.description}}
+                                {% if a.is_approved == '1' %}
+                                <div class="badge badge-success">Completado a tiempo</div>
+                                {% elif a.is_approved == '2' %}
+                                <div class="badge badge-warning">Completado con retraso</div>
+                                {% elif a.is_approved == '3' %}
+                                <div class="badge badge-danger">Completado con mucho retraso</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{a.project.name}}
+                            </td>
+                            <td>
+                                {{a.project.members}}
+                            </td>
+                            <td>
+                                {{a.due_date}}
+                            </td>
+                            {% if a.is_completed %}
+                            <td>
+                                <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>COMPLETADA</div>
+                            </td>
+                            {% else %}
+                            <td>
+                                <div class="alert alert-warning" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>PENDIENTE</div>
+                            </td>
+                            <td class="jaku-actions" style="min-width: 150px;">
+                                <ul>
+                                    <li>
+                                        {% if perms.tracing.change_global_activity %}
+                                        <a onclick="editarModal('{% url 'tracing:editglobalactivity' a.id %}')" class="editar" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
+                                        
+                                        {% endif %}
+                                        {% if perms.tracing.delete_activity %}
+                                        <a href="{% url 'tracing:deleteactivity' a.id %}"
+                                            onclick="return confirm('¿Esta seguro de eliminar esta actividad?')" class="eliminar" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h2>No hay registros de actividades.</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="editar"></div>
+<!-- Footer -->
+{% include "web/footer-mysoft.html" %}
+<!-- End Footer -->
+</div>
+{% endblock %}

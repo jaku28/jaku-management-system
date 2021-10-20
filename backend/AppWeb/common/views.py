@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import permission_required, login_required
+from django.db.models.aggregates import Sum
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse
@@ -7,7 +8,7 @@ from django.db.models import Q
 from .filters import ProjectFilter
 from . import models
 from accounts.models import User, Profile, ProfileJury, ProfileMentor, ProfileCoach
-from tracing.models import EvaluationProject
+from tracing.models import EvaluationProject, Mentoring
 from .models import New
 from .forms import NewForm, ProjectForm, EventForm, AccountForm, UserForm, CallForm
 import datetime
@@ -564,19 +565,36 @@ def delete_news(request, new_id):
 def create_call(request):
 	title = 'Agregar Convocatoria'
 	entities = models.Entity.objects.all()
+	bigform_text_inputs = range(6)
+	bigform_file_inputs = range(4)
 	if request.method == 'GET':	
 		form = CallForm()
-		context = {
-			"form": form,
-			"entities": entities
-		}
 	else:
-		form = CallForm(request.POST, request.FILES)
-		context = {
-			"form": form
-		}
+		form = CallForm(request.POST, request.FILES)		
 		if form.is_valid():
 			call = form.save()
+			forms_configs = []
+			for i in bigform_text_inputs:
+				field_name = request.POST.get('text_field_name'+str(i))
+				if field_name:
+					models.FormConfig.objects.create(
+						field = 'field'+str(i), 
+						type = 'text', 
+						label = field_name, 
+						call = call
+					)
+			
+			for i in bigform_file_inputs:
+				field_name = request.POST.get('file_field_name'+str(i))
+				if field_name:
+					models.FormConfig.objects.create(
+						field = 'field'+str(i+6),
+						type =  'file',
+						label = field_name,
+						call = call
+					)
+
+
 			return redirect(reverse('common:defaultworkshoplist', kwargs={'call_id':call.id}))
 	return render(request, 'common/call/form.html', locals())
 	
@@ -700,22 +718,64 @@ def update_call(request, call_id):
 	title = 'Editar Convocatoria'
 	call = get_object_or_404(models.Call, pk=call_id)
 	entities = models.Entity.objects.all()
+	labels_questions = models.FormConfig.objects.filter(call__id=call_id).order_by("field")
+	labels = ["", "", "", "", "", "", "", "", "", ""]
+	for i in labels_questions:
+		index = int(i.field[5:])
+		labels[index] = i.label
+	
+	#labels = dict(zip(labels, labels))
+
+	bigform_text_inputs = range(6)
+	bigform_file_inputs = range(4)
 
 	if call.has_projects == 0:
 		if request.method == 'POST':
 			form = CallForm(request.POST, request.FILES, instance = call)
-			context = {
-				"form": form
-			}
+
+			for i in bigform_text_inputs:
+				field_name = request.POST.get('text_field_name'+str(i))
+				field = 'field' + str(i)
+				try:
+					f = labels_questions.get(field=field)
+					if field_name == '':
+						f.delete()
+					else:
+						f.label = field_name
+						f.save()
+				except models.FormConfig.DoesNotExist:
+					if field_name != '':
+						f = models.FormConfig.objects.create(
+							field = 'field'+str(i), 
+							type = 'text',
+							label = field_name, 
+							call = call
+						)
+			
+			for i in bigform_file_inputs:
+				field_name = request.POST.get('file_field_name'+str(i))
+				field = 'field' + str(i+6)
+				try:
+					f = labels_questions.get(field=field)
+					if field_name == '':
+						f.delete()
+					else:
+						f.label = field_name
+						f.save()
+				except models.FormConfig.DoesNotExist:
+					if field_name != '':
+						f = models.FormConfig.objects.create(
+							field = 'field'+str(i+6), 
+							type = 'file',
+							label = field_name, 
+							call = call
+						)
+
 			if form.is_valid():
 				form.save()
 
 		else:
 			form = CallForm(instance = call)
-			context = {
-				"form":form,
-				"entities":entities
-			}
 			return render(request, 'common/call/update_call.html', locals())
 
 	return redirect('common:calllist')	
@@ -813,11 +873,14 @@ def finish_review(request, call_id):
 #shows project detail
 @login_required
 @permission_required('common.is_jaku_staff')
-def call_project_detail(request, project_id):
+def call_project_detail(request, call_id, project_id):
 	title = 'Detalle de proyecto'
 	project = models.Project.objects.select_related('call').get(pk=project_id)
 	leader = Profile.objects.get(pk=project.leader)
 	today = datetime.date.today()
+	text_label_questions = models.FormConfig.objects.filter(call__id=call_id).filter(type='text')
+	file_label_questions = models.FormConfig.objects.filter(call__id=call_id).filter(type='file')
+	answers = models.BigForm.objects.get(project__id=project_id)
 
 	return render(request, 'common/call/project_detail.html', locals())
 
@@ -842,6 +905,7 @@ def reject_project(request, project_id):
 	today = datetime.date.today()
 	if call.due_date < today:
 		project.is_approved = '3'
+		project.is_active = False
 		project.save()
 	return redirect('common:callprojectslist', call.id)
 
@@ -942,12 +1006,13 @@ def create_project(request, call_id):
 	call = models.Call.objects.get(pk = call_id)
 	user_projects = models.UserProject.objects.select_related('project').filter(user=request.user)
 	users_project = models.UserProject.objects.select_related('project').values('user')
-	profiles = Profile.objects.select_related('user').values('user')
-	profiles_ = []
+	label_questions = models.FormConfig.objects.filter(call__id = call_id)
+	profiles_ = Profile.objects.select_related('user').filter(is_pending = False).values('user')
+	profiles = []
 
-	for p in profiles:
+	for p in profiles_:
 		if not(p in users_project):
-			profiles_.append(Profile.objects.get(user__id = p['user']))
+			profiles.append(Profile.objects.get(user__id = p['user']))
 
 	is_already_registered_in_convocatory = False
 	is_already_registered_in_entity = False
@@ -969,7 +1034,8 @@ def create_project(request, call_id):
 				"form": form,
 				"call": call,
 				"user": request.user,
-				"profiles": profiles_
+				"profiles": profiles,
+				"label_questions": label_questions
 			}
 		else:
 			form = ProjectForm(request.POST)
@@ -985,16 +1051,94 @@ def create_project(request, call_id):
 				formc.code = create_code(call)
 				call.num_projects += 1
 				call.has_projects += 1
+
 				call.save()
 				formc.save()
+				new_big_form = models.BigForm()
+				new_big_form.field0 = request.POST.get('field0', None)
+				new_big_form.field1 = request.POST.get('field1', None)
+				new_big_form.field2 = request.POST.get('field2', None)
+				new_big_form.field3 = request.POST.get('field3', None)
+				new_big_form.field4 = request.POST.get('field4', None)
+				new_big_form.field5 = request.POST.get('field5', None)
+				new_big_form.field6 = request.FILES.get('field6', None)
+				new_big_form.field7 = request.FILES.get('field7', None)
+				new_big_form.field8 = request.FILES.get('field8', None)
+				new_big_form.field9 = request.FILES.get('field9', None)
+				new_big_form.project = formc
+				new_big_form.save()
+
 				array = request.POST.get('members_id').split()
 				for x in array:
 					user_ = Profile.objects.get(pk = x)
 					registry = models.UserProject(project=formc, user=user_.user)
 					registry.save()
 					email_util().send_email_entrepreneur(request, user_, formc.name)
-				return redirect('common:myprojectslist')
+				
+				if call.is_incubation:
+					return redirect(reverse('common:myprojectbudget', kwargs={'project_id':formc.id}))
+				else:
+					return redirect('common:myprojectslist')
 		return render(request, 'common/project/form.html', context)
+
+#can add budget for a project
+@login_required
+@permission_required('common.is_entrepreneur')
+def my_project_budget(request, project_id):
+	project = models.Project.objects.get(pk=project_id)
+	if request.method == 'GET':
+		return render(request, 'common/project/budget_table.html', locals())
+	else:
+		budget_names = request.POST.getlist('task_name[]')
+		budget_amount = request.POST.getlist('task_amount[]')
+		
+		for i,j in zip(budget_names, budget_amount):
+			if i != '':
+				models.BudgetRegistry.objects.create(
+					description = i, 
+					actual_budget = j, 
+					project = project
+				)
+
+		budget = request.POST.get('budget')
+		project.budget = budget
+		project.save()
+
+		return redirect('common:myprojectslist')
+
+#can edit budget for a project
+@login_required
+@permission_required('common.is_entrepreneur')
+def edit_project_budget(request, project_id):
+	title = 'Aspectos financieros'
+	project = models.Project.objects.get(pk=project_id)
+	project_budget = models.BudgetRegistry.objects.filter(project=project)
+	if project_budget.count() == 0:
+		return redirect(reverse('common:myprojectslist'))
+	if request.method == 'GET':
+		budget = float(project.budget)
+		totalBudgetRegistries = project_budget.aggregate(Sum('actual_budget'))['actual_budget__sum']
+		return render(request, 'common/project/edit_budget.html', locals())
+
+	new_budget_description = request.POST.getlist('budget_description')
+	new_budget_amount = request.POST.getlist('budget_amount')
+	
+	for description, amount in zip(new_budget_description, new_budget_amount):
+		if description == '' and amount == '':
+			return redirect(reverse('common:editprojectbudget', kwargs={'project_id':project_id}))
+		budgetRegistry = models.BudgetRegistry(project=project, description=description, actual_budget=amount)
+		budgetRegistry.save()
+	
+	return redirect(reverse('common:editprojectbudget', kwargs={'project_id':project_id}))
+
+#delete an item from the project budget
+@login_required
+@permission_required('common.is_entrepreneur')
+def delete_project_budget(request, project_id, budget_registry_id):
+	budgetRegistry = get_object_or_404(models.BudgetRegistry, pk=budget_registry_id)
+	budgetRegistry.delete()
+
+	return redirect(reverse('common:editprojectbudget', kwargs={'project_id':project_id}))
 
 # function for generate a project code
 def create_code(current_call):
@@ -1022,9 +1166,18 @@ def edit_project(request, project_id):
 	leader = Profile.objects.get(pk=project.leader)
 	user_first_name = request.user.first_name
 	user_last_name = request.user.last_name
-	profiles = Profile.objects.all()
+
 	if request.method == 'GET':
+		users_project = models.UserProject.objects.select_related('project').values('user')
+		profiles_ = Profile.objects.select_related('user').filter(is_pending = False).values('user')
+		profiles_project = models.UserProject.objects.filter(project = project)
+		profiles = []
+
+		for p in profiles_:
+			if not(p in users_project):
+				profiles.append(Profile.objects.get(user__id = p['user']))
 		form = ProjectForm(instance = project)
+		
 	else:
 		form = ProjectForm(request.POST, instance = project)		
 		if form.is_valid():
@@ -1073,13 +1226,17 @@ def my_project_detail(request, project_id):
 @login_required
 @permission_required('common.is_entrepreneur')
 def delete_project(request, project_id):
-	project = models.UserProject.objects.get(project__id = project_id, user = request.user)
-
-	if request.user == project.user:
-		call = project.project.call
+	project_user = models.UserProject.objects.get(project__id = project_id, user = request.user)
+	project = get_object_or_404(models.Project, pk = project_id)
+	query_set = models.UserProject.objects.filter(project__id = project_id)
+	
+	if request.user == project_user.user:
+		call = project.call
 		call.has_projects -= 1
 		call.save()
 		project.delete()
+		for relation in query_set:
+			relation.delete()
 	else :
 		return HttpResponse('No tiene permisos para visualizar este proyecto')
 
@@ -1169,7 +1326,8 @@ def create_personal(request):
 		return render(request, 'common/personal/form.html', locals())
 	
 	group = Group.objects.get(name='Personal')
-	
+	first_name = request.POST.get('first_name')
+	last_name = request.POST.get('last_name')
 	pwd = request.POST.get('pwd')
 	user = models.User(username=username, first_name=first_name, last_name=last_name, email=username)
 	user.set_password(pwd)
@@ -1365,10 +1523,17 @@ def mentor_list(request):
 @permission_required('common.is_jaku_staff')
 def delete_mentor(request, mentor_id):
 	mentor = get_object_or_404(ProfileMentor, pk=mentor_id)
-	user = mentor.user
-	user.delete()
-	mentor.delete()
-	return redirect(reverse('common:listmentor'))
+	if Mentoring.objects.filter(mentor=mentor).exists():
+		error = "El mentor tiene un proyecto asignado, debe reasignar el proyecto a un nuevo mentor antes de eliminarlo"
+		title = 'Lista de mentores'
+		query_set = ProfileMentor.objects.select_related('user').all()
+		mentors = reversed(list(query_set))
+		return render(request, 'common/mentor/list.html', locals())
+	else:
+		user = mentor.user
+		user.delete()
+		mentor.delete()
+		return redirect(reverse('common:listmentor'))
 
 #create users of type coach
 @login_required
@@ -1391,7 +1556,7 @@ def create_coach(request):
 	user.set_password(pwd)
 	user.save()
 	user.groups.add(group)
-	coach = ProfileCoach(user=user, phone_number=phone_number)
+	coach = ProfileCoach(user=user, phone_number=phone_number, habilitado=True)
 	
 	coach.save()
 	return redirect(reverse('common:listcoach'))
@@ -1431,7 +1596,7 @@ def edit_coach(request, coach_id):
 @permission_required('common.is_jaku_staff')
 def coach_list(request):
 	title = 'Lista de coach'
-	query_set = ProfileCoach.objects.select_related('user').all()
+	query_set = ProfileCoach.objects.select_related('user').order_by('habilitado')
 	coach = reversed(list(query_set))
 	return render(request, 'common/coach/list.html', locals())
 
@@ -1440,9 +1605,24 @@ def coach_list(request):
 @permission_required('common.is_jaku_staff')
 def delete_coach(request, coach_id):
 	coach = get_object_or_404(ProfileCoach, pk=coach_id)
-	user = coach.user
-	user.delete()
-	coach.delete()
+	if models.Project.objects.filter(coach=coach).exists():
+		error = "El coach tiene un proyecto asignado, debe reasignar el proyecto a un nuevo coach antes de eliminarlo"
+		title = 'Lista de coach'
+		query_set = ProfileCoach.objects.select_related('user').order_by('habilitado')
+		coach = reversed(list(query_set))
+		return render(request, 'common/coach/list.html', locals())
+	else:
+		coach.habilitado = False
+		coach.save()
+		return redirect(reverse('common:listcoach'))
+
+#can delete a coach
+@login_required
+@permission_required('common.is_jaku_staff')
+def restore_coach(request, coach_id):
+	coach = get_object_or_404(ProfileCoach, pk=coach_id)
+	coach.habilitado = True
+	coach.save()
 	return redirect(reverse('common:listcoach'))
 
 #tmp

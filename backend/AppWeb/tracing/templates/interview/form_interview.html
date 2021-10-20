@@ -27,6 +27,11 @@
                     <textarea name="description" cols="40" rows="10" id="description"
                         class="form-control mb-3" required></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="link">Link:</label>
+                    <input type="text" class="form-control" id="link" name="link">
+                    <small id="helpId" class="form-text text-muted">Ejemplo: www.sitioweb.com</small>
+                </div>
                 <div>
                     <label for="date">Fecha:</label><br>
                     <input type="date" id="date" name="date" class="form-control col-md-4 mb-3" 
@@ -47,3 +52,32 @@
 <!-- End Footer -->
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		$("#link").each(function () {
+			$(this).keyup(function () {
+				validateLink();
+			});
+		});
+	});
+
+	function validateLink() {
+		var link = document.getElementById('link').value
+		if (link === 'https://') {
+			link = '';
+			document.getElementById('link').value = link;
+		} else {
+			if ('https://' === link.substr(0, 8)) {
+				console.log(link);
+			} else {
+				link = 'https://' + link;
+				document.getElementById('link').value = link;
+				console.log(document.getElementById('link').value);
+			}
+		}
+	}
+
+</script>
+{% endblock scripts %}

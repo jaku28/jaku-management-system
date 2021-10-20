@@ -1,4 +1,4 @@
-{% extends 'common/layout_admin.html' %}
+{% include 'common/layout_admin.html' with active_page='call'%}
 {% block container %}
 
 <!-- Add new workshop for a call (this workshop will not be saved on default workshops) -->
@@ -15,33 +15,36 @@
 				<span class="text-primary">{{title}}</span>
 			</h1>
 			<div class="dropdown-divider"></div>
-			<form action="." method="POST">
+			<form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
 				{%csrf_token%}
-				<div class="form-row">
-					<div class="col-md-4 mb-4">
-						<label for="">Taller</label>
-						<input type="text" name="workshop_name" class="form-control" required>
+					<div class="card mb-3" id="newTask">
+						<div class="card-header h4">Nuevo taller
+							<span class="pull-right clickable close-icon" dataset="fadeOut" id="taskClose"><i class="fa fa-times" aria-hidden="true"></i></span>
+						</div>
+						<div class="card-body">
+							<div class="form-row">
+								<div class="col-md-4 mb-4">
+									<label for="">Taller</label>
+									<input type="text" name="workshop_name" class="form-control" required pattern="^((\S+ )*\S+)?$"
+									data-toggle="tooltip" data-placement="left"
+									title="No poner espacios en blanco al inicio, al final o seguidos.">
+								</div>
+								<div class="col-md-4 mb-4">
+									<label for="">Descripción:</label>
+									<textarea class="form-control" type="text" name="workshop_description" id="description" rows="1" required></textarea>
+								</div>
+								<div class="col-md-4 mb-4">
+									<label for="">Temario:</label>
+									<textarea class="form-control" type="text" name="workshop_temary" id="temary" rows="1" required></textarea>                       
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-4 mb-4">
-						<label for="">Descripción:</label>
-					    <textarea class="form-control" type="text" name="workshop_description" id="description" rows="1" required></textarea>
+					<div id="divTasks">
+	
 					</div>
-                    <div class="col-md-4 mb-4">
-						<label for="">Temario:</label>
-					    <textarea class="form-control" type="text" name="workshop_temary" id="temary" rows="1" required></textarea>
-					</div>
-					<div id="divInput" class="col-md-4 mb-4">
-
-					</div>
-					<div id="divSelect" class="col-md-4 mb-4">
-
-					</div>
-					<div id="divDateA" class="col-md-4 mb-4">
-
-					</div>
-				</div>
 				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
-						class="fas fa-plus"></i></button>
+							class="fas fa-plus mr-2"></i>Añadir nuevo taller</button>
 				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
 			</form>
 		</div>
@@ -54,35 +57,90 @@
 
 {% block scripts %}
 <script type="text/javascript">
+	var close = document.getElementById('taskClose');
+	close.addEventListener('click', () => document.getElementById('newTask').remove());
+	var countTask = 0;
 	function newField() {
-		var divi = document.createElement('div');
-		var divs = document.createElement('div');
-		var divda = document.createElement('div');
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+		countTask = countTask+1
+		var divTask = document.createElement('div');
+		var divTaskHead = document.createElement('div');
+		var divTaskBody = document.createElement('div');
+		var divContentTaskBody = document.createElement('div');
+		var spanClose = document.createElement('span');
+		var iClose = document.createElement('i');
+		var divContentName = document.createElement('div');
+		var divContentDesc = document.createElement('div');
+		var divContentTem = document.createElement('div');
+
+		var laInput = document.createElement('label');
 		var input = document.createElement('input');
+		
+		var laDesc = document.createElement('label');
 		var textareaDesc = document.createElement('textarea');
+		var laTem = document.createElement('label');
 		var textareaTem = document.createElement('textarea');
+
+		divTask.className = 'card mb-3'
+		divTaskHead.className = 'card-header h4'
+		divTaskHead.innerHTML = 'Nuevo taller'
+		divTaskBody.className = 'card-body'
+		spanClose.className = 'pull-right clickable close-icon'
+		spanClose.dataset = 'fadeOut'
+		spanClose.id = 'taskCloses'
+		iClose.className = 'fa fa-times'
+		divContentTaskBody.className = 'form-row'
+		divContentName.className = 'col-md-4 mb-4'
+		divContentDesc.className = 'col-md-4 mb-4'
+		divContentTem.className = 'col-md-4 mb-4'
+		
+		laInput.innerHTML = 'Taller'
+		input.setAttribute('data-toggle', 'tooltip');
+		input.setAttribute('data-placement', 'left');
+		input.name = 'workshop_name';
+		input.required = true
+		input.className = 'form-control';
+		input.pattern = '^((\\S+ )*\\S+)?$'
+		input.title = 'No poner espacios en blanco al inicio, al final o seguidos.'
+		laDesc.innerHTML = 'Descripción:'
+		laTem.innerHTML = 'Temario:'
 		textareaDesc.type = 'text'
 		textareaDesc.rows = '1'
 		textareaDesc.name = 'workshop_description'
-		textareaDesc.className = 'form-control mb-4';
+		textareaDesc.className = 'form-control';
 		textareaDesc.required = true
 		textareaTem.type = 'text'
 		textareaTem.rows = '1'
 		textareaTem.name = 'workshop_temary'
-		textareaTem.className = 'form-control mb-4';
-		textareaTem.required =true
-		input.name = 'workshop_name';
-		input.required = true
-		input.className = 'form-control mb-4';
-		
-		divi.appendChild(input);
-		divs.appendChild(textareaDesc);
-		divda.appendChild(textareaTem);
-		
+		textareaTem.className = 'form-control';
+		textareaTem.required = true
 
-		document.getElementById("divInput").appendChild(divi)
-		document.getElementById("divSelect").appendChild(divs)
-		document.getElementById("divDateA").appendChild(divda)
+		divTasks.appendChild(divTask);
+		divTask.appendChild(divTaskHead);
+		divTaskHead.appendChild(spanClose);
+		spanClose.appendChild(iClose);
+		divTask.appendChild(divTaskBody);
+		divTaskBody.appendChild(divContentTaskBody);
+		divContentTaskBody.appendChild(divContentName);
+		divContentTaskBody.appendChild(divContentDesc);
+		divContentTaskBody.appendChild(divContentTem);
+		divContentName.appendChild(laInput);
+		divContentName.appendChild(input);
+		divContentDesc.appendChild(laDesc);
+		divContentDesc.appendChild(textareaDesc);
+		divContentTem.appendChild(laTem);
+		divContentTem.appendChild(textareaTem);
+		
+		spanClose.addEventListener('click', () =>divTask.remove());
+
+		// document.getElementById("divInput").appendChild(divi)
+		// document.getElementById("divSelect").appendChild(divs)
+		// document.getElementById("divDateA").appendChild(divda)
+		// document.getElementById("divDateL").appendChild(divdl)
+
 	}
 </script>
+
 {% endblock%}

@@ -14,12 +14,7 @@
                 <span class="text-primary">{{title}} de la convocatoria: </span><br><span class="text-capitalize">{{call.name}} </span>
             </h1>
             <hr>
-            <div class="btn-toolbar my-3">
-				<a class="btn btn-jaku" href="{% url 'tracing:listglobalactivities' call.id %}">
-					Actividades globales
-				</a>
-			</div>
-        
+
             <div class="table-responsive shadow-sm" style="border-radius: 9px;">
                 <table class="table table-bordered css-serial">
                     <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
@@ -29,7 +24,7 @@
                             <th>Título</th>
                             <th>Integrantes</th>
                             <th>Tipo de Proyecto</th>
-                            <th>Coach</th>
+                            <th>Entrevista</th>
                             
                         </tr>
                     <tbody>
@@ -37,9 +32,7 @@
                         {% for p in active_projects %}
                         <tr>
                             <td></td>
-                            <td>{{p.code}} <br>
-                                <a href="{% url 'tracing:blockproject' p.id %}" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea dar de baja a este proyecto?')"><i class="fa fa-times mr-2"></i>Dar de baja el proyecto</a>
-                            </td>
+                            <td>{{p.code}}</td>
                             <td>{{p.name}}</td>
                             <td>{{p.members|linebreaks}}</td>
                             <td>
@@ -49,17 +42,23 @@
                             </td>
 
                             <td class="jaku-actions" style="max-width: 150px;">
-                                {% if p.coach %}
-                                <div class="form-inline" style="align-items: baseline;">
-                                    <div class="alert alert-success" role="alert">
-                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i> {{p.coach.user.last_name}}, {{p.coach.user.first_name}}
-                                    </div>
-                                    <a onclick="abrirModal('{% url 'tracing:assigncoach' p.id %}')" class="btn btn-warning ml-3">Reasignar coach</a>                                    
+                                {% if p.interview_set.count == 1 %}
+                                <a onclick="abrirModal('{% url 'tracing:interviewdetail' p.interview_set.first.id %}')" class="btn btn-primary activities" data-toggle="tooltip" title="Ver entrevista" data-placement="top">Entrevista</a>
+                                    {% if p.interview_set.first.is_evaluated %}
+                                    <div class="alert alert-secondary" role="alert">EVALUADO</div>
                                     {% else %}
-                                    <a onclick="abrirModal('{% url 'tracing:assigncoach' p.id %}')" class="btn btn-jaku ml -3">Asignar coach</a>
-                                        
-                                </div>
-                                {% endif %} 
+                                    <div class="form-inline" style="align-items: baseline;">
+                                        <a href="{% url 'tracing:approveproject' p.interview_set.first.id %}" onclick="return confirm('¿Esta seguro de aprobar este proyecto?')"
+                                        class="btn btn-success my-3" data-toggle="tooltip" title="Aprobar" data-placement="top">Aprobar</a>
+                                        <a href="{% url 'tracing:rejectproject' p.interview_set.first.id %}" onclick="return confirm('¿Esta seguro de rechazar este proyecto?')"
+                                        class="btn btn-danger my-3" data-toggle="tooltip" title="Rechazar" data-placement="top">Rechazar</a>
+                                    </div>
+                                    {% endif %}   
+                                    
+                                {% else %}
+								<span style="color: Dodgerblue;"></span><a href="{% url 'tracing:createinterview' p.id %}" data-toggle="tooltip" title="Añadir entrevista" data-placement="top"><i class="fas fa-coffee fa-2x" ></i></a></span>							
+
+                                {% endif %}                   
                             </td>
                         </tr>
                         {% endfor %}

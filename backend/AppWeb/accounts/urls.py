@@ -2,19 +2,10 @@ from django.urls import include, path
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from django.contrib.auth.views import (password_reset_complete, password_reset_confirm,
                                        password_reset_done, password_reset, login, logout)
-from rest_framework.routers import DefaultRouter
-from rest_framework.documentation import include_docs_urls
 
 from . import api, views, forms
 
 app_name = 'accounts'
-
-router = DefaultRouter()
-router.register('users', api.UserViewSet)
-
-apipatterns = router.urls + [
-    path('registration/', api.CreateUserView.as_view()),
-]
 
 password_reset_patterns = [
     path('done/', password_reset_complete, {
@@ -57,7 +48,6 @@ profile_patterns = [
 
 urlpatterns = [
     path('', include(profile_patterns)),
-    path('api/', include(apipatterns)),
     path('password/', include(password_reset_patterns)),
     path('perfil/mentor/<int:user_id>/', views.mentor_profile, name='mentorprofile'),
 	path('perfil/mentor/editar/<int:user_id>/', views.update_mentor_profile, name='updatementorprofile'),

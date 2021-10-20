@@ -294,7 +294,7 @@ static %}
           let dataState = "{{form_profile.state.value}}";
           document.getElementById("country").value =
             res.data[document.getElementById("pais").value - 1].name;
-
+          document.getElementById("state").value = "";
           cod = res.data.find((a) => a.id == pa);
           let astates = [];
           console.log(cod.states ===undefined)
@@ -325,6 +325,7 @@ static %}
         let es = document.getElementById("estado");
         let selected = es.options[es.selectedIndex].text;
         (document.getElementById("state").value = selected), cod;
+        document.getElementById("city").value = "";
 
         for (var make in cod.states) {
           if (!make.localeCompare(selected)) {

@@ -54,7 +54,11 @@
                 </div>
               </a>
               <h1>&nbsp</h1>  
-              <a class="btn btn-jaku my-3" href="{% url 'tracing:activeprojects' c.id %}">
+              <a class="btn btn-jaku my-3 mx-2" href="{% url 'tracing:secondfilter' c.id %}">
+                <i class="fas fa-list-ol"></i>
+                Lista de proyectos vigentes 2do filtro
+              </a>
+              <a class="btn btn-jaku my-3 mx-2" href="{% url 'tracing:activeprojects' c.id %}">
                 <i class="fas fa-list-ol"></i>
                 Lista de proyectos vigentes
               </a>

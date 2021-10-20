@@ -19,6 +19,14 @@
 					Agregar nuevo mentor
 				</a>
 			</div>
+			{% if error %}
+				<div class="alert alert-danger" role="alert">
+					{{error}}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endif %}
 			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
 				<table class="table table-bordered">
 					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">

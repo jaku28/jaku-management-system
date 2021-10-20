@@ -16,7 +16,7 @@
             </h1>
             
             <div class="table-responsive shadow-sm" style="border-radius: 9px;">
-                <table class="table table-bordered css-serial">
+                <!-- <table class="table table-bordered css-serial">
                     <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
                         <tr>
                             <th>#</th>
@@ -39,10 +39,38 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-                </table>
+                </table> -->
+                
+                
+                {% for p in projects %}
+                <div class="card">
+                    <div class="card-header" style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                        Proyecto: <h5 class="font-weight-bold d-inline">{{p.name}}</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            
+                            {% for j in juries %}
+                                
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col font-weight-bold">{{j.user.last_name}}, {{j.user.first_name}}</div>
+                                    <div class="col">{{ points_per_jury_dict|get_item_score:p|get_item_for_jury:j }}</div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                                
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <h6 class="font-weight-bold d-inline">Puntaje Final: </h6>{{ final_score_dict|get_item_final_score:p }}
+                    </div>
+                </div>
+                {% endfor %}
+                    
             </div>
+            <a href="{% url 'tracing:addumbral' evaluation.id %}" class="btn btn-primary active" role="button" aria-pressed="true">Agregar umbral</a>
         </div>
-        <a href="{% url 'tracing:addumbral' evaluation.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Agregar umbral</a>
     </div>
 </div>
 <!-- Footer -->

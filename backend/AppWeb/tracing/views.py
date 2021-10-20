@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth.decorators import permission_required, login_required
-from common.models import Call, Project, UserProject
+from common.models import Call, Project, UserProject, BudgetRegistry
 from .models import Mentoring, Evaluation, Criteria, EvaluationJury, CriteriaProject, EvaluationProject, Activity, EvaluationSummary
 from .forms import *
 from accounts.models import ProfileMentor, ProfileJury, ProfileCoach, User, Profile
@@ -11,7 +11,9 @@ import json
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.models import Group
 import xlwt
+from django.db.models import Sum
 
 
 #For creating a new evaluation
@@ -391,10 +393,14 @@ def list_activities(request, project_id):
     project = Project.objects.get(pk = project_id)
     query_activities = Activity.objects.filter(project=project)
     activities = reversed(list(query_activities))
-
     title_mentoring = 'Mentorías'
     query_mentorings = Mentoring.objects.select_related('mentor__user').filter(project=project)
     mentorings = reversed(list(query_mentorings))
+
+    budgetRegistries = BudgetRegistry.objects.filter(project=project)
+    if (budgetRegistries.count() > 0):
+        budget = float(project.budget)
+        totalBudgetRegistries = budgetRegistries.aggregate(Sum('actual_budget'))['actual_budget__sum']
 
     return render(request, 'coach_data/activities_list.html', locals())
 
@@ -411,6 +417,7 @@ def create_activity(request, project_id):
         if form.is_valid():
             activity = form.save(commit=False)
             activity.project = project
+            activity.author_activity = Group.objects.get(name='Coach')
             activity.save()
             return redirect('tracing:listactivities', project.id)
     return render(request, 'coach_data/form_activity.html', locals())
@@ -422,6 +429,7 @@ def edit_activity(request, activity_id):
     title = 'Editar Actividad'
     activity = get_object_or_404(Activity, pk=activity_id)
     project = activity.project
+    author = activity.author_activity
     if request.method == 'GET':
         form = ActivityForm(instance = activity)
     else:
@@ -429,6 +437,7 @@ def edit_activity(request, activity_id):
         if form.is_valid():
             activity = form.save(commit=False)
             activity.project = project
+            activity.author_activity = author
             activity.save()
             return redirect('tracing:listactivities', project.id)
     return render(request, 'coach_data/edit_activity.html', locals())
@@ -445,6 +454,17 @@ def delete_activity(request, activity_id):
 
 #Create global activities for all call's projects
 @login_required
+@permission_required('tracing.list_activity')
+def list_global_activities(request, call_id):
+    title_activity = 'Actividades globales'
+    call = Call.objects.get(pk = call_id)
+    query_activities = Activity.objects.all().filter(author_activity = 'Administrador')
+    activities = reversed(list(query_activities))
+
+    return render(request, 'coach_assignment/list_activity.html', locals())
+
+#Create global activities for all call's projects
+@login_required
 @permission_required('tracing.add_activity')
 def global_activity(request, call_id):
     title = 'Crear actividad global'
@@ -457,12 +477,33 @@ def global_activity(request, call_id):
         title_ = request.POST.get('title')
         description = request.POST.get('description')
         due_date = request.POST.get('due_date')
+        author_activity = Group.objects.get(name='Administrador')
         for p in projects:
-            activity = Activity(project = p, title = title_, description = description, due_date = due_date)
+            activity = Activity(project = p, title = title_, description = description, due_date = due_date, author_activity = author_activity)
             activity.save()
-        return redirect('tracing:activeprojects', call.id)
+        return redirect('tracing:listglobalactivities', call.id)
     return render(request, 'coach_assignment/form_activity.html', locals())
 
+# Edit an global activity
+@login_required
+@permission_required('tracing.change_global_activity')
+def edit_global_activity(request, activity_id):
+    title = 'Editar Actividad Global'
+    activity = get_object_or_404(Activity, pk=activity_id)
+    project = activity.project
+    call = activity.project.call
+    author = activity.author_activity
+    if request.method == 'GET':
+        form = ActivityForm(instance = activity)
+    else:
+        form = ActivityForm(request.POST, request.FILES, instance = activity)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.project = project
+            activity.author_activity = author
+            activity.save()
+            return redirect('tracing:listglobalactivities', call.id)
+    return render(request, 'coach_assignment/edit_activity.html', locals())
 #Shows activities of a project
 @login_required
 @permission_required('common.is_entrepreneur')
@@ -533,7 +574,7 @@ def reject_activity(request, activity_id):
 def evaluation_calls_list(request):
     title = 'Lista de convocatorias'
     today = datetime.date.today()
-    calls = Call.objects.filter(due_date__lt= today)
+    calls = Call.objects.filter(due_date__lt= today).reverse()
     #Search
     queryset = request.GET.get("buscar")
     if queryset:
@@ -737,5 +778,51 @@ def create_interview(request, project_id):
             interview = form.save(commit=False)
             interview.project = project
             interview.save()
-            return redirect('tracing:activeprojects', project.call_id)
+            return redirect('tracing:secondfilter', project.call_id)
     return render(request, 'interview/form_interview.html', locals())
+
+#Create a interview of a project
+@login_required
+def interview_detail(request, interview_id):
+    title = 'Ver entrevista'
+    interview = get_object_or_404(Interview, pk = interview_id)
+    
+    return render(request, 'interview/detail.html', locals())
+
+
+#List all the active projects for second filter
+@login_required
+@permission_required('common.is_jaku_staff')
+def second_filter(request, call_id):
+    title = 'Proyectos vigentes: 2do filtro'
+    leaders_ = []
+    call = Call.objects.get(pk = call_id)
+    query_set= Project.objects.select_related('call').filter(call=call).filter(is_active = True)
+    active_projects = reversed(list(query_set))
+    return render(request, 'coach_assignment/second_filter.html', locals())
+
+#Reject a project in active project list based on the interview
+@login_required
+@permission_required('common.is_jaku_staff')
+def reject_project(request, interview_id):
+
+    interview = get_object_or_404(Interview, pk = interview_id)
+    interview.is_evaluated = True
+    interview.save()
+
+    interview.project.is_active = False
+    interview.project.save()
+
+    
+    return redirect('tracing:secondfilter', interview.project.call.id)
+
+#Approve a project in active project list based on the interview
+@login_required
+@permission_required('common.is_jaku_staff')
+def approve_project(request, interview_id):
+    interview = get_object_or_404(Interview, pk = interview_id)
+    interview.is_evaluated = True
+    interview.save()
+
+    
+    return redirect('tracing:secondfilter', interview.project.call.id)

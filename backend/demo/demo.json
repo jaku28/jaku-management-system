@@ -4,11 +4,11 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$100000$GQLjlFqsYuFl$ED2kkq5xqsYhgJ+I0scSr9XLfRpbrKt6p/DHRtbQSDA=",
-        "last_login": "2019-04-15T11:45:34.725Z",
+        "last_login": null,
         "is_superuser": true,
         "username": "admin",
         "first_name": "Admin",
-        "last_name": "Admin",
+        "last_name": "",
         "email": "admin@gmail.com",
         "is_staff": true,
         "is_active": true,

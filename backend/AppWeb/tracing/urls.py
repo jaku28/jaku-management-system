@@ -50,10 +50,15 @@ urlpatterns = [
 	path('evaluacion-lista-convocatorias/evaluaciones/cartillas-evaluacion/detalle/descargar/<int:evaluation_id>/<int:jury_id>/', views.export_evaluation_card, name='exportevaluationcard'),
 	
 	path('evaluacion-lista-convocatorias/proyectos-vigentes/<int:call_id>/', views.active_projects, name='activeprojects'),
-	path('evaluacion-lista-convocatorias/proyectos-vigentes/agregar-actividad/<int:call_id>/', views.global_activity, name='globalactivity'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/actividades/agregar-actividad/<int:call_id>/', views.global_activity, name='globalactivity'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/actividades/<int:call_id>/', views.list_global_activities, name='listglobalactivities'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/actividades/editar-actividad/<int:activity_id>/', views.edit_global_activity, name='editglobalactivity'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/entrevistas/<int:call_id>/', views.second_filter, name='secondfilter'),
 	path('evaluacion-lista-convocatorias/proyectos-vigentes/asignar-coach/<int:project_id>/', views.assign_coach, name='assigncoach'),
 	path('evaluacion-lista-convocatorias/proyectos-vigentes/bloquear-proyecto/<int:project_id>/', views.block_project, name='blockproject'),
 
 	path('evaluacion-lista-convocatorias/proyectos-vigentes/entrevista/agregar/<int:project_id>/', views.create_interview, name='createinterview'),
-
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/entrevista/detalle/<int:interview_id>/', views.interview_detail, name='interviewdetail'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/entrevista/aprobar/<int:interview_id>/', views.approve_project, name='approveproject'),
+	path('evaluacion-lista-convocatorias/proyectos-vigentes/entrevista/rechazar/<int:interview_id>/', views.reject_project, name='rejectproject'),
 ]

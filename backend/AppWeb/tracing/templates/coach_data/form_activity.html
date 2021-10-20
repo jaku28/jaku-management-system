@@ -15,7 +15,7 @@
             <div class="alert alert-danger" role="alert">
                 Todos los campos con * son obligatorios.
             </div>
-            <form method="POST" enctype="multipart/form-data" class="needs-validated required">
+            <form method="POST" enctype="multipart/form-data" class="needs-validation required" novalidate enctype="multipart/form-data">
                 {%csrf_token%}
                 <div>
                     <label for="title">Título</label>

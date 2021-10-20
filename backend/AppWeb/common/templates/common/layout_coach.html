@@ -13,8 +13,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="{% static 'css/layout-administrador.css'%}">
     <link rel="stylesheet" href="{% static 'css/layout-emprendedor.css'%}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css" integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
@@ -137,9 +136,15 @@
             var t = !1, o = !1, e = 0, a = 0
             t || ($toggle = $(".sidenav-toggler"), $toggle.click(function () { 1 == e ? ($("html").removeClass("nav_open"), $toggle.removeClass("toggled"), e = 0) : ($("html").addClass("nav_open"), $toggle.addClass("toggled"), e = 1) }), t = !0), o || ($topbar = $(".topbar-toggler"), $topbar.click(function () { 1 == a ? ($("html").removeClass("topbar_open"), $topbar.removeClass("toggled"), a = 0) : ($("html").addClass("topbar_open"), $topbar.addClass("toggled"), a = 1) }), o = !0), $('[data-select="checkbox"]').change(function () { $target = $(this).attr("data-target"), $($target).prop("checked", $(this).prop("checked")) })
         });
-        
+        function editarModal(url) {
+            $('#editar').load(url, function () {
+                $(this).modal('show');
+            });
+        }
     </script>
     {% endblock %}
+    {% load static %}
+    <script src="{% static 'js/validation-form.js'%}"></script>
 </body>
 
 </html>

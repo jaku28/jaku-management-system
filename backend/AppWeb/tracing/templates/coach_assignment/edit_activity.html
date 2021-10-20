@@ -13,10 +13,10 @@
                 <div class="alert alert-danger" role="alert">
                     Todos los campos con * son obligatorios.
                 </div>
-                <form action="{% url 'tracing:editactivity' activity.id %}" method="POST" enctype="multipart/form-data" class="was-validated required">
+                <form action="{% url 'tracing:editglobalactivity' activity.id %}" method="POST" enctype="multipart/form-data" class="was-validated required">
                     {%csrf_token%}
                     <div>
-                        <label for="title">Título</label>
+                        <label for="title">Título:</label>
                         <input type="text" id="title" name="title" class="form-control input-square mb-3" required
                             pattern="^((\S+ )*\S+)?$" data-toggle="tooltip" data-placement="left" value="{{activity.title}}">
                     </div>
@@ -31,7 +31,7 @@
                             value="{{activity.due_date|date:"Y-m-d"}}" required>
                     </div>
                     <input type="submit" value="Guardar" class="btn btn-jaku px-4 my-3">
-                    <a class="btn btn-secondary my-3" href="{% url 'tracing:listactivities' project.id%}">Cancelar</a>
+                    <a class="btn btn-secondary my-3" href="{% url 'tracing:listglobalactivities' project.id%}">Cancelar</a>
                 </form>
             </div>
         </div>

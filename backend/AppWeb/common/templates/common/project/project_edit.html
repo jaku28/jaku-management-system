@@ -20,7 +20,7 @@
 				<i class="fa fa-check" aria-hidden="true"></i>{{call}}
 			</h3>
 			<hr />
-			<form method="POST" action="{% url 'common:editproject' project.id %}" class="was-validated required">
+			<form method="POST" action="{% url 'common:editproject' project.id %}" class="was-validated required" onsubmit="return cantidadMiembros();">
 				{%csrf_token%}
 				<div class="form-group">
 					<label for="title">Título del Emprendimiento:</label>
@@ -61,12 +61,17 @@
 					<div class="alert alert-warning" role="alert">No se tienen emprendedores registrados.</div>
 					{% endif %}
 
-					<input type="text" id="new_leader" style="display:none;" name="new_leader" value="{{leader.id}}"/>
-					<div id="membersContent" class="card bg-light p-3">
-					</div>
+					<input type="text" id="new_leader" style="display:none;" name="new_leader" value="{{leader.id}}" />
 
-					<textarea class="form-control" name="members" id="members" rows="8" style="display:none;"></textarea>
-					<textarea class="form-control" name="members_id" id="members_id" rows="8" style="display:none;"></textarea>
+					<div id="membersContent" class="card bg-light p-3">
+						
+					</div>
+					
+						
+					<textarea class="form-control" name="members" id="members" rows="8" style="display:none;" />
+
+					<textarea class="form-control" name="members_id" id="members_id" rows="8" style="display:none;"/>
+					
 					<textarea class="form-control" name="members_id_delete" id="members_id_delete" rows="8" style="display:none;"></textarea>
 
 					<label for="title">Link video:</label>
@@ -79,31 +84,27 @@
 	</div>
 </div>
 {% block scripts %}
-<script>
+<script type="text/javascript">
+	var membersCurrent = new Map();
+	var listMembers = new Map();
+	{% for pr in profiles_project %}
+		membersCurrent.set('{{pr.user.profile.id}}','{{pr.user.first_name}} {{pr.user.last_name}}');
+		listMembers.set('{{pr.user.profile.id}}','{{pr.user.first_name}} {{pr.user.last_name}}');
+	{% endfor %}
+	
+
 	var dataM = "{{form.members.value|linebreaks}}";
-	console.log(dataM);
 	dataM = dataM.replace("<p>", "");
 	dataM = dataM.replace("</p>", "");
 	var dataline = dataM.split("<br />");
-
 	var data = document.getElementById("names");
-	var miembross = new Map();
+	var names = "{{profiles}}";
 	var newMembers = new Map();
 	var delMembers = new Map();
-	var listMembers = new Map();
 	var leaderSelect = new Map();
 	//add leader
-	for (let i = 0; i < data.length; i++) {
-		for (let j = 0; j < dataline.length; j++) {
-			const element = dataline[j];
-			if (element == data.options[i].text.split(" (", -1)[0]) {
-				miembross.set(data.options[i].value, data.options[i].text.split(" (", -1)[0]);
-				listMembers.set(data.options[i].value, data.options[i].text);
-			}
-		}
-	}
-	// keys 
-	var keyMembers = Array.from(listMembers.keys());
+	// // keys 
+	// var keyMembers = Array.from(listMembers.keys());
 	addTextArea();
 	enlistarMiembros();
 	
@@ -113,7 +114,6 @@
 			divMembers.removeChild(divMembers.firstChild);
 		}
 		var liderActual = document.getElementById('new_leader');
-		console.log(liderActual.value);
 		for (var [key, value] of listMembers) {
 			var contentMembers = document.createElement("div");
 			var inputMember = document.createElement("input");
@@ -142,7 +142,7 @@
 
 			btnDeleteMember.innerHTML = "X";
 			btnNewLeader.innerHTML = "Nuevo Líder";
-			btnNewLeader.setAttribute("onclick", "addLeader(this.parentNode)")
+			btnNewLeader.setAttribute("onclick", "addLeader("+key+")")
 			inputMember.value = value;
 
 			if (key !== liderActual.value) {
@@ -159,83 +159,6 @@
 
 		}
 	}
-
-	function deleteMembers(n) {
-		// console.log(n.id);
-		if (miembross.has(n.id)) {
-			console.log(miembross.get(n.id));
-			delMembers.set(n.id, miembross.get(n.id));
-			miembross.delete(n.id);
-			addTextArea();
-		}
-		n.remove();
-	}
-
-	function addMembers() {
-		// console.log(miembross.get("leader") == data.options[data.selectedIndex].text.split(' (', -1)[0]);
-		if (!!!document.getElementById(data.value) && miembross.get("leader") != data.options[data.selectedIndex].text
-			.split(' (', -1)[0]) {
-			newMembers.set(data.value, data.options[data.selectedIndex].text.split(' (', -1)[0]);
-			listMembers.set(data.value, data.options[data.selectedIndex].text)
-			addTextArea();
-
-			var contentMembers = document.createElement('div')
-			var inputMember = document.createElement('input');
-			var btnDeleteMember = document.createElement('button');
-			var btnNewLeader = document.createElement("button");
-
-			contentMembers.className = 'input-group mb-2';
-			contentMembers.id = data.value
-			inputMember.type = 'text';
-			inputMember.className = 'form-control';
-			inputMember.disabled = true;
-			btnDeleteMember.type = 'button';
-			btnDeleteMember.className = 'btn btn-outline-danger';
-			btnNewLeader.type = "button";
-			btnNewLeader.className = "newLeader btn btn-outline-secondary";
-			btnNewLeader.disabled = true;
-
-			btnDeleteMember.innerHTML = 'X';
-			inputMember.value = data.options[data.selectedIndex].text;
-			btnNewLeader.innerHTML = "Nuevo Líder";
-			btnNewLeader.setAttribute("onclick", "addLeader(this.parentNode)")
-
-			membersContent.appendChild(contentMembers);
-			contentMembers.appendChild(inputMember);
-			contentMembers.appendChild(btnDeleteMember);
-			contentMembers.appendChild(btnNewLeader);
-
-			btnDeleteMember.addEventListener('click', () => {
-				// console.log(btnDeleteMember.id)
-				if (newMembers.has(contentMembers.id)) {
-					console.log(newMembers.get(contentMembers.id))
-					newMembers.devare(contentMembers.id);
-					addTextArea();
-					contentMembers.remove();
-				}
-			})
-		}
-	}
-	// Function add data in textarea of members id's and textarea of names members
-	function addTextArea() {
-		var id_miembro = document.getElementById('members_id');
-		var miembros = document.getElementById('members');
-		id_miembro.value = '';
-		miembros.value = '';
-		for (let [key, value] of miembross) {
-			miembros.value += value + '\n';
-		}
-		for (var [key, value] of newMembers) {
-			miembros.value += value + '\n';
-		}
-
-		compareData();
-		console.log("nuevos", newMembers);
-		console.log("antiguos", miembross);
-		console.log("eliminados", delMembers);
-		membersDelete();
-	}
-
 	// Function change leader div display
 	function changeLeader() {
 		var btnNewLeader = document.querySelectorAll('.newLeader');
@@ -246,31 +169,85 @@
 	}
 	// Function select new leader
 	function addLeader(lider) {
-		console.log(">>" , lider.id);
 		var inputLeader = document.getElementById('new_leader');
-		inputLeader.value = lider.id;
-		enlistarMiembros()
-		console.log(miembross);
+		Swal.fire({
+			title: 'El siguiente usuario será el nuevo lider del proyecto.',
+			showCancelButton: true,
+			confirmButtonText: 'Ok',
+			}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire('Correcto!', '', 'success')
+				inputLeader.value = lider;
+				enlistarMiembros()
+			}
+			})
+		
 	}
-	// Function 
-	function compareData() {
+	function deleteMembers(n) {
+		if (listMembers.has(n.id)) {
+			Swal.fire({
+			title: 'Seguro que quiere eliminar al miembro?',
+			showCancelButton: true,
+			confirmButtonText: 'Si',
+			}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire('Eliminado!', '', 'success')
+				delMembers.set(n.id, listMembers.get(n.id));
+				listMembers.delete(n.id);
+				newMembers.delete(n.id);
+				n.remove();
+				addTextArea();
+			}
+			})
+			
+		}
+	}
+	function addMembers() {
+		newMembers.set(data.value,data.options[data.selectedIndex].text.split(' (', -1)[0]);
+		listMembers.set(data.value,data.options[data.selectedIndex].text.split(' (', -1)[0]);
+		enlistarMiembros();
+		addTextArea();
+	}
+	// Function add data in textarea of members id's and textarea of names members
+	function addTextArea() {
 		var id_miembro = document.getElementById('members_id');
-		id_miembro.value = '';
-		var testVal;
-		for (let [key, val] of newMembers) {
-			testVal = delMembers.get(key);
-			if (testVal !== val) {
-				console.log("nuevo enviar correo", val)
-				id_miembro.value += key + '\n';
+		var miembros = document.getElementById('members');
+		var del_Members = document.getElementById('members_id_delete');
+		miembros.value = '';
+		id_miembro.value ='';
+		del_Members.value ='';
+		for (let [key, value] of listMembers) {
+			miembros.value += value + '\n';
+		}
+		for (var [key, value] of newMembers) {
+			id_miembro.value += key + '\n'
+		}
+		for (var [key, value] of delMembers) {
+			if (membersCurrent.has(key)) {
+				del_Members.value += key + '\n'
 			}
 		}
-		return true;
+
+		// membersDelete();
 	}
+
 	function membersDelete() {
 		var delM = document.getElementById('members_id_delete');
 		delM.value = '';
 		for (let [key, val] of delMembers) {
 			delM.value += key + '\n';
+		}
+	}
+	function cantidadMiembros(){
+		if((listMembers.size) < 3 || (listMembers.size) > 5){
+			Swal.fire({
+  				icon: 'error',
+  				title: 'Oops...',
+  				html: 'Mínima cantidad de integrantes es 3. <br\> Máxima cantidad de integrantes es 5.',
+			});
+			return false;
+		}else{
+			return true;
 		}
 	}
 </script>

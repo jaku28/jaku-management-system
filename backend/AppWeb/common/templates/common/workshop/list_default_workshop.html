@@ -1,4 +1,4 @@
-{% extends 'common/layout_admin.html' %}
+{% include 'common/layout_admin.html' with active_page='call'%}
 {% block container %}
 
 <!-- Showing default workshops list to register them on a call -->
@@ -42,7 +42,7 @@
 						</table>											
 				</div>
 				<br/>
-				<button type="submit" name="add_workshops" value="add_workshops" class="btn btn-outline-secondary">Agregar nuevos talleres</button>
+				<button type="submit" name="add_workshops" value="add_workshops" class="btn btn-outline-success">Agregar nuevos talleres</button>
 				<button type="submit" name="save_workshops" value="save_workshops" class="btn btn-jaku mx-3">Guardar talleres</button>
 				
 			</form>

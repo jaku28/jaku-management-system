@@ -1,4 +1,4 @@
-{% include 'common/layout_admin.html' with active_page='call'  %}
+{% include 'common/layout_entrepreneur.html' with active_page='my_proyects'  %}
 {% block container %}
 
 <!-- Form to edit task assigned on an event -->
@@ -10,31 +10,37 @@
 	<div class="content">
 		<div class="container-fluid shadow-sm bg-light p-3">
 			<h1> <i class="fas fa-tasks" style="color: #bdc3c7;"></i>
-				<span class="text-primary">{{title}}: </span><br><span class="text-capitalize">{{call.name}} </span>
+				<span class="text-primary">{{title}}: </span><br><span class="text-capitalize">{{project.name}} </span>
 			</h1>
 			<div class="dropdown-divider"></div>
+            <h4 class="text-muted">
+				Presupuesto: S/.{{budget}}
+                    {% if budget >= totalBudgetRegistries %}
+                        <span class="badge badge-warning">Presupuesto dentro del límite</span>
+                    {% else %}
+                        <span class="badge badge-danger">Presupuesto excedido</span>
+                    {% endif %}
+                </h4>
 			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
 				<table class="table table-bordered">
 					<thead style=" background: linear-gradient(120deg,#3183c5,#33afe2);">
 					<tr>
-						<th>Taller</th>
-						<th>Descripción</th>
-						<th>Temario</th>
-						<th>Acciones</th>
+						<th scope="col" class="w-75">Item</th>
+						<th scope="col">Presupuesto</th>
+                        <th>Acciones</th>
 					</tr>
 					</thead>
 					<tbody>
-						{%for t in call_workshops%}
+						{%for t in project_budget%}
 						<tr>
-							<td>{{t.name}}</td>
-							<td>{{t.description|linebreaks}}</td>
-							<td>{{t.temary|linebreaks}}</td>
+							<td>{{t.description}}</td>
+							<td class="text-right">S/.{{t.actual_budget}}</td>
 							<td class="jaku-actions">
 								<ul>
 									<li>
-										{% if perms.common.change_call %}
-										<a href="{% url 'common:deletecallworkshop' call.id t.id %}"
-											onclick="return confirm('¿Está seguro de eliminar este taller asignado?')"
+										{% if perms.common.is_entrepreneur %}
+										<a href="{% url 'common:deleteprojectbudget' project.id t.id %}"
+											onclick="return confirm('¿Está seguro de eliminar este item del presupuesto?')"
 											class="eliminar" data-toggle="tooltip" title="Eliminar"
 											data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
 										{% endif%}
@@ -43,33 +49,35 @@
 							</td>
 						</tr>
 						{%endfor%}
+                        <tr>
+                            <td class="text-right"><b>TOTAL:</b></td>
+                            <td class="text-right"><b>S/.{{totalBudgetRegistries}}</b></td>
+                            <td></td>
+                        </tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="dropdown-divider"></div>
-			<h1> <i class="fas fa-sticky-note" style="color: #bdc3c7;"></i> Agregar talleres </h1>
+			<h1> <i class="fas fa-sticky-note" style="color: #bdc3c7;"></i> Agregar items </h1>
 			<div class="dropdown-divider"></div>
 			<form action="." method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
 				{%csrf_token%}
 				<div class="card mb-3" id="newTask">
-					<div class="card-header h4">Nuevo taller
+					<div class="card-header h4">Nuevo item
 						<span class="pull-right clickable close-icon" dataset="fadeOut" id="taskClose"><i class="fa fa-times" aria-hidden="true"></i></span>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-							<div class="col-md-4 mb-4">
-								<label for="">Taller</label>
-								<input type="text" name="workshop_name" class="form-control" required pattern="^((\S+ )*\S+)?$"
+							<div class="col-md-8 mb-8">
+								<label for="">Item</label>
+								<input type="text" name="budget_description" class="form-control" required pattern="^((\S+ )*\S+)?$"
 								data-toggle="tooltip" data-placement="left"
 								title="No poner espacios en blanco al inicio, al final o seguidos.">
 							</div>
 							<div class="col-md-4 mb-4">
-                                <label for="">Descripción:</label>
-					            <textarea class="form-control" type="text" name="workshop_description" id="description" rows="1" required></textarea>
-							</div>
-							<div class="col-md-4 mb-4">
-                                <label for="">Temario:</label>
-                                <textarea class="form-control" type="text" name="workshop_temary" id="temary" rows="1" required></textarea>                       
+                                <label for="">Presupuesto:</label>
+					            <input type="number" name="budget_amount" class="form-control" required 
+											data-toggle="tooltip" data-placement="left">
 							</div>
 						</div>
 					</div>
@@ -79,7 +87,7 @@
 				</div>
 				<!-- </div> -->
 				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
-						class="fas fa-plus mr-2"></i>Añadir nuevo taller</button>
+						class="fas fa-plus mr-2"></i>Añadir nuevo item</button>
 				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
 
 
@@ -111,49 +119,41 @@
 		var iClose = document.createElement('i');
 		var divContentName = document.createElement('div');
 		var divContentDesc = document.createElement('div');
-		var divContentTem = document.createElement('div');
 
 		var laInput = document.createElement('label');
 		var input = document.createElement('input');
 		
 		var laDesc = document.createElement('label');
-		var textareaDesc = document.createElement('textarea');
-		var laTem = document.createElement('label');
-		var textareaTem = document.createElement('textarea');
+		var textareaDesc = document.createElement('input');
 
 		divTask.className = 'card mb-3'
 		divTaskHead.className = 'card-header h4'
-		divTaskHead.innerHTML = 'Nuevo taller'
+		divTaskHead.innerHTML = 'Nuevo item'
 		divTaskBody.className = 'card-body'
 		spanClose.className = 'pull-right clickable close-icon'
 		spanClose.dataset = 'fadeOut'
 		spanClose.id = 'taskCloses'
 		iClose.className = 'fa fa-times'
 		divContentTaskBody.className = 'form-row'
-		divContentName.className = 'col-md-4 mb-4'
+		divContentName.className = 'col-md-8 mb-8'
 		divContentDesc.className = 'col-md-4 mb-4'
-		divContentTem.className = 'col-md-4 mb-4'
 		
-		laInput.innerHTML = 'Taller'
+		laInput.innerHTML = 'Item'
 		input.setAttribute('data-toggle', 'tooltip');
 		input.setAttribute('data-placement', 'left');
-		input.name = 'workshop_name';
+		input.name = 'budget_description';
 		input.required = true
 		input.className = 'form-control';
 		input.pattern = '^((\\S+ )*\\S+)?$'
 		input.title = 'No poner espacios en blanco al inicio, al final o seguidos.'
-		laDesc.innerHTML = 'Descripción:'
-		laTem.innerHTML = 'Temario:'
-		textareaDesc.type = 'text'
-		textareaDesc.rows = '1'
-		textareaDesc.name = 'workshop_description'
+		laDesc.innerHTML = 'Presupuesto:'
+        textareaDesc.setAttribute('data-toggle', 'tooltip');
+		textareaDesc.setAttribute('data-placement', 'left');
+		textareaDesc.type = 'number'
+		textareaDesc.name = 'budget_amount'
 		textareaDesc.className = 'form-control';
 		textareaDesc.required = true
-		textareaTem.type = 'text'
-		textareaTem.rows = '1'
-		textareaTem.name = 'workshop_temary'
-		textareaTem.className = 'form-control';
-		textareaTem.required = true
+		
 
 		divTasks.appendChild(divTask);
 		divTask.appendChild(divTaskHead);
@@ -163,13 +163,10 @@
 		divTaskBody.appendChild(divContentTaskBody);
 		divContentTaskBody.appendChild(divContentName);
 		divContentTaskBody.appendChild(divContentDesc);
-		divContentTaskBody.appendChild(divContentTem);
 		divContentName.appendChild(laInput);
 		divContentName.appendChild(input);
 		divContentDesc.appendChild(laDesc);
 		divContentDesc.appendChild(textareaDesc);
-		divContentTem.appendChild(laTem);
-		divContentTem.appendChild(textareaTem);
 		
 		spanClose.addEventListener('click', () =>divTask.remove());
 

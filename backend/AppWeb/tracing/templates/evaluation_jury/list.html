@@ -24,10 +24,10 @@
                         <option value="{{j.id}}">{{j.user.first_name}}</option>
                         {% endfor %}
                     </select>
+                    <button type="submit" name="add_evaluation_jury" value="add_evaluation_jury" class="btn btn-jaku mx-3">Agregar</button>
                     {% else %}
                     <h3>No hay más jurados.</h3>
                     {% endif %}
-                    <button type="submit" name="add_evaluation_jury" value="add_evaluation_jury" class="btn btn-jaku mx-3">Agregar</button>
                 </div>
             </form>
             <hr>

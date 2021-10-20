@@ -40,7 +40,7 @@
 								</select>
 							</td>
 							<td style="width: 5%">
-								<input type="date" name="assigned_date" id="assigned_date{{ forloop.counter }}" disabled class="form-control" required></td>
+								<input type="date" name="assigned_date" id="assigned_date{{ forloop.counter }}" disabled class="form-control" required onchange="updateMinByData('{{ forloop.counter }}')"></td>
 							<td style="width: 5%">
 								<input type="date" name="due_date" id="due_date{{ forloop.counter }}" disabled class="form-control"  required></td>							
 							</tr>	
@@ -54,7 +54,15 @@
 				
 			</form>
 			<!-- End Default tasks list form -->
-						
+			<!-- Date Limit validation -->
+			<script type="text/javascript">
+				function updateMinByData(event) {
+					var idDue = "due_date"+event;
+					var dateAssigned = document.getElementById("assigned_date"+event).value;
+					document.getElementById(idDue).setAttribute('min', dateAssigned);  
+				}
+			</script>
+
 			<script type="text/javascript">
 				document.addEventListener('change', function (event) {
 					if (event.target.type != 'checkbox')

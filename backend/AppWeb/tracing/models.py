@@ -2,6 +2,7 @@ from django.db import models
 from common.models import Call, Project
 from accounts.models import ProfileMentor, ProfileJury
 
+
 #Model for evaluation
 class Evaluation(models.Model):
     class Meta:
@@ -82,6 +83,7 @@ class Activity(models.Model):
     title = models.CharField('título de la actividad', max_length=300)
     description = models.TextField('descripción de la actividad', blank=False, null=False)
     due_date = models.DateField('fecha límite', null=True, blank=True)
+    author_activity =  models.CharField('autor', max_length=20, blank=True, null=True)
     file_activity = models.FileField('archivo adjunto de actividad', null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=False, verbose_name='proyecto')
     is_completed = models.BooleanField('completado', null=False, default = False)
@@ -104,6 +106,8 @@ class Interview(models.Model):
     link = models.CharField('link', max_length=200, null=True, blank=True)
     date = models.DateField('fecha', null=False, blank=False)
     time = models.TimeField('hora', blank=True, null=True)
+    is_evaluated = models.BooleanField('evaluado', null=False, default = False)
+
 
     def __str__(self):
         return str(self.title)

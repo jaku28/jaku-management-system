@@ -59,7 +59,14 @@
                         </tr>
                         <tr>
                             <td>Lugar de origen</td>
-                            <td>{{requesting_user.country}}, {{requesting_user.state}}, {{requesting_user.city}}</td>
+                            <td>{{requesting_user.country}}
+                                {% if requesting_user.state %}
+                                    , {{requesting_user.state}}
+                                {% endif %}
+                                {% if requesting_user.city %}
+                                    , {{requesting_user.city}}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>Institución de procedencia</td>

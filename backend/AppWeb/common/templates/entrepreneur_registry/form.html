@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <link
       rel="stylesheet"
@@ -38,9 +41,9 @@
           </div>
           <div class="col-lg-6 bg-light shadow">
             <div class="container" style="padding: 5%; ">
-              <p style="font-size: 5vh">
+              <h1 >
                 <span class="text" style="color: #3182c5">{{title}}</span>
-              </p>
+              </h1>
               <div class="dropdown-divider"></div>
               <div class="alert alert-danger" role="alert">
                 Todos los campos son obligatorios.
@@ -293,29 +296,18 @@
                   <input type="hidden" id="state" name="state" />
                   <input type="hidden" id="institution" name="institution" />
                   <hr />
-                  <span
-                    ><button
+                  <button
                       type="submit"
-                      class="btn"
-                      style="
-                        width: 40%;
-                        background-color: #3182c5;
-                        color: white;
-                        font-size: 3vh;
-                      "
+                      class="btn btn-primary btn-lg"
                     >
                       <i class="fa fa-paper-plane" aria-hidden="true"></i>
                       Enviar
-                    </button></span
-                  >
-                  <span
-                    ><a
+                    </button>
+                    <a
                       href="{% url 'common:home' %}"
-                      style="text-decoration: none"
-                      class="btn btn-secondary"
+                      class="btn btn-outline-secondary"
                       >Volver</a
-                    ></span
-                  >
+                    >
                 </form>
               </div>
             </div>
@@ -368,7 +360,7 @@
           let pa = document.getElementById("pais").value;
           document.getElementById("country").value =
             res.data[document.getElementById("pais").value - 1].name;
-
+          document.getElementById("state").value = "";
           cod = res.data.find((a) => a.id == pa);
           let astates = [];
           for (var make in cod.states) {
@@ -386,12 +378,11 @@
         let es = document.getElementById("estado");
         let selected = es.options[es.selectedIndex].text;
         (document.getElementById("state").value = selected), cod;
+        document.getElementById("city").value = "";
 
         for (var make in cod.states) {
-          console.log(make);
           if (!make.localeCompare(selected)) {
             ciudad = cod.states[make];
-            console.log(ciudad.length);
             break;
           }
         }
@@ -416,7 +407,6 @@
           window.onload;
           univer.value = "Universidad Nacional de San Agústin";
           checkUnsa.value = "";
-          console.log(univer.value);
         });
       document
         .getElementById("check-no-unsa")

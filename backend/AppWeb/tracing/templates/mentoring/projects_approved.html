@@ -41,7 +41,15 @@
                                 {% elif p.project_type == '2' %} SOCIAL
                                 {% else %} PRODUCTIVO {% endif %}
                             </td>
-                            <td><a href="{{p.link_video}}" target="_blank">{{p.link_video}}</a></td>
+                            <td>
+                            {% if p.link_video|stringformat:"s" == 'None' %}
+                                <div class="alert alert-warning" role="alert">
+                                    No cuenta con link.
+                                </div>
+                            {% else %}
+                                <a href="{{p.link_video}}" target="_blank">{{p.link_video}}</a>
+                            {% endif %}
+                            </td>
                             <td style="min-width: 200px;"> 
                                 
                                     {% if p.is_approved == '2' %} <div class="alert alert-success" role="alert"><i class="fa fa-check mr-2" aria-hidden="true"></i>APROBADO</div> 

@@ -59,7 +59,7 @@ urlpatterns = [
 	path('convocatoria/editar/<int:call_id>/', views.update_call, name='updatecall'),
 	path('convocatoria/eliminar/<int:call_id>/', views.delete_call, name='deletecall'),
 	path('convocatoria/proyectos/<int:call_id>/', views.call_projects_list, name='callprojectslist'),	
-	path('convocatoria/proyectos/detalle/<int:project_id>/', views.call_project_detail, name='callprojectdetail'),
+	path('convocatoria/proyectos/detalle/<int:call_id>/<int:project_id>/', views.call_project_detail, name='callprojectdetail'),
 	path('convocatoria/proyectos/detalle/aprobar/<int:project_id>/', views.approve_project, name='approveproject'),
 	path('convocatoria/proyectos/detalle/rechazar/<int:project_id>/', views.reject_project, name='rejectproject'),
 	path('convocatoria/proyectos/terminar/<int:call_id>/', views.finish_review, name='finishreview'),	
@@ -84,7 +84,9 @@ urlpatterns = [
 	path('mis-proyectos/editar/<int:project_id>/', views.edit_project, name='editproject'),
 	path('mis-proyectos/eliminar/<int:project_id>/', views.delete_project, name='deleteproject'),
 	path('mis-proyectos/detalle-de-convocatoria/<int:call_id>/', views.my_project_call_detail, name='myprojectcalldetail'),
-
+	path('mis-proyectos/financieros/<int:project_id>/', views.my_project_budget, name='myprojectbudget'),
+	path('mis-proyectos/editar/financieros/<int:project_id>/', views.edit_project_budget, name='editprojectbudget'),
+	path('mis-proyectos/eliminar/financieros/<int:project_id>/<int:budget_registry_id>/', views.delete_project_budget, name='deleteprojectbudget'),
 
 	path('perfil/<int:user_id>/', views.profile, name='profile'),
 	path('perfil/editar/<int:user_id>/', views.update_profile, name='update_profile'),
@@ -108,6 +110,7 @@ urlpatterns = [
 	path('coach/editar/<int:coach_id>/', views.edit_coach, name='editcoach'),
 	path('coach/agregar/', views.create_coach, name='createcoach'),
 	path('coach/eliminar/<int:coach_id>/', views.delete_coach, name='deletecoach'),
+	path('coach/restaurar/<int:coach_id>/', views.restore_coach, name='restorecoach'),
 	
 	#tmp
 	path('lista-puntaje-por-jurado/', views.list_score_per_jury, name='listscoreperjury'),

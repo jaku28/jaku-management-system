@@ -1,4 +1,4 @@
-{% extends 'common/layout_admin.html' %}
+{% include 'common/layout_admin.html' with active_page='event'%}
 {% block container %}
 
 <!-- Add new task for an event (this task will not be saved on default tasks) -->
@@ -15,45 +15,49 @@
 				<span class="text-primary">{{title}}</span>
 			</h1>
 			<div class="dropdown-divider"></div>
-			<form action="." method="POST">
+			<form action="." method="POST" class="needs-validation required" novalidate
+			enctype="multipart/form-data">
 				{%csrf_token%}
-				<div class="form-row">
-					<div class="col-md-3 mb-3">
-						<label for="">Tarea</label>
-						<input type="text" name="newTask" class="form-control" required>
+				
+				<!--Add task  -->
+				<div class="card mb-3" id="newTask">
+					<div class="card-header h4">Nueva tarea
+						<span class="pull-right clickable close-icon" dataset="fadeOut" id="taskClose"><i class="fa fa-times" aria-hidden="true"></i></span>
 					</div>
-					<div class="col-md-3 mb-3">
-						<label for="">Asignado a:</label>
-						<select name="n_personalusers" id="n_personalusers" class="form-control">
-							<option selected>Ninguno</option>
-							{%for p in personal_users%}
-							<option value="{{p.id}}">{{p.first_name}}</option>
-							{%endfor%}
-						</select>
-					</div>
-					<div class="col-md-3 mb-3">
-						<label for="">Fecha de asignación:</label>
-						<input type="date" name="n_assigned_date" class="form-control" required>
-					</div>
-					<div class="col-md-3 mb-3">
-						<label for="">Fecha límite:</label>
-						<input type="date" name="n_due_date" class="form-control" required>
-					</div>
-					<div id="divInput" class="col-md-3">
-
-					</div>
-					<div id="divSelect" class="col-md-3">
-
-					</div>
-					<div id="divDateA" class="col-md-3">
-
-					</div>
-					<div id="divDateL" class="col-md-3">
-
+					<div class="card-body">
+						<div class="form-row">
+							<div class="col-md-3 mb-3">
+								<label for="">Tarea</label>
+								<input type="text" name="newTask" class="form-control" required pattern="^((\S+ )*\S+)?$"
+								data-toggle="tooltip" data-placement="left"
+								title="No poner espacios en blanco al inicio, al final o seguidos.">
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Asignado a:</label>
+									<select name="n_personalusers" id="n_personalusers" class="form-control">
+										<option selected>Ninguno</option>
+										{%for p in personal_users%}
+											<option value="{{p.id}}">{{p.first_name}}</option>
+										{%endfor%}
+									</select>
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Fecha de asignación:</label>
+								<input type="date" name="n_assigned_date" id="n_assigned_date" class="form-control" onchange="updateMinByData()" required>
+							</div>
+							<div class="col-md-3 mb-3">
+								<label for="">Fecha límite:</label>
+								<input type="date" name="n_due_date" id="n_due_date" class="form-control" required>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div id="divTasks">
+
+				</div>
+				<!--  -->
 				<button type="button" onclick="newField()" class="btn btn-info mx-2"><i
-						class="fas fa-plus"></i></button>
+					class="fas fa-plus mr-2"></i>Añadir nueva tarea</button>
 				<button type="submit" class="btn btn-jaku px-4">Guardar</button>
 			</form>
 		</div>
@@ -65,29 +69,70 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- Date Limit validation -->
 <script type="text/javascript">
+</script>
+<script type="text/javascript">
+	function updateMinByData() {
+		var dateAssigned = document.getElementById("n_assigned_date").value;
+		console.log(dateAssigned);
+		document.getElementById("n_due_date").setAttribute('min', dateAssigned);  
+	}
+	function updateMinByDataNew(count) {
+		console.log("ga");
+		var dateAssigned = document.getElementById("n_assigned_date"+count).value;
+		document.getElementById("n_due_date"+count).setAttribute('min', dateAssigned);  
+	}
+
+	var close = document.getElementById('taskClose');
+	close.addEventListener('click', () => document.getElementById('newTask').remove());
+
+	var countTask = 0;
 	function newField() {
-		var divi = document.createElement('div');
-		var divs = document.createElement('div');
-		var divda = document.createElement('div');
-		var divdl = document.createElement('div');
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+		countTask = countTask+1
+		var divTask = document.createElement('div');
+		var divTaskHead = document.createElement('div');
+		var divTaskBody = document.createElement('div');
+		var divContentTaskBody = document.createElement('div');
+		var spanClose = document.createElement('span');
+		var iClose = document.createElement('i');
+		var divContentName = document.createElement('div');
+		var divContentAssignedTo = document.createElement('div');
+		var divContentDateAssigned = document.createElement('div');
+		var divContentDateLimit = document.createElement('div');
+
+		var laInput = document.createElement('label');
 		var input = document.createElement('input');
+		
+		
+		var laAssignedTo = document.createElement('label');
 		var select = document.createElement('select');
-		var input_due_date = document.createElement('input');
+
+		var laDateAssigned = document.createElement('label');
 		var input_assigned_date = document.createElement('input');
-		input_due_date.type = 'date'
-		input_due_date.name = 'n_due_date'
-		input_due_date.className = 'form-control my-3';
-		input_due_date.required = true
-		input_assigned_date.type = 'date'
-		input_assigned_date.name = 'n_assigned_date'
-		input_assigned_date.className = 'form-control my-3';
-		input_assigned_date.required =true
-		input.name = 'newTask';
-		input.required = true
-		input.className = 'form-control my-3';
+		
+		var laDateLimit = document.createElement('label');
+		var input_due_date = document.createElement('input');
+
+		divTask.className = 'card mb-3'
+		divTaskHead.className = 'card-header h4'
+		divTaskHead.innerHTML = 'Nueva tarea'
+		divTaskBody.className = 'card-body'
+		spanClose.className = 'pull-right clickable close-icon'
+		spanClose.dataset = 'fadeOut'
+		spanClose.id = 'taskCloses'
+		iClose.className = 'fa fa-times'
+		divContentTaskBody.className = 'form-row'
+		divContentName.className = 'col-md-3 mb-3'
+		divContentAssignedTo.className = 'col-md-3 mb-3'
+		divContentDateAssigned.className = 'col-md-3 mb-3'
+		divContentDateLimit.className = 'col-md-3 mb-3'
+
 		select.name = 'n_personalusers';
-		select.className = 'form-control my-3';
+		select.className = 'form-control';
 		var o;
 		o = document.createElement('option')
 		o.value = 'Ninguno';
@@ -101,16 +146,97 @@
 		o.text = '{{p.first_name}}';
 		select.appendChild(o);
 		{% endfor %}
-		divi.appendChild(input);
-		divs.appendChild(select);
-		divda.appendChild(input_assigned_date);
-		divdl.appendChild(input_due_date);
+		
+		laInput.innerHTML = 'Tarea'
+		input.setAttribute('data-toggle', 'tooltip');
+		input.setAttribute('data-placement', 'left');
+		input.name = 'newTask';
+		input.required = true
+		input.className = 'form-control';
+		input.pattern = '^((\\S+ )*\\S+)?$'
+		input.title = 'No poner espacios en blanco al inicio, al final o seguidos.'
+		laAssignedTo.innerHTML = 'Asignado a:'
+		laDateAssigned.innerHTML = 'Fecha de asignación:'
+		input_assigned_date.type = 'date'
+		input_assigned_date.id = 'n_assigned_date'+countTask
+		input_assigned_date.name = 'n_assigned_date'
+		input_assigned_date.className = 'form-control';
+		input_assigned_date.required =true
+		input_assigned_date.setAttribute('onchange', 'updateMinByDataNew('+countTask+')');
+		laDateLimit.innerHTML = 'Fecha límite:'
+		input_due_date.type = 'date'
+		input_due_date.id = 'n_due_date'+countTask
+		input_due_date.name = 'n_due_date'
+		input_due_date.className = 'form-control';
+		input_due_date.required = true
+
+
+		divTasks.appendChild(divTask);
+		divTask.appendChild(divTaskHead);
+		divTaskHead.appendChild(spanClose);
+		spanClose.appendChild(iClose);
+		divTask.appendChild(divTaskBody);
+		divTaskBody.appendChild(divContentTaskBody);
+		divContentTaskBody.appendChild(divContentName);
+		divContentTaskBody.appendChild(divContentAssignedTo);
+		divContentTaskBody.appendChild(divContentDateAssigned);
+		divContentTaskBody.appendChild(divContentDateLimit);
+		divContentName.appendChild(laInput);
+		divContentName.appendChild(input);
+		divContentAssignedTo.appendChild(laAssignedTo);
+		divContentAssignedTo.appendChild(select);
+		divContentDateAssigned.appendChild(laDateAssigned);
+		divContentDateAssigned.appendChild(input_assigned_date);
+		divContentDateLimit.appendChild(laDateLimit);
+		divContentDateLimit.appendChild(input_due_date);
+		
+		spanClose.addEventListener('click', () =>divTask.remove());
+
+		// var divTask = document.createElement('div');
+		// var divi = document.createElement('div');
+		// var divs = document.createElement('div');
+		// var divda = document.createElement('div');
+		// var divdl = document.createElement('div');
+		// var input = document.createElement('input');
+		// var select = document.createElement('select');
+		// var input_due_date = document.createElement('input');
+		// var input_assigned_date = document.createElement('input');
+		// input_due_date.type = 'date'
+		// input_due_date.name = 'n_due_date'
+		// input_due_date.className = 'form-control my-3';
+		// input_due_date.required = true
+		// input_assigned_date.type = 'date'
+		// input_assigned_date.name = 'n_assigned_date'
+		// input_assigned_date.className = 'form-control my-3';
+		// input_assigned_date.required =true
+		// input.name = 'newTask';
+		// input.required = true
+		// input.className = 'form-control my-3';
+		// select.name = 'n_personalusers';
+		// select.className = 'form-control my-3';
+		// var o;
+		// o = document.createElement('option')
+		// o.value = 'Ninguno';
+		// o.text = 'Ninguno';
+		// o.setAttribute('selected', 'selected');
+		// select.appendChild(o);
+
+		// {% for p in personal_users %}
+		// o = document.createElement('option');
+		// o.value = '{{p.id}}';
+		// o.text = '{{p.first_name}}';
+		// select.appendChild(o);
+		// {% endfor %}
+		// divi.appendChild(input);
+		// divs.appendChild(select);
+		// divda.appendChild(input_assigned_date);
+		// divdl.appendChild(input_due_date);
 		
 
-		document.getElementById("divInput").appendChild(divi)
-		document.getElementById("divSelect").appendChild(divs)
-		document.getElementById("divDateA").appendChild(divda)
-		document.getElementById("divDateL").appendChild(divdl)
+		// document.getElementById("divInput").appendChild(divi)
+		// document.getElementById("divSelect").appendChild(divs)
+		// document.getElementById("divDateA").appendChild(divda)
+		// document.getElementById("divDateL").appendChild(divdl)
 	}
 </script>
 {% endblock%}

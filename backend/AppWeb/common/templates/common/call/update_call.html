@@ -1,4 +1,4 @@
-
+{% load %}
 <div class="modal-lg" style="margin:auto" role="document">
     <div class="modal-content">
         <div class="container-fluid shadow-sm bg-light p-3">
@@ -48,6 +48,52 @@
                             <input type="file" class="custom-file-input" input=""  id="rules" name="rules" onchange="$('.custom-file-label').html(this.files[0].name)">
                             <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un archivo...</span>
                         </div>
+                    
+                    <h5>Campos dinámicos:</h5>
+                    <h6>Texto:</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre del campo</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in bigform_text_inputs %}
+                            <tr>
+                                <td>
+                                    <input 
+                                    class="form-control input-square mb-3" 
+                                    name="text_field_name{{ forloop.counter0 }}"
+                                    value="{{labels|get_value_in_list:forloop.counter0 }}"
+                                ></td>
+                                <td>Texto</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <h6>Archivo:</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre del campo</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in bigform_file_inputs %}
+                            <tr>
+                                <td>
+                                    <input 
+                                    class="form-control input-square mb-3" 
+                                    name="file_field_name{{ forloop.counter0 }}"
+                                    value="{{labels|get_file_value_in_list:forloop.counter0 }}"
+                                ></td>
+                                <td>Archivo</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     <button type="submit" class="btn btn-jaku">Actualizar</button>
                     <a class="btn btn-secondary my-3"  href="{% url 'common:calllist'%}">Cancelar</a>
 

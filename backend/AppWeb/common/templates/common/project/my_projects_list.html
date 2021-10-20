@@ -63,6 +63,12 @@
 										<a href="{% url 'common:deleteproject' p.project.id %}"
 											onclick="return confirm('¿Esta seguro de eliminar Este Proyecto?')" class="eliminar" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
 										<a href="{% url 'tracing:projectactivities' p.project.id %}" class="btn btn-primary activities" data-toggle="tooltip" title="Ver actividades y mentorías" data-placement="top">Actividades</a>
+										{% if p.project.budgetregistry_set.count > 0 %}
+										<a href="{% url 'common:editprojectbudget' p.project.id %}" class="btn btn-primary activities" data-toggle="tooltip" title="Ver aspectos financieros (presupuesto)" data-placement="top">Asp. Financieros</a>
+										{% endif %}
+										{% if p.project.interview_set.count == 1 %}
+										<a onclick="abrirModal('{% url 'tracing:interviewdetail' p.project.interview_set.first.id %}')" class="btn btn-primary activities" data-toggle="tooltip" title="Ver entrevista" data-placement="top">Entrevista</a>
+										{% endif %}
 									</li>
 								</ul>
 							</td>

@@ -19,6 +19,14 @@
 					Agregar nuevo coach
 				</a>
 			</div>
+			{% if error %}
+				<div class="alert alert-danger" role="alert">
+					{{error}}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endif %}
 			<div class="table-responsive shadow-sm" style="border-radius: 9px;">
 				<table class="table table-bordered">
 					<thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
@@ -26,6 +34,7 @@
                             <th>Apellidos y nombres</th>
 							<th>Celular</th>
 							<th>Correo / nombre de usuario</th>
+							<th>Estado</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
@@ -35,18 +44,32 @@
                             <td	class="text-capitalize">{{m.user.last_name}}, {{m.user.first_name}}</td>
 							<td>{{m.phone_number}}</td>
 							<td>{{m.user.email}}</td>
+							<td>
+								{% if m.habilitado %}
+									<span class="badge badge-success">Habilitado</span>
+								{% else %}
+									<span class="badge badge-secondary">Inhabilitado</span>
+								{% endif %}
+							</td>
 							<td class="jaku-actions">
 								<ul>
 									<li>
-										{% if perms.auth.change_user %}
-										<a onclick="abrirModal('{% url 'common:editcoach' m.id %}')" class="editar" data-toggle="tooltip"
-											title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
-										{% endif %}
-										{% if perms.auth.delete_user %}
-										<a href="{% url 'common:deletecoach' m.id %}"
-											onclick="return confirm('¿Está seguro de eliminar este usuario?')"
-											class="eliminar" data-toggle="tooltip" title="Eliminar"
-											data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+										{% if m.habilitado %}
+											{% if perms.auth.change_user %}
+											<a onclick="abrirModal('{% url 'common:editcoach' m.id %}')" class="editar" data-toggle="tooltip"
+												title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
+											{% endif %}
+											{% if perms.auth.delete_user %}
+											<a href="{% url 'common:deletecoach' m.id %}"
+												onclick="return confirm('¿Está seguro de eliminar este usuario?')"
+												class="eliminar" data-toggle="tooltip" title="Eliminar"
+												data-placement="top"><i class="fas fa-trash-alt fa-lg "></i></a>
+											{% endif %}
+										{% else %}
+											<a href="{% url 'common:restorecoach' m.id %}"
+												onclick="return confirm('¿Está seguro de restaurar este usuario?')"
+												class="evaluation" data-toggle="tooltip" title="Restaurar"
+												data-placement="top"><i class="fas fa-trash-restore-alt fa-lg"></i></a>
 										{% endif %}
 									</li>
 								</ul>

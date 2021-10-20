@@ -43,10 +43,8 @@ INSTALLED_APPS = [
     'web.apps.WebConfig',
     'common.apps.CommonConfig',
     'tracing.apps.TracingConfig',
-    'rest_framework',
-    'rest_framework.authtoken',
     'django_filters',
-    'rest_auth',
+    #'rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -155,6 +153,7 @@ ACCOUNT_USERNAME_BLACKLIST = ['admin']
 
 # Rest authentication
 
+'''
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.SessionAuthentication',
@@ -164,7 +163,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
-}
+}'''
 
 # Fixtures
 

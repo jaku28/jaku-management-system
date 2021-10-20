@@ -23,15 +23,15 @@
                         {% endfor %}
                     </select>
                     </div>
+                    <div class="form-group">
+                        <button type="submit" name="assign_coach" value="assign_coach"
+                        class="btn btn-jaku mx-3">Asignar</button>
+                    </div>
                     {% else %}
                     <div class="alert alert-warning" role="alert">
                         No hay coaches registrados.
                     </div>
                     {% endif %}
-                    <div class="form-group">
-                        <button type="submit" name="assign_coach" value="assign_coach"
-                        class="btn btn-jaku mx-3">Asignar</button>
-                    </div>
                 </form>
                 <!-- Table of project information -->
                 <div class="table-responsive shadow-sm" style="border-radius: 9px;">
@@ -80,7 +80,7 @@
 
                             <tr>
                                 <td>Link de Presentacion:</td>
-                                {% if project.link == None %}
+                                {% if project.link_video == None %}
                                 <td><div class="alert alert-warning" role="alert">
                                     No cuenta con link.
                                 </div></td>

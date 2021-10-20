@@ -83,11 +83,11 @@
 							</div>
 							<div class="col-md-3 mb-3">
 								<label for="">Fecha de asignación:</label>
-								<input type="date" name="assigned_date" class="form-control" required>
+								<input type="date" name="assigned_date" class="form-control" id="assigned_date"  data-min ="assigned" required>
 							</div>
 							<div class="col-md-3 mb-3">
 								<label for="">Fecha límite:</label>
-								<input type="date" name="due_date" class="form-control" required>
+								<input type="date" name="due_date" id="due_date" class="form-control" data-min="due_limit" required>
 							</div>
 						</div>
 					</div>
@@ -112,15 +112,33 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script type="text/javascript">
+    function updateMinByData(event) {
+		console.log("fff");
+        document.getElementById("due_date").setAttribute('min', event.target.value);  
+    }
+    var el_assigned = document.getElementById("assigned_date"); 
+    el_assigned.addEventListener("change", updateMinByData, false); 
+</script>
+
+
 <script type="text/javascript">
 	var close = document.getElementById('taskClose');
 	close.addEventListener('click', () => document.getElementById('newTask').remove());
 	var countTask = 0;
+	function updateMinByDataNew(num) {
+		var date = document.getElementById("assigned_date"+num).value;
+		document.getElementById("due_date"+num).setAttribute('min', date);  
+	}
+
 	function newField() {
+		
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
 		countTask = countTask+1
+		
 		var divTask = document.createElement('div');
 		var divTaskHead = document.createElement('div');
 		var divTaskBody = document.createElement('div');
@@ -168,12 +186,15 @@
 		laDateLimit.innerHTML = 'Fecha límite:'
 		input_due_date.type = 'date'
 		input_due_date.name = 'due_date'
+		input_due_date.id = 'due_date'+countTask
 		input_due_date.className = 'form-control';
 		input_due_date.required = true
 		input_assigned_date.type = 'date'
 		input_assigned_date.name = 'assigned_date'
+		input_assigned_date.id = 'assigned_date'+countTask
 		input_assigned_date.className = 'form-control';
 		input_assigned_date.required = true
+		input_assigned_date.setAttribute('onchange', 'updateMinByDataNew('+countTask+')');
 		
 		laSelect.innerHTML = 'Asignado a:'
 		select.name = 'personal_users';

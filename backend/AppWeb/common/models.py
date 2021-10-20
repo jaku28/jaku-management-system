@@ -34,6 +34,7 @@ class Call(models.Model):
 	award = models.CharField('premio', max_length=50)
 	rules = models.FileField('bases')
 	is_reviewed = models.BooleanField(default=False)
+	is_incubation = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.name
@@ -99,9 +100,49 @@ class Project(models.Model):
 	is_active = models.BooleanField('activo', null=False, default = True)
 	coach = models.ForeignKey(ProfileCoach, on_delete=models.CASCADE, null=True, blank=True, verbose_name='coach')
 	eval_score = models.DecimalField('puntaje temporal de evaluacion', blank=True, null=True, decimal_places=5, max_digits=10)
+	budget = models.CharField('presupuesto', max_length=50)
 
 	def __str__(self):
 		return self.name
+
+class BudgetRegistry(models.Model):
+	description = models.CharField('descripción', max_length=100, null=True)
+	actual_budget = models.IntegerField(verbose_name='presupuesto')
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.description
+
+class BigForm(models.Model):
+	class Meta:
+		verbose_name = 'bigForm'
+	
+	field0 = models.CharField('campo0', max_length=200, null=True, blank=True)
+	field1 = models.CharField('campo1', max_length=200, null=True, blank=True)
+	field2 = models.CharField('campo2', max_length=200, null=True, blank=True)
+	field3 = models.CharField('campo3', max_length=200, null=True, blank=True)
+	field4 = models.CharField('campo4', max_length=200, null=True, blank=True)
+	field5 = models.CharField('campo5', max_length=200, null=True, blank=True)
+	field6 = models.FileField('campo6', max_length=200, null=True, blank=True)
+	field7 = models.FileField('campo7', max_length=200, null=True, blank=True)
+	field8 = models.FileField('campo8', max_length=200, null=True, blank=True)
+	field9 = models.FileField('campo9', max_length=200, null=True, blank=True)
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+
+class FormConfig(models.Model):
+	class Meta:
+		verbose_name = 'formConfig'
+
+	field = models.CharField('campo', max_length=200)
+	type = models.CharField('tipo', max_length=200)
+	label = models.CharField('etiqueta', max_length=200)
+	call = models.ForeignKey(Call, on_delete=models.CASCADE)
+
+
+	def __str__(self):
+		return self.field
+
 
 class UserProject(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='usuario')

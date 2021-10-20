@@ -1,4 +1,4 @@
-{% include 'common/layout_admin.html' %}
+{% include 'common/layout_admin.html' with active_page='project_evaluation'%}
 {% block container %}
 {% load static %}
 <!-- Add umbral -->
@@ -13,14 +13,16 @@
                 <i class="far fa-calendar-alt" style="color: #bdc3c7;"></i> 
                 <span class="text-primary">{{title}}: </span><br><span class="text-capitalize"></span>
             </h1>
+            <form method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
+                {%csrf_token%}
+                <div class="form-group">
+                    <label for="umbral">Puntaje mínimo:</label>
+                    <input type="number" id="umbral" name="umbral" min="0" class="form-control col-md-4">  
+                    
+                </div>
+                <button type="submit" class="btn btn-jaku px-4">Guardar</button> 
+            </form>
         </div>
-        <form method="POST" class="needs-validation required" novalidate enctype="multipart/form-data">
-            {%csrf_token%}
-            <label for="umbral">Puntaje mínimo:</label>
-            <input type="number" id="umbral" name="umbral" min="0">  
-
-            <button type="submit" class="btn btn-jaku px-4">Guardar</button>
-        </form>
     </div>
 </div>
 <!-- Footer -->

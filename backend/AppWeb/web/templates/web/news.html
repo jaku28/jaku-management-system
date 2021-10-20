@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-content">
                                 <h4 class="card-title">
-                                    <a href="{% url 'web:newdetail' n.id %}"> {{ n.title|slice:":70" }}
+                                    <a href="{% url 'web:newdetail' n.id %}"> {{ n.title|slice:':70' }}
                                     </a>
                                 </h4>
                                 <hr>
@@ -42,7 +42,7 @@
                                 </p>
                             </div>
                             <div class="card-read-more">
-                                <a href="{% url 'web:newdetail' title=n.title %}" class="btn readMoreBtn">
+                                <a href="{% url 'web:newdetail' n.id %}" class="btn readMoreBtn">
                                     Leer Mas
                                 </a>
                             </div>

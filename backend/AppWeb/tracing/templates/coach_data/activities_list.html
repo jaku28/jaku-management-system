@@ -16,6 +16,47 @@
 			<h4 class="text-muted"><i class="fa fa-address-book" aria-hidden="true"></i>
 				Proyecto: {{project.name}}</h4>
             <div class="dropdown-divider"></div>
+            {% if budgetRegistries.count > 0 %}
+                <h4 class="text-muted">
+				Presupuesto: S/.{{budget}}
+                    {% if budget >= totalBudgetRegistries %}
+                        <span class="badge badge-warning">Presupuesto dentro del límite</span>
+                    {% else %}
+                        <span class="badge badge-danger">Presupuesto excedido</span>
+                    {% endif %}
+                </h4>
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-bordered">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);" class="text-center">
+                            <tr>
+                                <th>
+                                    Descripción
+                                </th>
+                                <th>
+                                    Presupuesto
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in budgetRegistries %}
+                            <tr>
+                                <td>
+                                    {{b.description}}
+                                </td>
+                                <td  class="text-right">
+                                    S/.{{b.actual_budget}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="text-right"><b>TOTAL:</b></td>
+                                <td class="text-right"><b>S/.{{totalBudgetRegistries}}</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> 
+            {% endif %}
+            <div class="dropdown-divider"></div>
             {% if perms.tracing.add_activity %}
             <a href="{% url 'tracing:createactivity' project.id%}" class="btn btn-jaku my-3">
                 <i class="fas fa-plus"></i> Agregar nueva actividad
@@ -47,7 +88,16 @@
                         {% for a in activities %}
                         <tr>
                             <td>
-                                {{a.title}} <br>
+                                <div>
+                                    
+                                    {% if a.author_activity|stringformat:"s" == "Administrador" %}
+                                    <span class="bg-info text-light p-1 mr-2 ">
+                                        Act. Global
+                                    </span> 
+                                    {% endif %}
+                                        
+                                    {{a.title}} 
+                                </div><br>
                                 {% if a.is_approved == '1' %}
                                 <div class="badge badge-success">Completado a tiempo</div>
                                 {% elif a.is_approved == '2' %}
@@ -83,7 +133,7 @@
                                 <ul>
                                     <li>
                                         {% if perms.tracing.change_activity %}
-                                        <a href="{% url 'tracing:editactivity' a.id %}" class="editar" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
+                                        <a onclick="editarModal('{% url 'tracing:editactivity' a.id %}')" class="editar" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-edit fa-lg"></i></a>
                                         {% endif %}
                                         {% if perms.tracing.delete_activity %}
                                         <a href="{% url 'tracing:deleteactivity' a.id %}"
@@ -157,6 +207,7 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="editar"></div>
 <!-- Footer -->
 {% include "web/footer-mysoft.html" %}
 <!-- End Footer -->

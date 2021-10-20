@@ -51,6 +51,7 @@ class ProfileMentor(models.Model):
 class ProfileCoach(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField('telefono/celular', max_length=20, blank=False, null=False)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username

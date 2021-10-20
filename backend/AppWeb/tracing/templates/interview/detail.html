@@ -1,0 +1,59 @@
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="container-fluid shadow-sm bg-light p-3">
+
+            <div class="modal-header">
+                <h1><i class="fas fa-calendar-check" style="color: #bdc3c7;"></i>
+                    <span class="text-primary">{{title}}: </span><br><span class="text-capitalize ml-3">{{interview.title}} </span>
+                </h1>                
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">     
+                <div class="table-responsive shadow-sm" style="border-radius: 9px;">
+                    <table class="table table-head-bg-success table-striped table-hover">
+                        <thead style="background: linear-gradient(120deg,#3183c5,#33afe2);">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Información</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Título entrevista</td>
+                                <td>{{interview.title}}</td>
+                            </tr>
+                            <tr>
+                                <td>Descripción</td>
+                                <td>{{interview.description|linebreaks}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha</td>
+                                <td>{{interview.date}}</td>
+                            </tr>
+                            <tr>
+                                <td>Hora</td>
+                                <td>{{interview.time}}</td>
+                            </tr>
+                            <tr>
+                                <td>Link</td>
+                                <td>
+                                    {% if interview.link != None %}
+                                <a href="{{interview.link}}" target="_blank">{{interview.link}}</a>
+                                {% else %}
+                                <div class="alert alert-warning" role="alert">
+                                    No cuenta con un link.
+                                </div>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

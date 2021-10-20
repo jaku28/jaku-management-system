@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Call, Entity, Project, New, Event, DefaultTask, Task, EventRegister, DefaultWorkshop, Workshop, UserProject
+from .models import BudgetRegistry, Call, Entity, Project, New, Event, DefaultTask, Task, EventRegister, DefaultWorkshop, Workshop, UserProject, BigForm, FormConfig, BudgetRegistry
 admin.site.site_header = 'Jaku'
 admin.site.site_title = 'Jaku'
 admin.site.index_title = 'Jaku'
@@ -30,3 +30,6 @@ admin.site.register(Task, TaskAdmin)
 admin.site.register(DefaultWorkshop)
 admin.site.register(UserProject)
 admin.site.register(Workshop, WorkshopAdmin)
+admin.site.register(BigForm)
+admin.site.register(FormConfig)
+admin.site.register(BudgetRegistry)

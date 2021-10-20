@@ -87,6 +87,53 @@
                         <span class="custom-file-label" for="validatedCustomFile" data-browse="Elegir">Elige un archivo...</span>
                     </div>
                     
+                    <label><input type="checkbox" id="is_incubation" name="is_incubation"> ¿Es de tipo incubación?</label><br>
+                    <hr>
+                    <h4>Campos dinámicos:</h4>
+                    <h5>Texto:</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre del campo</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in bigform_text_inputs %}
+                            <tr>
+                                <td>
+                                    <input 
+                                        class="form-control input-square mb-3" 
+                                        name="text_field_name{{ forloop.counter0 }}"
+                                    >
+                                </td>
+                                <td>Texto</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <h5>Archivo:</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre del campo</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in bigform_file_inputs %}
+                            <tr>
+                                <td>
+                                    <input 
+                                        class="form-control input-square mb-3" 
+                                        name="file_field_name{{ forloop.counter0 }}"
+                                    >
+                                </td>
+                                <td>Archivo</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     <button type="submit" class="btn btn-jaku px-4">Guardar</button>
                     <a class="btn btn-secondary my-3"  href="{% url 'common:calllist'%}">Cancelar</a>
                 </form>

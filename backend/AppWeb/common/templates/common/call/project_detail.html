@@ -75,6 +75,19 @@
                             </td>
                         
                         </tr>
+                        {% for lb in text_label_questions %}
+                            <tr>
+                                <td style="text-transform: capitalize;">{{lb.label}}</td>
+                                <td>{{answers|get_question_answer:lb.field }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for fl in file_label_questions %}
+                            <tr>
+                                <td style="text-transform: capitalize;">{{fl.label}}</td>
+                                <td><a target="_blank" href="{{answers|get_url_file:fl.field}}">Ver archivo</a></td>
+                            </tr>
+                        {% endfor %}
+
                         <tr>
                             <td>Estado</td>
                             <td>

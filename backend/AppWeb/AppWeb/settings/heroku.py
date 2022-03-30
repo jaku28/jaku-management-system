@@ -13,7 +13,7 @@ DEBUG = False
 
 SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
 
-ALLOWED_HOSTS = ['.herokuapp.com', '.appweb.net', 'jaku.edu.pe']
+ALLOWED_HOSTS = ['.herokuapp.com', '.appweb.net', '.edu.pe', '.jaku.edu.pe']
 
 MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware'
